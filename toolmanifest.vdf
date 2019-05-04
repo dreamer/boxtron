@@ -1,5 +1,7 @@
 "manifest"
 {
-  "commandline" "/run_dosbox run"
-  "commandline_waitforexitandrun" "/run_dosbox waitforexitandrun"
+  "commandline" "/run_dosbox"
+  "commandline_waitforexitandrun" "/run_dosbox --wait-before-run"
+  "commandline_getnativepath" "/run_dosbox --get-native-path"
+  "commandline_getcompatpath" "/run_dosbox --get-compat-path"
 }

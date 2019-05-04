@@ -1,8 +1,51 @@
 #!/usr/bin/env python3
 
+# pylint: disable=missing-docstring
+# pylint: disable=fixme
+
+import argparse
+import subprocess
+import sys
+import os
+
+
+def run(cmd_line, wait=False):
+
+    if wait:
+        print('wait for dropbox to stop')
+
+    _folder, exe = os.path.split(cmd_line[0])
+
+    if exe.lower() == 'dosbox.exe':
+        # Basic use-case is dosbox.conf file in top-level game dir
+        # that includes autoexec section.
+        subprocess.call(['dosbox'])
+    else:
+        print('run_dosbox: silently ignoring executable: ', cmd_line)
+
+
 def main():
-    # pylint: disable=C0111
-    print('hello, cruel world!')
+    parser = argparse.ArgumentParser()
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument('--get-native-path', action='store_true')
+    group.add_argument('--get-compat-path', action='store_true')
+    group.add_argument('--wait-before-run', action='store_true')
+    group.add_argument('--get-current-step')
+    parser.add_argument('commands', nargs='*')
+    args = parser.parse_intermixed_args()
+
+    if args.get_native_path:
+        # FIXME convert single path: windows -> linux
+        sys.exit(1)
+    elif args.get_compat_path:
+        # FIXME convert single path: linux -> windows
+        sys.exit(1)
+    elif args.get_current_step:
+        # Steam sometimes ivokes this even when it's not defined in
+        # toolmanifest…
+        sys.exit(1)
+    else:
+        run(args.commands, wait=args.wait_before_run)
 
 
 if __name__ == "__main__":
