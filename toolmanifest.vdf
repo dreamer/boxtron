@@ -1,0 +1,5 @@
+"manifest"
+{
+  "commandline" "/run_dosbox run"
+  "commandline_waitforexitandrun" "/run_dosbox waitforexitandrun"
+}

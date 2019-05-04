@@ -1,0 +1,13 @@
+"compatibilitytools"
+{
+  "compat_tools"
+  {
+    "steam_dos_0.1" // Internal name of this tool
+    {
+      "install_path" "."
+      "display_name" "DOSBox (native)"
+      "from_oslist"  "windows"
+      "to_oslist"    "linux"
+    }
+  }
+}
