@@ -8,6 +8,22 @@ import subprocess
 import sys
 import os
 
+# X-COM: UFO Defense (7760)
+# Works. Uses runme.exe as launcher for dropbox.exe
+#
+# X-COM: Terror from the Deep (7650)
+# Works. Uses runme.exe as launcher for dropbox.exe
+#
+# STAR WARS™ - Dark Forces (32400)
+# Works after manual fix.
+# File is named Dosbox.conf and mount path in file is wrong
+#
+# Tomb Raider I (224960)
+# Does not work. Uses DOSBox with additional patches.
+#
+# MegaRace 2 (733760)
+# TBD
+
 
 def run(cmd_line, wait=False):
 
@@ -16,7 +32,7 @@ def run(cmd_line, wait=False):
 
     _folder, exe = os.path.split(cmd_line[0])
 
-    if exe.lower() == 'dosbox.exe':
+    if exe.lower() == 'dosbox.exe' or os.path.isfile('dosbox.conf'):
         # Basic use-case is dosbox.conf file in top-level game dir
         # that includes autoexec section.
         subprocess.call(['dosbox'])
