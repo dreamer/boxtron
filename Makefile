@@ -14,14 +14,16 @@ lint:
 	pylint run_dosbox
 
 $(tool_dir).tar.xz: $(files)
-	install -D -t $(tool_dir) $^
+	mkdir -p $(tool_dir)
+	cp --reflink=auto -t $(tool_dir) $^
 	tar -cJf $(tool_dir).tar.xz $(tool_dir)
+	rm -rf $(tool_dir)
 
 install: $(files)
-	install -D -t $(install_dir) $^
+	mkdir -p $(install_dir)
+	cp --reflink=auto -t $(install_dir) $^
 
 clean:
-	rm -rf $(tool_dir)
 	rm -f $(tool_dir).tar.xz
 
 uninstall:
