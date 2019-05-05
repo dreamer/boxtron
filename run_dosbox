@@ -10,16 +10,18 @@ import os
 
 # FIXME tweaks for following titles:
 #
-# STAR WARS™ - Dark Forces (32400)
-# Works after manual fix.
-# File is named Dosbox.conf and mount path in file is wrong
-#
 # Tomb Raider I (224960)
 # Does not work. Uses DOSBox with additional patches.
 
 TWEAKS_DB = {
+    # STAR WARS™: Dark Forces
+    # - uses 'Dosbox.conf' instead of 'dosbox.conf'
+    # - bad capitalization in .conf and in launch parameter
+    '32400': {
+        'args': ['Game/DARK.EXE', '-fullscreen', '-exit'],
+    },
     # MegaRace 2
-    # Has faulty launch command in Steam database.
+    # - has faulty launch command in Steam database
     '733760': {
         'args': ['-c', 'mount D . -t cdrom', 'MEGARACE.EXE',
                  '-fullscreen', '-exit'],
@@ -79,7 +81,9 @@ def run(cmd_line, wait=False):
 
     if exe == 'iscriptevaluator.exe':
         print('run_dosbox: skipping Steam script:', cmd_line, file=sys.stderr)
-    if STEAM_APP_ID in TWEAKS_DB:
+    elif STEAM_APP_ID in TWEAKS_DB and not os.path.isfile('dosbox.conf'):
+        # We have working commandline for this game and user does not want
+        # to override any DOSBox options.
         print(f'run_dosbox: tweaking command for app {STEAM_APP_ID}: ',
               file=sys.stderr)
         run_dosbox(TWEAKS_DB[STEAM_APP_ID]['args'])
