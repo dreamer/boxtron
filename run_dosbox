@@ -25,19 +25,57 @@ import os
 # TBD
 
 
+STEAM_APP_ID = os.environ.get('SteamAppId')
+PID_FILE = f'/tmp/steam_dos_{STEAM_APP_ID}'
+
+
+def wait_for_previous_process():
+    if not STEAM_APP_ID:
+        return
+    pid = 0
+    try:
+        with open(PID_FILE, 'r') as pid_file:
+            pid = int(pid_file.read())
+    except FileNotFoundError:
+        pass
+    if pid and os.path.isfile(f'/proc/{pid}/cmdline'):
+        print(f'run_dosbox: waiting for process {pid} to stop',
+              f'and delete file {PID_FILE}')
+        subprocess.call(['inotifywait', '-e', 'delete', PID_FILE])
+
+
+# FIXME rewrite this as __enter__, __exit__ to be used in 'with' statement
+def create_pid_file():
+    if not STEAM_APP_ID:
+        return
+    with open(PID_FILE, 'w') as pid_file:
+        pid_file.write(str(os.getpid()))
+
+
+def cleanup_pid_file():
+    if not STEAM_APP_ID:
+        return
+    try:
+        os.remove(PID_FILE)
+    except FileNotFoundError:
+        pass
+
+
 def run(cmd_line, wait=False):
 
     if wait:
-        print('wait for dropbox to stop')
+        wait_for_previous_process()
 
-    _folder, exe = os.path.split(cmd_line[0])
+    _folder, exe = os.path.split(cmd_line[0]) if cmd_line else (None, '')
 
     if exe.lower() == 'dosbox.exe' or os.path.isfile('dosbox.conf'):
         # Basic use-case is dosbox.conf file in top-level game dir
         # that includes autoexec section.
+        create_pid_file()
         subprocess.call(['dosbox'])
+        cleanup_pid_file()
     else:
-        print('run_dosbox: silently ignoring executable: ', cmd_line)
+        print('run_dosbox: silently ignoring command: ', cmd_line)
 
 
 def main():
