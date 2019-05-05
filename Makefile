@@ -4,7 +4,8 @@ tool_dir = steam-dos-0.1
 
 files = run_dosbox \
 	compatibilitytool.vdf \
-	toolmanifest.vdf
+	toolmanifest.vdf \
+	LICENSE
 
 steam_dir = ${HOME}/.local/share/Steam
 install_dir = $(steam_dir)/compatibilitytools.d/$(tool_dir)
