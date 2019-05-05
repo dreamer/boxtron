@@ -8,11 +8,7 @@ import subprocess
 import sys
 import os
 
-# X-COM: UFO Defense (7760)
-# Works. Uses runme.exe as launcher for dropbox.exe
-#
-# X-COM: Terror from the Deep (7650)
-# Works. Uses runme.exe as launcher for dropbox.exe
+# FIXME tweaks for following titles:
 #
 # STAR WARS™ - Dark Forces (32400)
 # Works after manual fix.
@@ -20,12 +16,18 @@ import os
 #
 # Tomb Raider I (224960)
 # Does not work. Uses DOSBox with additional patches.
-#
-# MegaRace 2 (733760)
-# TBD
 
+TWEAKS_DB = {
+    # MegaRace 2
+    # Has faulty launch command in Steam database.
+    '733760': {
+        'args': ['-c', 'mount D . -t cdrom', 'MEGARACE.EXE',
+                 '-fullscreen', '-exit'],
+    },
+}
 
 STEAM_APP_ID = os.environ.get('SteamAppId')
+
 PID_FILE = f'/tmp/steam_dos_{STEAM_APP_ID}'
 
 
@@ -61,6 +63,13 @@ def cleanup_pid_file():
         pass
 
 
+def run_dosbox(args):
+    create_pid_file()
+    print(['dosbox'] + args)
+    subprocess.call(['dosbox'] + args)
+    cleanup_pid_file()
+
+
 def run(cmd_line, wait=False):
 
     if wait:
@@ -68,15 +77,18 @@ def run(cmd_line, wait=False):
 
     _folder, exe = os.path.split(cmd_line[0]) if cmd_line else (None, '')
 
-    if exe.lower() == 'dosbox.exe' or os.path.isfile('dosbox.conf'):
-        # Basic use-case is dosbox.conf file in top-level game dir
-        # that includes autoexec section.
-        create_pid_file()
-        subprocess.call(['dosbox'])
-        cleanup_pid_file()
+    if exe == 'iscriptevaluator.exe':
+        print('run_dosbox: skipping Steam script:', cmd_line, file=sys.stderr)
+    if STEAM_APP_ID in TWEAKS_DB:
+        print(f'run_dosbox: tweaking command for app {STEAM_APP_ID}: ',
+              file=sys.stderr)
+        run_dosbox(TWEAKS_DB[STEAM_APP_ID]['args'])
+    elif exe.lower() == 'dosbox.exe' or os.path.isfile('dosbox.conf'):
+        # Normal use-case is dosbox.conf file in top-level game dir
+        # with autoexec section inside.
+        run_dosbox([])
     else:
-        print('run_dosbox: silently ignoring command: ',
-              cmd_line, file=sys.stderr)
+        print('run_dosbox: ignoring command:', cmd_line, file=sys.stderr)
 
 
 def main():
