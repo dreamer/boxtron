@@ -40,7 +40,7 @@ def wait_for_previous_process():
         pass
     if pid and os.path.isfile(f'/proc/{pid}/cmdline'):
         print(f'run_dosbox: waiting for process {pid} to stop',
-              f'and delete file {PID_FILE}')
+              f'and delete file {PID_FILE}', file=sys.stderr)
         subprocess.call(['inotifywait', '-e', 'delete', PID_FILE])
 
 
@@ -75,7 +75,8 @@ def run(cmd_line, wait=False):
         subprocess.call(['dosbox'])
         cleanup_pid_file()
     else:
-        print('run_dosbox: silently ignoring command: ', cmd_line)
+        print('run_dosbox: silently ignoring command: ',
+              cmd_line, file=sys.stderr)
 
 
 def main():
