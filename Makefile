@@ -1,11 +1,17 @@
-.PHONY: lint install uninstall clean
+.PHONY: lint install uninstall clean version
 
-tool_dir = steam-dos-0.1
+# major.minor part of version of this release
+# TODO inject it into .vdf files, so manual tweak won't be
+# needed. Also, make sure it's compatible with the latest tag.
+version_major_minor = 0.1
+
+tool_dir = steam-dos-$(version_major_minor)
 
 files = run_dosbox \
 	compatibilitytool.vdf \
 	toolmanifest.vdf \
-	LICENSE
+	LICENSE \
+	version
 
 steam_dir = ${HOME}/.local/share/Steam
 install_dir = $(steam_dir)/compatibilitytools.d/$(tool_dir)
@@ -13,6 +19,9 @@ install_dir = $(steam_dir)/compatibilitytools.d/$(tool_dir)
 lint:
 	pycodestyle-3 run_dosbox
 	pylint run_dosbox
+
+version:
+	git describe --tags --dirty --long > version
 
 $(tool_dir).tar.xz: $(files)
 	mkdir -p $(tool_dir)
