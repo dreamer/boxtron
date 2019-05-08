@@ -23,10 +23,16 @@ lint:
 version:
 	git describe --tags --dirty --long > version
 
+$(tool_dir).zip: $(files)
+	mkdir -p $(tool_dir)
+	cp --reflink=auto -t $(tool_dir) $^
+	zip $@ $(tool_dir)/*
+	rm -rf $(tool_dir)
+
 $(tool_dir).tar.xz: $(files)
 	mkdir -p $(tool_dir)
 	cp --reflink=auto -t $(tool_dir) $^
-	tar -cJf $(tool_dir).tar.xz $(tool_dir)
+	tar -cJf $@ $(tool_dir)
 	rm -rf $(tool_dir)
 
 install: $(files)
@@ -35,6 +41,7 @@ install: $(files)
 
 clean:
 	rm -f $(tool_dir).tar.xz
+	rm -f $(tool_dir).zip
 
 uninstall:
 	rm -rf $(install_dir)
