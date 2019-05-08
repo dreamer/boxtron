@@ -4,29 +4,57 @@
 # pylint: disable=fixme
 
 import argparse
+import os
+import re
 import subprocess
 import sys
-import os
 
 # FIXME tweaks for following titles:
 #
 # Tomb Raider I (224960)
 # Does not work. Uses DOSBox with additional patches.
+#
+# All of these come with slightly different commands and .conf files:
+#
+# Ultimate Doom https://steamdb.info/app/2280/config/
+# Final DOOM (https://steamdb.info/app/2290/config/)
+# Master Levels for DOOM II (https://steamdb.info/app/9160/config/)
 
 TWEAKS_DB = {
+
+    # DOOM II: Hell on Earth
+    '2300': {
+        'commands': {
+            r'.*doom2 \+ mouse.bat$':  {
+                'cmds': ['mount C base', 'C:', 'DOOM2.EXE -config MOUSE.CFG'],
+            },
+            r'.*doom2.bat$': {
+                'args': ['base/DOOM2.EXE', '-fullscreen', '-exit'],
+            },
+        },
+    },
     # STAR WARS™: Dark Forces
     # - uses 'Dosbox.conf' instead of 'dosbox.conf'
     # - bad capitalization in .conf and in launch parameter
     '32400': {
-        'args': ['Game/DARK.EXE', '-fullscreen', '-exit'],
+        'commands': {
+            r'.*':  {
+                'args': ['Game/DARK.EXE', '-fullscreen', '-exit'],
+            },
+        },
     },
     # MegaRace 2
     # - has faulty launch command in Steam database
     '733760': {
-        'args': ['-c', 'mount D . -t cdrom', 'MEGARACE.EXE',
-                 '-fullscreen', '-exit'],
+        'commands': {
+            r'.*':  {
+                'args': ['-c', 'mount D . -t cdrom', 'MEGARACE.EXE',
+                         '-fullscreen', '-exit'],
+            },
+        },
     },
 }
+
 
 STEAM_APP_ID = os.environ.get('SteamAppId')
 
@@ -65,9 +93,33 @@ def cleanup_pid_file():
         pass
 
 
+def autoexec(cmds):
+    args = ['-fullscreen']
+    for cmd in cmds:
+        args.extend(['-c', cmd])
+    args.extend(['-c', 'exit'])
+    return args
+
+
+def tweak_command(cmd_line):
+    orig_cmd = ' '.join(cmd_line)
+    exec_replacements = TWEAKS_DB[STEAM_APP_ID]['commands']
+    for expr, replacement in exec_replacements.items():
+        exe_pattern = re.compile(expr)
+        if exe_pattern.match(orig_cmd):
+            if 'args' in replacement:
+                return replacement['args']
+            if 'cmds' in replacement:
+                return autoexec(replacement['cmds'])
+            raise KeyError
+    print('run_dosbox: warning: no suitable command tweak found',
+          file=sys.stderr)
+    return []
+
+
 def run_dosbox(args):
     create_pid_file()
-    print(['dosbox'] + args)
+    print('run_dosbox:', ['dosbox'] + args, file=sys.stderr)
     subprocess.call(['dosbox'] + args)
     cleanup_pid_file()
 
@@ -86,7 +138,7 @@ def run(cmd_line, wait=False):
         # to override any DOSBox options.
         print(f'run_dosbox: tweaking command for app {STEAM_APP_ID}: ',
               file=sys.stderr)
-        run_dosbox(TWEAKS_DB[STEAM_APP_ID]['args'])
+        run_dosbox(tweak_command(cmd_line))
     elif exe.lower() == 'dosbox.exe' or os.path.isfile('dosbox.conf'):
         # Normal use-case is dosbox.conf file in top-level game dir
         # with autoexec section inside.
