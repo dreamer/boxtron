@@ -19,8 +19,8 @@ Compatibility tool to run DOS games on Steam through native Linux DOSBox version
 1. Close Steam.
 2. Download and unpack tarball:
 
-        $ cd ~/.local/share/Steam/compatibilitytools.d/
-        $ curl -L https://github.com/dreamer/steam-dos/releases/download/v0.1.0/steam-dos-0.1.tar.xz | tar xJf -
+       $ cd ~/.local/share/Steam/compatibilitytools.d/ || cd ~/.steam/root/compatibilitytools.d/
+       $ curl -L https://github.com/dreamer/steam-dos/releases/download/v0.1.0/steam-dos-0.1.tar.xz | tar xJf -
 
 3. Start Steam.
 4. In game properties window select "Force the use of a specific Steam Play
