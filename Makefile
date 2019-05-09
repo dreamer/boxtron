@@ -17,8 +17,8 @@ steam_dir = ${HOME}/.local/share/Steam
 install_dir = $(steam_dir)/compatibilitytools.d/$(tool_dir)
 
 lint:
-	pycodestyle-3 run_dosbox
-	pylint run_dosbox
+	pycodestyle-3 run_dosbox *.py
+	pylint run_dosbox *.py
 
 version:
 	git describe --tags --dirty --long > version
