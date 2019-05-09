@@ -40,7 +40,7 @@ def convert_autoexec_section(conf_file):
             continue
         if cmd == 'mount':
             drive = words[1][0].upper()
-            path = to_posix_path(active_path, words[2])
+            path = to_posix_path(active_path, words[2]) or '.'
             dos_drives[drive] = path
             yield ' '.join(['mount', drive, path] + words[3:])
             continue

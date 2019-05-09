@@ -119,6 +119,15 @@ def tweak_command(cmd_line):
     return []
 
 
+def get_steam_dos_conf(args):
+    name = confgen.uniq_conf_name(STEAM_APP_ID, args)
+    if not os.path.isfile(name):
+        print(f'run_dosbox: generating {name} based on {args}',
+              file=sys.stderr)
+        confgen.create_conf_file(name, args)
+    return name
+
+
 def run_dosbox(args):
     create_pid_file()
     print('run_dosbox:', ['dosbox'] + args, file=sys.stderr)
@@ -135,26 +144,27 @@ def run(cmd_line, wait=False):
 
     if exe == 'iscriptevaluator.exe':
         print('run_dosbox: skipping Steam script:', cmd_line, file=sys.stderr)
-    elif STEAM_APP_ID in TWEAKS_DB and not os.path.isfile('dosbox.conf'):
-        # We have working commandline for this game and user does not want
-        # to override any DOSBox options.
+
+    elif STEAM_APP_ID in TWEAKS_DB:
+        # TODO adapt to new style of creating a .conf file
         print(f'run_dosbox: tweaking command for app {STEAM_APP_ID}: ',
               file=sys.stderr)
         run_dosbox(tweak_command(cmd_line))
-    elif os.path.isfile('dosbox.conf'):
-        # Normal use-case is dosbox.conf file in top-level game dir
-        # with autoexec section inside.
-        run_dosbox([])
+
     elif STEAM_APP_ID and exe.lower() == 'dosbox.exe':
-        # No tweaks, no dosbox.conf - perhaps we can guess .conf file
-        # content based on commandline
-        dosbox_args = cmd_line[1:]
-        name = confgen.uniq_conf_name(STEAM_APP_ID, dosbox_args)
-        if not os.path.isfile(name):
-            print(f'run_dosbox: generating {name} based on {dosbox_args}',
-                  file=sys.stderr)
-            confgen.create_conf_file(name, dosbox_args)
+        # When dosbox with parameters is called, use them to
+        # generate new .conf file.  When dosbox without parameters
+        # is called, it implies: -conf dosbox.conf
+        dosbox_args = cmd_line[1:] or ['-conf', 'dosbox.conf']
+        name = get_steam_dos_conf(dosbox_args)
         run_dosbox(['-conf', name])
+
+    elif STEAM_APP_ID and os.path.isfile('dosbox.conf'):
+        # Executable is unrecognized, but at least there's a dosbox.conf
+        # let's pretend it was passed to dropbox.exe:
+        name = get_steam_dos_conf(['-conf', 'dosbox.conf'])
+        run_dosbox(['-conf', name])
+
     else:
         print('run_dosbox: ignoring command:', cmd_line, file=sys.stderr)
 
