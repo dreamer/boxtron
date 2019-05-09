@@ -9,6 +9,8 @@ import re
 import subprocess
 import sys
 
+import confgen
+
 # FIXME tweaks for following titles:
 #
 # Tomb Raider I (224960)
@@ -139,10 +141,20 @@ def run(cmd_line, wait=False):
         print(f'run_dosbox: tweaking command for app {STEAM_APP_ID}: ',
               file=sys.stderr)
         run_dosbox(tweak_command(cmd_line))
-    elif exe.lower() == 'dosbox.exe' or os.path.isfile('dosbox.conf'):
+    elif os.path.isfile('dosbox.conf'):
         # Normal use-case is dosbox.conf file in top-level game dir
         # with autoexec section inside.
         run_dosbox([])
+    elif STEAM_APP_ID and exe.lower() == 'dosbox.exe':
+        # No tweaks, no dosbox.conf - perhaps we can guess .conf file
+        # content based on commandline
+        dosbox_args = cmd_line[1:]
+        name = confgen.uniq_conf_name(STEAM_APP_ID, dosbox_args)
+        if not os.path.isfile(name):
+            print(f'run_dosbox: generating {name} based on {dosbox_args}',
+                  file=sys.stderr)
+            confgen.create_conf_file(name, dosbox_args)
+        run_dosbox(['-conf', name])
     else:
         print('run_dosbox: ignoring command:', cmd_line, file=sys.stderr)
 
@@ -154,8 +166,7 @@ def main():
     group.add_argument('--get-compat-path', action='store_true')
     group.add_argument('--wait-before-run', action='store_true')
     group.add_argument('--get-current-step')
-    parser.add_argument('commands', nargs='*')
-    args = parser.parse_intermixed_args()
+    args, run_cmd_line = parser.parse_known_args()
 
     if args.get_native_path:
         # FIXME convert single path: windows -> linux
@@ -168,7 +179,7 @@ def main():
         # toolmanifest…
         sys.exit(1)
     else:
-        run(args.commands, wait=args.wait_before_run)
+        run(run_cmd_line, wait=args.wait_before_run)
 
 
 if __name__ == "__main__":
