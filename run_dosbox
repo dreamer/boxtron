@@ -35,16 +35,6 @@ TWEAKS_DB = {
             },
         },
     },
-    # STAR WARS™: Dark Forces
-    # - uses 'Dosbox.conf' instead of 'dosbox.conf'
-    # - bad capitalization in .conf and in launch parameter
-    '32400': {
-        'commands': {
-            r'.*':  {
-                'args': ['Game/DARK.EXE', '-fullscreen', '-exit'],
-            },
-        },
-    },
     # MegaRace 2
     # - has faulty launch command in Steam database
     '733760': {
