@@ -3,7 +3,7 @@
 # pylint: disable=fixme
 
 """
-Module documentation
+DOSBox configuration file generator.
 """
 
 import argparse
@@ -36,6 +36,7 @@ def uniq_conf_name(app_id, args):
 
 
 def parse_dosbox_config(conf_file):
+    """Parse DOSBox configuration file."""
     if conf_file is None:
         return None
     config = configparser.ConfigParser(allow_no_value=True, delimiters='=')
@@ -45,6 +46,7 @@ def parse_dosbox_config(conf_file):
 
 
 def convert_autoexec_section(config):
+    """Return iterator over lines in autoexec section converted to posix fs."""
     dos_drives = {}
     active_path = '.'
     for line in config['autoexec']:
@@ -67,17 +69,27 @@ def convert_autoexec_section(config):
     yield 'exit'  # add 'exit' for games, that passed it through cmd line param
 
 
-def create_conf_file(name, dosbox_args):
-    assert name
-
+def parse_dosbox_arguments(args):
+    """Parse subset of DOSBox commandline arguments."""
     parser = argparse.ArgumentParser()
     parser.add_argument('-conf')
     parser.add_argument('-c', action='append')
     parser.add_argument('-fullscreen', action='store_true')
     parser.add_argument('-exit', action='store_true')
     parser.add_argument('file', nargs='?')
-    args = parser.parse_args(dosbox_args)
+    return parser.parse_args(args)
 
+
+def create_conf_file(name, dosbox_args):
+    """Create DOSBox configuration file.
+
+    Different sections are choosen either by this module, copied from
+    existing .conf files, generated based on '-c' DOSBox argument or
+    generated from a file pointed to be run.
+    """
+    assert name
+
+    args = parse_dosbox_arguments(dosbox_args)
     exe_file = to_posix_path('.', args.file) if args.file else ''
     orig_conf_file = to_posix_path('.', args.conf) if args.conf else ''
     fallback_conf_file = to_posix_path('.', 'dosbox.conf')
