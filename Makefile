@@ -9,6 +9,7 @@ tool_dir = steam-dos-$(version_major_minor)
 
 files = run_dosbox \
 	confgen.py \
+	toolbox.py \
 	compatibilitytool.vdf \
 	toolmanifest.vdf \
 	LICENSE \
