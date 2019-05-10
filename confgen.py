@@ -36,6 +36,8 @@ def uniq_conf_name(app_id, args):
 
 
 def parse_dosbox_config(conf_file):
+    if conf_file is None:
+        return None
     config = configparser.ConfigParser(allow_no_value=True, delimiters='=')
     config.optionxform = str
     config.read(conf_file)
@@ -77,20 +79,32 @@ def create_conf_file(name, dosbox_args):
 
     exe_file = to_posix_path('.', args.file) if args.file else ''
     orig_conf_file = to_posix_path('.', args.conf) if args.conf else ''
+    fallback_conf_file = to_posix_path('.', 'dosbox.conf')
     assert exe_file or orig_conf_file
     original_config = parse_dosbox_config(orig_conf_file)
+    fallback_config = parse_dosbox_config(fallback_conf_file)
 
     with open(name, 'w') as conf_file:
         conf_file.write(COMMENT_SECTION.format(dosbox_args))
         conf_file.write('\n')
         conf_file.write(SDL_SECTION.format(dosbox_args))
         conf_file.write('\n')
+
+        # TODO remove code duplication from fallback_config
+
         if original_config and original_config.has_section('mixer'):
             conf_file.write(f'# Section copied from {orig_conf_file}\n')
             conf_file.write('[mixer]\n')
             for key, val in original_config['mixer'].items():
                 conf_file.write(f'{key}={val}\n')
             conf_file.write('\n')
+        elif fallback_config and fallback_config.has_section('mixer'):
+            conf_file.write(f'# Section copied from {fallback_conf_file}\n')
+            conf_file.write('[mixer]\n')
+            for key, val in fallback_config['mixer'].items():
+                conf_file.write(f'{key}={val}\n')
+            conf_file.write('\n')
+
         if exe_file:
             conf_file.write(f'# Section generated for {exe_file}\n')
             conf_file.write('[autoexec]\n')
