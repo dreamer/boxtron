@@ -72,6 +72,7 @@ def create_conf_file(name, dosbox_args):
 
     parser = argparse.ArgumentParser()
     parser.add_argument('-conf')
+    parser.add_argument('-c', action='append')
     parser.add_argument('-fullscreen', action='store_true')
     parser.add_argument('-exit', action='store_true')
     parser.add_argument('file', nargs='?')
@@ -80,7 +81,10 @@ def create_conf_file(name, dosbox_args):
     exe_file = to_posix_path('.', args.file) if args.file else ''
     orig_conf_file = to_posix_path('.', args.conf) if args.conf else ''
     fallback_conf_file = to_posix_path('.', 'dosbox.conf')
+    dos_commands = args.c if args.c else []
+
     assert exe_file or orig_conf_file
+
     original_config = parse_dosbox_config(orig_conf_file)
     fallback_config = parse_dosbox_config(fallback_conf_file)
 
@@ -105,7 +109,13 @@ def create_conf_file(name, dosbox_args):
                 conf_file.write(f'{key}={val}\n')
             conf_file.write('\n')
 
-        if exe_file:
+        if dos_commands:
+            conf_file.write(f'# Section forced through -c arguments\n')
+            conf_file.write('[autoexec]\n')
+            for line in dos_commands:
+                conf_file.write(line + '\n')
+            conf_file.write('exit\n')
+        elif exe_file:
             conf_file.write(f'# Section generated for {exe_file}\n')
             conf_file.write('[autoexec]\n')
             folder, exe = os.path.split(exe_file)

@@ -36,12 +36,14 @@ TWEAKS_DB = {
         },
     },
     # MegaRace 2
-    # - has faulty launch command in Steam database
     '733760': {
         'commands': {
             r'.*':  {
-                'args': ['-c', 'mount D . -t cdrom', 'MEGARACE.EXE',
-                         '-fullscreen', '-exit'],
+                'args': ['-conf', 'dosboxmegarace2.conf',
+                         '-c', 'mount C .',
+                         '-c', 'mount D . -t cdrom',
+                         '-c', 'C:',
+                         '-c', 'MEGARACE.EXE'],
             },
         },
     },
@@ -84,16 +86,6 @@ def cleanup_pid_file():
     except FileNotFoundError:
         pass
 
-# example usage:
-#'cmds': ['mount C base', 'C:', 'DOOM2.EXE -config MOUSE.CFG'],
-#
-def autoexec(cmds):
-    args = ['-fullscreen']
-    for cmd in cmds:
-        args.extend(['-c', cmd])
-    args.extend(['-c', 'exit'])
-    return args
-
 
 def tweak_command(cmd_line):
     orig_cmd = ' '.join(cmd_line)
@@ -103,8 +95,6 @@ def tweak_command(cmd_line):
         if exe_pattern.match(orig_cmd):
             if 'args' in replacement:
                 return replacement['args']
-            if 'cmds' in replacement:
-                return autoexec(replacement['cmds'])
             raise KeyError
     print('run_dosbox: warning: no suitable command tweak found',
           file=sys.stderr)
