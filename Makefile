@@ -10,6 +10,7 @@ tool_dir = steam-dos-$(version_major_minor)
 files = run_dosbox \
 	confgen.py \
 	toolbox.py \
+	tweaks.py \
 	compatibilitytool.vdf \
 	toolmanifest.vdf \
 	LICENSE \
