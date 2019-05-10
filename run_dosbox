@@ -28,10 +28,10 @@ TWEAKS_DB = {
     '2300': {
         'commands': {
             r'.*doom2 \+ mouse.bat$':  {
-                'cmds': ['mount C base', 'C:', 'DOOM2.EXE -config MOUSE.CFG'],
+                'args': ['-conf', 'base\\doom2m.conf'],
             },
             r'.*doom2.bat$': {
-                'args': ['base/DOOM2.EXE', '-fullscreen', '-exit'],
+                'args': ['-conf', 'base\\doom2.conf'],
             },
         },
     },
@@ -84,7 +84,9 @@ def cleanup_pid_file():
     except FileNotFoundError:
         pass
 
-
+# example usage:
+#'cmds': ['mount C base', 'C:', 'DOOM2.EXE -config MOUSE.CFG'],
+#
 def autoexec(cmds):
     args = ['-fullscreen']
     for cmd in cmds:
@@ -136,10 +138,12 @@ def run(cmd_line, wait=False):
         print('run_dosbox: skipping Steam script:', cmd_line, file=sys.stderr)
 
     elif STEAM_APP_ID in TWEAKS_DB:
-        # TODO adapt to new style of creating a .conf file
+        # If AppId is included in known tweaks, then modify command line
+        # before handing it over to .conf generator:
         print(f'run_dosbox: tweaking command for app {STEAM_APP_ID}: ',
               file=sys.stderr)
-        run_dosbox(tweak_command(cmd_line))
+        name = get_steam_dos_conf(tweak_command(cmd_line))
+        run_dosbox(['-conf', name])
 
     elif STEAM_APP_ID and exe.lower() == 'dosbox.exe':
         # When dosbox with parameters is called, use them to
