@@ -58,6 +58,16 @@ midiconfig={port}
 
 """.lstrip()
 
+# Port 330 is hardcoded in DOSBox
+MIDI_INFO = """
+        Music: General MIDI (MPU-401 compatible)
+         Port: 330
+"""[1:]
+
+MIDI_INFO_NA = """
+        Music: No MIDI synthesiser found
+"""[1:]
+
 
 def uniq_conf_name(app_id, args):
     """Return unique .conf file for given SteamAppId and dosbox args."""
@@ -189,11 +199,10 @@ def create_audio_conf():
         audio.write(SBLASTER_SECTION.format(base=base, irq=irq,
                                             dma=dma, hdma=hdma))
         if mport:
-            print_err('        Music: General MIDI (MPU-401 compatible)')
-            print_err('         Port: 330')  # hardcoded in DOSBox
+            print_err(MIDI_INFO)
             audio.write(MIDI_SECTION.format(port=mport.addr))
         else:
-            print_err('        Music: No MIDI synthesiser found')
+            print_err(MIDI_INFO_NA)
     return name
 
 
