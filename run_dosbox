@@ -80,7 +80,7 @@ def run(cmd_line, wait=False):
         # before handing it over to .conf generator:
         print_err(f'run_dosbox: tweaking command for app {STEAM_APP_ID}')
         name = get_steam_dos_conf(tweak_command(STEAM_APP_ID, cmd_line))
-        run_dosbox(['-conf', name])
+        run_dosbox(['-conf', name, '-conf', confgen.create_audio_conf()])
 
     elif STEAM_APP_ID and exe.lower() == 'dosbox.exe':
         # When dosbox with parameters is called, use them to
@@ -88,13 +88,13 @@ def run(cmd_line, wait=False):
         # is called, it implies: -conf dosbox.conf
         dosbox_args = cmd_line[1:] or ['-conf', 'dosbox.conf']
         name = get_steam_dos_conf(dosbox_args)
-        run_dosbox(['-conf', name])
+        run_dosbox(['-conf', name, '-conf', confgen.create_audio_conf()])
 
     elif STEAM_APP_ID and os.path.isfile('dosbox.conf'):
         # Executable is unrecognized, but at least there's a dosbox.conf
         # let's pretend it was passed to dropbox.exe:
         name = get_steam_dos_conf(['-conf', 'dosbox.conf'])
-        run_dosbox(['-conf', name])
+        run_dosbox(['-conf', name, '-conf', confgen.create_audio_conf()])
 
     else:
         print_err('run_dosbox: ignoring command:', cmd_line)

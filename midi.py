@@ -37,6 +37,13 @@ def list_alsa_sequencer_ports():
                 yield MidiPort(f'{client}:{port}', name, desc, space, flags)
 
 
-# example usage
-for mp in list_alsa_sequencer_ports():
-    print(mp.addr, mp.name, mp.flags[1])
+def detect_software_synthesiser(name_expr):
+    """Return an input port, where client name matches expression."""
+    client_name_pattern = re.compile(name_expr)
+    for port in list_alsa_sequencer_ports():
+        if port.flags[1] != 'W':
+            continue
+        match = client_name_pattern.match(port.name.lower())
+        if match:
+            return port
+    return None
