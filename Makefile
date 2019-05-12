@@ -9,6 +9,7 @@ tool_dir = steam-dos-$(version_major_minor)
 
 files = run_dosbox \
 	confgen.py \
+	midi.py \
 	toolbox.py \
 	tweaks.py \
 	compatibilitytool.vdf \
