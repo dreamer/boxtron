@@ -7,14 +7,20 @@ Compatibility tool to run DOS games on Steam through native Linux DOSBox version
 ## Prerequisites
 
 You will need Python (>= 3.6), DOSBox (>= 0.74) and inotify-tools.
+Optionally for MIDI support: TiMidity++ or FluidSynth and a soundfont
+(FluidR3 by default).
 
 #### Fedora
 
-    $ sudo dnf install dosbox inotify-tools
+    $ sudo dnf install dosbox inotify-tools timidity++ fluid-soundfont-gm
 
 #### Debian, Ubuntu et consortes
 
-    $ sudo apt install dosbox inotify-tools
+    $ sudo apt install dosbox inotify-tools timidity fluid-soundfont-gm
+
+#### Arch, Manjaro
+
+    $ sudo pacman -S dosbox inotify-tools timidity++ soundfont-fluid
 
 
 ## Installation (using tarball)
