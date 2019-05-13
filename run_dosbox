@@ -20,7 +20,9 @@ STEAM_APP_ID = os.environ.get('SteamAppId')
 
 PID_FILE = f'/tmp/steam_dos_{STEAM_APP_ID}'
 
-MIDI_DISABLED = enabled_in_env('SD_NO_MIDI')
+MIDI_DISABLED = enabled_in_env('SDOS_NO_MIDI')
+
+RUN_EXE = os.environ.get('SDOS_RUN_EXE')
 
 
 def wait_for_previous_process():
@@ -87,6 +89,7 @@ def get_steam_dos_conf(args):
 def run_dosbox(args):
     create_pid_file()
     print_err('run_dosbox:', ['dosbox'] + args)
+    sys.stderr.flush()
     subprocess.call(['dosbox'] + args)
     cleanup_pid_file()
 
@@ -100,6 +103,17 @@ def run(cmd_line, wait=False):
 
     if exe == 'iscriptevaluator.exe':
         print_err('run_dosbox: skipping Steam script:', cmd_line)
+
+    elif RUN_EXE:
+        # User wants to run different executable than the one
+        # selected by Steam (e.g. sound setup).
+        exe = RUN_EXE
+        configure_midi()
+        if os.path.isfile(exe):
+            run_dosbox(['-conf', confgen.create_audio_conf(), exe, '-exit'])
+        else:
+            run_dosbox(['-conf', confgen.create_audio_conf(),
+                        '-c', f'@echo File not found: {os.getcwd()}/{exe}'])
 
     elif STEAM_APP_ID in TWEAKS_DB:
         # If AppId is included in known tweaks, then modify command line
