@@ -23,7 +23,7 @@ install_dir = $(steam_dir)/compatibilitytools.d/$(tool_dir)
 lint:
 	shellcheck $(shell find . -name *.sh)
 	pycodestyle-3 run_dosbox *.py tests/*.py
-	pylint run_dosbox *.py tests/*.py
+	pylint --rcfile=.pylint run_dosbox *.py tests/*.py
 
 test:
 	python3 -m unittest discover -v -s tests
