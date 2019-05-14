@@ -310,7 +310,7 @@ indent-after-paren=4
 indent-string='    '
 
 # Maximum number of characters on a single line.
-max-line-length=90
+max-line-length=80
 
 # Maximum number of lines in a module.
 max-module-lines=1000
@@ -374,10 +374,22 @@ max-spelling-suggestions=4
 # (myspell), en_ZW (myspell), en_US (myspell), fr_BE (myspell), fr_CA
 # (myspell), fr_CH (myspell), fr_FR (myspell), fr_LU (myspell), fr_MC
 # (myspell), pl_PL (myspell)..
-spelling-dict=
+spelling-dict=en_GB
 
 # List of comma separated words that should not be checked.
-spelling-ignore-words=
+spelling-ignore-words=alsa,
+                      autoexec,
+                      conf,
+                      ctypes,
+                      dosbox,
+                      exe,
+                      online,
+                      posix,
+                      procfs,
+                      setup,
+                      stderr,
+                      toolmanifest,
+                      tuple
 
 # A path to a file that contains private dictionary; one word per line.
 spelling-private-dict-file=

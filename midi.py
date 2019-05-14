@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-# pylint: disable=fixme
-
 """
 Additional functionality for MIDI support.
 """
@@ -62,7 +60,7 @@ def start_timidity(sfont):
     cmd = ['timidity', '-iA', '-x', f'soundfont {sfont}']
     proc = subprocess.Popen(cmd, shell=False, stdout=subprocess.DEVNULL)
     print_err(f'steam-dos: Starting MIDI client {proc.pid}')
-    time.sleep(0.5)  # FIXME properly wait until sequencer is online
+    time.sleep(0.5)  # TODO properly wait until sequencer is online
     atexit.register(stop_software_midi_synth, proc.pid)
 
 
@@ -71,11 +69,11 @@ def start_fluidsynth(sfont):
     cmd = ['fluidsynth', '-a', 'pulseaudio', sfont]
     proc = subprocess.Popen(cmd, shell=False, stdout=subprocess.DEVNULL)
     print_err(f'steam-dos: Starting MIDI client {proc.pid}')
-    time.sleep(1.0)  # FIXME properly wait until sequencer is online
+    time.sleep(1.0)  # TODO properly wait until sequencer is online
     atexit.register(stop_software_midi_synth, proc.pid)
 
 
 def stop_software_midi_synth(pid):
     """Stop software synthesiser process."""
     print_err(f'steam-dos: Stopping MIDI client {pid}')
-    os.kill(pid, signal.SIGTERM)  # FIXME ProcessLookupError:
+    os.kill(pid, signal.SIGTERM)  # TODO ProcessLookupError:

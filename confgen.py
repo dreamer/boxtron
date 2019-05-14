@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-# pylint: disable=fixme
-
 """
 DOSBox configuration file generator.
 """
@@ -58,7 +56,7 @@ midiconfig={port}
 
 """.lstrip()
 
-# Port 330 is hardcoded in DOSBox
+# Port 330 is hard-coded in DOSBox
 MIDI_INFO = """
         Music: General MIDI (MPU-401 compatible)
          Port: 330
@@ -70,7 +68,7 @@ MIDI_INFO_NA = """
 
 
 def uniq_conf_name(app_id, args):
-    """Return unique .conf file for given SteamAppId and dosbox args."""
+    """Return unique .conf file name for given SteamAppId and arguments."""
     uid_line = app_id + ''.join(args)
     uid = hashlib.sha1(uid_line.encode('utf-8')).hexdigest()[:6]
     return f'steam_dos_{app_id}_{uid}.conf'
@@ -87,11 +85,13 @@ def parse_dosbox_config(conf_file):
 
 
 def convert_autoexec_section(config):
-    """Return iterator over lines in autoexec section converted to posix fs."""
+    """Return iterator over lines in autoexec section.
+
+    Necessary paths will be converted to posix paths."""
     dos_drives = {}
     active_path = '.'
     for line in config['autoexec']:
-        words = line.split()  # FIXME quoting, maybe proper parser
+        words = line.split()  # TODO quoting, maybe proper parser
         cmd = words[0].lower()
         if cmd == 'exit':
             continue
@@ -107,11 +107,11 @@ def convert_autoexec_section(config):
             yield f'{drive}:'
             continue
         yield line
-    yield 'exit'  # add 'exit' for games, that passed it through cmd line param
+    yield 'exit'  # add 'exit' for games, that passed it through -c param
 
 
 def parse_dosbox_arguments(args):
-    """Parse subset of DOSBox commandline arguments."""
+    """Parse subset of DOSBox command line arguments."""
     parser = argparse.ArgumentParser()
     parser.add_argument('-conf')
     parser.add_argument('-c', action='append')
@@ -124,7 +124,7 @@ def parse_dosbox_arguments(args):
 def create_conf_file(name, dosbox_args):
     """Create DOSBox configuration file.
 
-    Different sections are choosen either by this module, copied from
+    Different sections are chosen either by this module, copied from
     existing .conf files, generated based on '-c' DOSBox argument or
     generated from a file pointed to be run.
     """
@@ -246,7 +246,7 @@ def to_posix_parts(parts):
 
     Works with assumption, that existing file is unique.
     """
-    # FIXME rewrite this in more time-effective manner for worst case scenario.
+    # TODO rewrite this in more time-effective manner for worst case scenario.
     if parts is None:
         return None
     if parts == ():

@@ -10,12 +10,12 @@ import sys
 
 
 def print_err(*value, sep=' ', end='\n', flush=False):
-    """Prints the values to sys.stderr"""
+    """Prints the values to stderr."""
     print(*value, sep=sep, end=end, file=sys.stderr, flush=flush)
 
 
 def enabled_in_env(var):
-    """Returns True for env variables with nonzero value."""
+    """Returns True for environment variables with non-zero value."""
     val = os.environ.get(var)
     return val and val != '0'
 

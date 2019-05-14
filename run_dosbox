@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 # pylint: disable=missing-docstring
-# pylint: disable=fixme
 
 import argparse
 import os
@@ -40,7 +39,7 @@ def wait_for_previous_process():
         subprocess.call(['inotifywait', '-e', 'delete', PID_FILE])
 
 
-# FIXME rewrite this as __enter__, __exit__ to be used in 'with' statement
+# TODO rewrite this as __enter__, __exit__ to be used in 'with' statement
 def create_pid_file():
     if not STEAM_APP_ID:
         return
@@ -58,7 +57,7 @@ def cleanup_pid_file():
 
 
 def configure_midi():
-    """Detect or run and configure MIDI synth."""
+    """Detect or run and configure software MIDI synthesiser."""
     if MIDI_DISABLED:
         # User decided to disable MIDI support.
         return
@@ -67,7 +66,8 @@ def configure_midi():
         # There's no reason to start our own.
         return
 
-    # TODO assure soundfont exists
+    # pylint: disable=wrong-spelling-in-comment
+    # TODO assure sound font exists
     # sfont = '/usr/share/soundfonts/timbres-of-heaven.sf2'
     sfont = '/usr/share/soundfonts/FluidR3_GM.sf2'
     if which('timidity'):
@@ -133,8 +133,8 @@ def run(cmd_line, wait=False):
         run_dosbox(['-conf', name, '-conf', confgen.create_audio_conf()])
 
     elif STEAM_APP_ID and os.path.isfile('dosbox.conf'):
-        # Executable is unrecognized, but at least there's a dosbox.conf
-        # let's pretend it was passed to dropbox.exe:
+        # Executable is unrecognised, but at least there's a dosbox.conf
+        # let's pretend it was passed to dosbox.exe:
         name = get_steam_dos_conf(['-conf', 'dosbox.conf'])
         run_dosbox(['-conf', name, '-conf', confgen.create_audio_conf()])
 
@@ -152,13 +152,13 @@ def main():
     args, run_cmd_line = parser.parse_known_args()
 
     if args.get_native_path:
-        # FIXME convert single path: windows -> linux
+        # TODO convert single path: Windows -> Linux
         sys.exit(1)
     elif args.get_compat_path:
-        # FIXME convert single path: linux -> windows
+        # TODO convert single path: Linux -> Windows
         sys.exit(1)
     elif args.get_current_step:
-        # Steam sometimes ivokes this even when it's not defined in
+        # Steam sometimes invokes this even when it's not defined in
         # toolmanifest…
         sys.exit(1)
     else:
