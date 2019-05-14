@@ -1,4 +1,4 @@
-.PHONY: lint install uninstall clean version
+.PHONY: lint test install uninstall clean version
 
 # major.minor part of version of this release
 # TODO inject it into .vdf files, so manual tweak won't be
@@ -21,8 +21,11 @@ steam_dir = ${HOME}/.local/share/Steam
 install_dir = $(steam_dir)/compatibilitytools.d/$(tool_dir)
 
 lint:
-	pycodestyle-3 run_dosbox *.py
-	pylint run_dosbox *.py
+	pycodestyle-3 run_dosbox *.py tests/*.py
+	pylint run_dosbox *.py tests/*.py
+
+test:
+	python3 -m unittest discover -v -s tests
 
 version:
 	git describe --tags --dirty --long > version
