@@ -106,6 +106,7 @@ class DosboxConfiguration(dict):
         for win_path in (conf_files or self.__get_default_conf__()):
             path = self.file_tree.get_posix_path(win_path)
             conf = parse_dosbox_config(path)
+            self.__import_ini_sections__(conf)
             if conf.has_section('autoexec'):
                 self.raw_autoexec.extend(line for line in conf['autoexec'])
 
@@ -124,9 +125,33 @@ class DosboxConfiguration(dict):
             return [path]
         return []
 
+    def __import_ini_sections__(self, config):
+        for name in config.sections():
+            if name == 'autoexec':
+                continue
+            if not self.has_section(name):
+                self[name] = config[name]
+                continue
+            for opt, val in config[name].items():
+                self.set(name, opt, val)
+
     def sections(self):
         """Return a list of section names."""
         return list(self.keys())
+
+    def has_section(self, section):
+        "Indicates whether the named section is present in the configuration."
+        return section in self.keys()
+
+    def set(self, section, option, value):
+        """Set option in section to value.
+
+        If the given section exists, set the given option to the specified
+        value; otherwise raise NoSectionError.
+        """
+        if section not in self:
+            raise configparser.NoSectionError
+        self[section][option] = value
 
 
 def uniq_conf_name(app_id, args):

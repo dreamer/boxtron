@@ -141,6 +141,17 @@ class TestDosboxConfiguration(unittest.TestCase):
                                                       'empty_autoexec.conf'])
         self.assertEqual(cfg['autoexec'], [])
 
+    # Configuration files with sections other than autoexec:
+    #
+    def test_update_sections(self):
+        os.chdir('tests/files/confs')
+        cfg = confgen.DosboxConfiguration(conf_files=['sb1.conf', 'sb2.conf'])
+        self.assertIn('sblaster', cfg.sections())
+        self.assertIn('mixer', cfg.sections())
+        self.assertEqual('44100', cfg['mixer']['rate'])  # from sb2.conf
+        self.assertEqual('77', cfg['sblaster']['irq'])  # from sb2.conf
+        self.assertEqual('42', cfg['sblaster']['dma'])  # from sb1.conf
+
 
 if __name__ == '__main__':
     unittest.main()
