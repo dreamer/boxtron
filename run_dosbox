@@ -119,7 +119,10 @@ def run(cmd_line, wait=False):
         # If AppId is included in known tweaks, then modify command line
         # before handing it over to .conf generator:
         print_err(f'run_dosbox: tweaking command for app {STEAM_APP_ID}')
-        name = get_steam_dos_conf(tweak_command(STEAM_APP_ID, cmd_line))
+        tweaked_cmd = tweak_command(STEAM_APP_ID, cmd_line)
+        if not tweaked_cmd:
+            sys.exit(1)
+        name = get_steam_dos_conf(tweaked_cmd)
         configure_midi()
         run_dosbox(['-conf', name, '-conf', confgen.create_audio_conf()])
 
