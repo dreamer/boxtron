@@ -96,15 +96,15 @@ class DosboxConfiguration(dict):
     values seen in previous configuration files.
     """
 
-    def __init__(self, file_tree, *, commands=[], conf_files=[], exe=None):
+    def __init__(self, *, pfx='.', commands=[], conf_files=[], exe=None):
         assert commands or conf_files or exe
         dict.__init__(self)
         self['autoexec'] = []
         self.raw_autoexec = self['autoexec']
-        self.file_tree = file_tree
+        self.file_tree = FileTree(pfx)
 
         for win_path in (conf_files or self.__get_default_conf__()):
-            path = file_tree.get_posix_path(win_path)
+            path = self.file_tree.get_posix_path(win_path)
             conf = parse_dosbox_config(path)
             if conf.has_section('autoexec'):
                 self.raw_autoexec.extend(line for line in conf['autoexec'])
@@ -112,7 +112,7 @@ class DosboxConfiguration(dict):
         self.raw_autoexec.extend(cmd for cmd in commands)
 
         if exe:
-            posix_path = file_tree.get_posix_path(exe)
+            posix_path = self.file_tree.get_posix_path(exe)
             path, file = os.path.split(posix_path)
             self.raw_autoexec.append(f'mount C {path or "."}')
             self.raw_autoexec.append('C:')

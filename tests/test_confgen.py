@@ -28,9 +28,9 @@ class TestDosboxConfiguration(unittest.TestCase):
     # Z:\>foo
     # Z:\>bar
     #
-    def test_config_with_commands(self):
-        files = confgen.FileTree('tests/files/no_conf')
-        cfg = confgen.DosboxConfiguration(files, commands=['foo', 'bar'])
+    def test_autoexec_with_commands(self):
+        os.chdir('tests/files/no_conf')
+        cfg = confgen.DosboxConfiguration(commands=['foo', 'bar'])
         self.assertIn('autoexec', cfg.sections())
         self.assertEqual(cfg['autoexec'], ['foo', 'bar'])
 
@@ -38,20 +38,18 @@ class TestDosboxConfiguration(unittest.TestCase):
     # Z:\>mount C .
     # Z:\>file.exe
     #
-    def test_config_single_exe(self):
+    def test_autoexec_single_exe(self):
         os.chdir('tests/files/no_conf')
-        files = confgen.FileTree('.')
-        cfg = confgen.DosboxConfiguration(files, exe='file.exe')
+        cfg = confgen.DosboxConfiguration(exe='file.exe')
         self.assertIn('autoexec', cfg.sections())
         self.assertEqual(cfg['autoexec'], ['mount C .', 'C:', 'file.exe'])
 
     # $ dosbox -conf c1.conf
     # <autoexec section from c1.conf>
     #
-    def test_config_from_conf(self):
+    def test_autoexec_from_conf(self):
         os.chdir('tests/files/confs')
-        files = confgen.FileTree('.')
-        cfg = confgen.DosboxConfiguration(files, conf_files=['c1.conf'])
+        cfg = confgen.DosboxConfiguration(conf_files=['c1.conf'])
         self.assertIn('autoexec', cfg.sections())
         self.assertEqual(cfg['autoexec'], ['echo c1'])
 
@@ -59,21 +57,18 @@ class TestDosboxConfiguration(unittest.TestCase):
     # <autoexec section from c1.conf>
     # <autoexec section from c2.conf>
     #
-    def test_config_from_conf_2(self):
+    def test_autoexec_from_conf_2(self):
         os.chdir('tests/files/confs')
-        files = confgen.FileTree('.')
-        cfg = confgen.DosboxConfiguration(files, conf_files=['c1.conf',
-                                                             'c2.conf'])
+        cfg = confgen.DosboxConfiguration(conf_files=['c1.conf', 'c2.conf'])
         self.assertIn('autoexec', cfg.sections())
         self.assertEqual(cfg['autoexec'], ['echo c1', 'echo c2'])
 
     # $ dosbox -conf C1.conf
     # <autoexec section from c1.conf>
     #
-    def test_config_from_conf_case_insensitive(self):
+    def test_autoexec_from_conf_3(self):
         os.chdir('tests/files/confs')
-        files = confgen.FileTree('.')
-        cfg = confgen.DosboxConfiguration(files, conf_files=['C1.conf'])
+        cfg = confgen.DosboxConfiguration(conf_files=['C1.conf'])
         self.assertIn('autoexec', cfg.sections())
         self.assertEqual(cfg['autoexec'], ['echo c1'])
 
@@ -84,11 +79,9 @@ class TestDosboxConfiguration(unittest.TestCase):
     # Z:\>C:
     # C:\>file.exe
     #
-    def test_config_cmds_and_exe(self):
+    def test_autoexec_cmds_and_exe(self):
         os.chdir('tests/files/no_conf')
-        files = confgen.FileTree('.')
-        cfg = confgen.DosboxConfiguration(files,
-                                          exe='FILE.EXE',
+        cfg = confgen.DosboxConfiguration(exe='FILE.EXE',
                                           commands=['cmd1', 'cmd2'])
         self.assertIn('autoexec', cfg.sections())
         self.assertEqual(cfg['autoexec'], ['cmd1',
@@ -102,11 +95,9 @@ class TestDosboxConfiguration(unittest.TestCase):
     # Z:\>cmd1
     # Z:\>cmd2
     #
-    def test_config_cmds_and_conf(self):
+    def test_autoexec_cmds_and_conf(self):
         os.chdir('tests/files/confs')
-        files = confgen.FileTree('.')
-        cfg = confgen.DosboxConfiguration(files,
-                                          conf_files=['c1.conf'],
+        cfg = confgen.DosboxConfiguration(conf_files=['c1.conf'],
                                           commands=['cmd1', 'cmd2'])
         self.assertIn('autoexec', cfg.sections())
         self.assertEqual(cfg['autoexec'], ['echo c1',
@@ -119,39 +110,34 @@ class TestDosboxConfiguration(unittest.TestCase):
     # Z:\>echo dosbox
     # Z:\>cmd
     #
-    def test_config_default_1(self):
+    def test_autoexec_default_1(self):
         os.chdir('tests/files/default')
-        files = confgen.FileTree('.')
-        cfg = confgen.DosboxConfiguration(files, commands=['cmd'])
+        cfg = confgen.DosboxConfiguration(commands=['cmd'])
         self.assertEqual(cfg['autoexec'], ['echo dosbox', 'cmd'])
 
     # When dosbox.conf with "echo dosbox" exists and c.conf with "cmd" exists:
     #
     # $ dosbox -conf c.conf
     # Z:\>cmd
-    def test_config_default_2(self):
+    def test_autoexec_default_2(self):
         os.chdir('tests/files/default')
-        files = confgen.FileTree('.')
-        cfg = confgen.DosboxConfiguration(files, conf_files=['c.conf'])
+        cfg = confgen.DosboxConfiguration(conf_files=['c.conf'])
         self.assertEqual(cfg['autoexec'], ['cmd'])
 
     # When DoSbOx.CoNf with "echo dOsBoX" exists:
     # $ dosbox -c foo
     # Z:\>echo dOsBoX
     # Z:\>foo
-    def test_config_default_3(self):
+    def test_autoexec_default_3(self):
         os.chdir('tests/files/case')
-        files = confgen.FileTree('.')
-        cfg = confgen.DosboxConfiguration(files, commands=['foo'])
+        cfg = confgen.DosboxConfiguration(commands=['foo'])
         self.assertEqual(cfg['autoexec'], ['echo dOsBoX', 'foo'])
 
     # Multiple .conf files with missing or empty autoexec
     #
-    def test_config_no_autoexec(self):
+    def test_autoexec_no_autoexec(self):
         os.chdir('tests/files/confs')
-        files = confgen.FileTree('.')
-        cfg = confgen.DosboxConfiguration(files,
-                                          conf_files=['no_autoexec.conf',
+        cfg = confgen.DosboxConfiguration(conf_files=['no_autoexec.conf',
                                                       'empty_autoexec.conf'])
         self.assertEqual(cfg['autoexec'], [])
 
