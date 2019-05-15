@@ -9,6 +9,7 @@ import configparser
 import hashlib
 import os
 import pathlib
+import re
 
 import midi
 
@@ -67,20 +68,18 @@ MIDI_INFO_NA = """
 """[1:]
 
 
+# pylint: disable=too-few-public-methods
+# We need this class to cache file paths in future.
 class FileTree:
     """Provide access to a file tree using Windows paths."""
 
     def __init__(self, root):
         self.root = root
-        self.cwd = root
 
     def get_posix_path(self, path):
         """Return real file referenced by case-insensitive Windows path."""
-        return to_posix_path(self.root, path)
-
-    def getcwd(self):
-        """Return posix path representing current working directory."""
-        return self.cwd  # TODO implement
+        assert self.root
+        return to_posix_path(path)
 
 
 class DosboxConfiguration(dict):
@@ -174,32 +173,28 @@ def parse_dosbox_config(conf_file):
     return config
 
 
-def convert_autoexec_section(config):
-    """Return iterator over lines in autoexec section.
-
-    Necessary paths will be converted to posix paths."""
-    dos_drives = {}
-    active_path = '.'
-    for line in config['autoexec']:
-        words = line.split()  # TODO quoting, maybe proper parser
-        cmd = words[0].lower()
-        if cmd == 'mount':
-            drive = words[1][0].upper()
-            mount_param = words[2]  # TODO this is really ugly way
-            mount_target = mount_param
-            if mount_param[0] in ['"', "'"]:
-                mount_target = mount_param[1:-1]
-            path = to_posix_path(active_path, mount_target)
-            if not path:
-                print_err('steam-dos: warning: {mount_target} not found')
-                path = '.'
-            dos_drives[drive] = path
-            yield ' '.join(['mount', drive, path] + words[3:])
+def to_linux_autoexec(autoexec):
+    """Convert case-sensitive parts in autoexec."""
+    cmd_1 = r'@? *(mount|imgmount) +([a-z]):? +"([^"]+)"( +(.*))?'
+    cmd_2 = r'@? *(mount|imgmount) +([a-z]):? +([^ ]+)( +(.*))?'
+    mount_cmd_1 = re.compile(cmd_1, re.IGNORECASE)
+    mount_cmd_2 = re.compile(cmd_2, re.IGNORECASE)
+    change_drv = re.compile(r'@? *([a-z]:)\\? *$', re.IGNORECASE)
+    tree = FileTree('.')
+    for line in autoexec:
+        match = mount_cmd_1.match(line) or mount_cmd_2.match(line)
+        if match:
+            cmd = match.group(1).lower()
+            drive = match.group(2).upper()
+            win_path = match.group(3)
+            rest = match.group(4) or ''
+            path = tree.get_posix_path(win_path)
+            yield f'{cmd} {drive} "{path}"{rest}'
             continue
-        if cmd[0].isalpha() and cmd[1] == ':':  # e.g. C: or C:\
-            drive = cmd[0].upper()
-            active_path = dos_drives[drive]
-            yield f'{drive}:'
+        match = change_drv.match(line)
+        if match:
+            drive = match.group(1).upper()
+            yield f'{drive}'
             continue
         yield line
 
@@ -241,7 +236,7 @@ def create_conf_file(name, dosbox_args):
             conf_file.write('\n')
         if conf.has_section('autoexec'):
             conf_file.write('[autoexec]\n')
-            for line in convert_autoexec_section(conf):
+            for line in to_linux_autoexec(conf['autoexec']):
                 conf_file.write(line + '\n')
 
 
@@ -270,11 +265,13 @@ def create_audio_conf():
     return name
 
 
-def to_posix_path(prefix, windows_path_str):
+def to_posix_path(windows_path_str):
     """Convert a string representing case-insensitive path to a string
     representing path to existing file.
     """
-    win_path = pathlib.PureWindowsPath(prefix + '\\' + windows_path_str)
+    if windows_path_str == '.':
+        return '.'
+    win_path = pathlib.PureWindowsPath(windows_path_str)
     posix_parts = to_posix_parts(win_path.parts)
     if posix_parts is None:
         return None

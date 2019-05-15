@@ -152,6 +152,30 @@ class TestDosboxConfiguration(unittest.TestCase):
         self.assertEqual('77', cfg['sblaster']['irq'])  # from sb2.conf
         self.assertEqual('42', cfg['sblaster']['dma'])  # from sb1.conf
 
+    def test_fix_autoexec_1(self):
+        os.chdir('tests/files/confs')
+        old = ['mount c .', '@mount d .']
+        new = ['mount C "."', 'mount D "."']
+        self.assertEqual(list(confgen.to_linux_autoexec(old)), new)
+
+    def test_fix_autoexec_2(self):
+        os.chdir('tests/files/confs')
+        old = ['mount c .. -type cdrom', 'c:', 'MOUNT d ".."', r'D:\ ']
+        new = ['mount C ".." -type cdrom', 'C:', 'mount D ".."', 'D:']
+        self.assertEqual(list(confgen.to_linux_autoexec(old)), new)
+
+    def test_fix_autoexec_3(self):
+        os.chdir('tests/files/confs')
+        old = ['mount c dir', '@mount D "a b"', 'MOUNT E ABC\\DEF']
+        new = ['mount C "Dir"', 'mount D "A B"', 'mount E "abc/DEF"']
+        self.assertEqual(list(confgen.to_linux_autoexec(old)), new)
+
+    def test_fix_autoexec_4(self):
+        os.chdir('tests/files/confs')
+        old = ['IMGMOUNT c dir/file', '@imgmount D "DIR/FILE"']
+        new = ['imgmount C "Dir/file"', 'imgmount D "Dir/file"']
+        self.assertEqual(list(confgen.to_linux_autoexec(old)), new)
+
 
 if __name__ == '__main__':
     unittest.main()
