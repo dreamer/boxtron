@@ -24,11 +24,12 @@ TWEAKS_DB = {
     '733760': {
         'commands': {
             r'.*':  {
-                'args': ['-conf', 'dosboxmegarace2.conf',
+                'args': ['-conf', 'dosboxmegarace2.conf', '-noautoexec',
                          '-c', 'mount C .',
                          '-c', 'mount D . -t cdrom',
                          '-c', 'C:',
-                         '-c', 'MEGARACE.EXE'],
+                         '-c', 'MEGARACE.EXE',
+                         '-c', 'exit'],
             },
         },
     },

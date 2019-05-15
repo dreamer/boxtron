@@ -96,7 +96,8 @@ class DosboxConfiguration(dict):
     values seen in previous configuration files.
     """
 
-    def __init__(self, *, pfx='.', commands=[], conf_files=[], exe=None):
+    def __init__(self, *, pfx='.', commands=[], conf_files=[], exe=None,
+                 noautoexec=False, exit_after_exe=False):
         assert commands or conf_files or exe
         dict.__init__(self)
         self['autoexec'] = []
@@ -107,7 +108,7 @@ class DosboxConfiguration(dict):
             path = self.file_tree.get_posix_path(win_path)
             conf = parse_dosbox_config(path)
             self.__import_ini_sections__(conf)
-            if conf.has_section('autoexec'):
+            if not noautoexec and conf.has_section('autoexec'):
                 self.raw_autoexec.extend(line for line in conf['autoexec'])
 
         self.raw_autoexec.extend(cmd for cmd in commands)
@@ -118,6 +119,8 @@ class DosboxConfiguration(dict):
             self.raw_autoexec.append(f'mount C {path or "."}')
             self.raw_autoexec.append('C:')
             self.raw_autoexec.append(file)
+            if exit_after_exe:
+                self.raw_autoexec.append('exit')
 
     def __get_default_conf__(self):
         path = self.file_tree.get_posix_path('dosbox.conf')
@@ -180,21 +183,25 @@ def convert_autoexec_section(config):
     for line in config['autoexec']:
         words = line.split()  # TODO quoting, maybe proper parser
         cmd = words[0].lower()
-        if cmd == 'exit':
-            continue
         if cmd == 'mount':
             drive = words[1][0].upper()
-            path = to_posix_path(active_path, words[2]) or '.'
+            mount_param = words[2]  # TODO this is really ugly way
+            mount_target = mount_param
+            if mount_param[0] in ['"', "'"]:
+                mount_target = mount_param[1:-1]
+            path = to_posix_path(active_path, mount_target)
+            if not path:
+                print_err('steam-dos: warning: {mount_target} not found')
+                path = '.'
             dos_drives[drive] = path
             yield ' '.join(['mount', drive, path] + words[3:])
             continue
-        if len(cmd) == 2 and cmd[0].isalpha() and cmd[1] == ':':
+        if cmd[0].isalpha() and cmd[1] == ':':  # e.g. C: or C:\
             drive = cmd[0].upper()
             active_path = dos_drives[drive]
             yield f'{drive}:'
             continue
         yield line
-    yield 'exit'  # add 'exit' for games, that passed it through -c param
 
 
 def parse_dosbox_arguments(args):
@@ -202,6 +209,7 @@ def parse_dosbox_arguments(args):
     parser = argparse.ArgumentParser()
     parser.add_argument('-conf', action='append')
     parser.add_argument('-c', action='append')
+    parser.add_argument('-noautoexec', action='store_true')
     parser.add_argument('-noconsole', action='store_true')
     parser.add_argument('-fullscreen', action='store_true')
     parser.add_argument('-exit', action='store_true')
@@ -217,55 +225,23 @@ def create_conf_file(name, dosbox_args):
     generated from a file pointed to be run.
     """
     assert name
-
     args = parse_dosbox_arguments(dosbox_args)
-    exe_file = to_posix_path('.', args.file) if args.file else ''
-    orig_conf_file = to_posix_path('.', args.conf[0]) if args.conf else ''
-    fallback_conf_file = to_posix_path('.', 'dosbox.conf')
-    dos_commands = args.c if args.c else []
-
-    assert exe_file or orig_conf_file
-
-    original_config = parse_dosbox_config(orig_conf_file)
-    fallback_config = parse_dosbox_config(fallback_conf_file)
-
+    conf = DosboxConfiguration(conf_files=(args.conf or []),
+                               commands=(args.c or []),
+                               exe=args.file,
+                               noautoexec=args.noautoexec,
+                               exit_after_exe=args.exit)
     with open(name, 'w') as conf_file:
         conf_file.write(COMMENT_SECTION.format(dosbox_args))
         conf_file.write(SDL_SECTION.format(dosbox_args))
-
-        # TODO remove code duplication from fallback_config
-
-        if original_config and original_config.has_section('mixer'):
-            conf_file.write(f'# Section copied from {orig_conf_file}\n')
+        if conf.has_section('mixer'):
             conf_file.write('[mixer]\n')
-            for key, val in original_config['mixer'].items():
+            for key, val in conf['mixer'].items():
                 conf_file.write(f'{key}={val}\n')
             conf_file.write('\n')
-        elif fallback_config and fallback_config.has_section('mixer'):
-            conf_file.write(f'# Section copied from {fallback_conf_file}\n')
-            conf_file.write('[mixer]\n')
-            for key, val in fallback_config['mixer'].items():
-                conf_file.write(f'{key}={val}\n')
-            conf_file.write('\n')
-
-        if dos_commands:
-            conf_file.write(f'# Section forced through -c arguments\n')
+        if conf.has_section('autoexec'):
             conf_file.write('[autoexec]\n')
-            for line in dos_commands:
-                conf_file.write(line + '\n')
-            conf_file.write('exit\n')
-        elif exe_file:
-            conf_file.write(f'# Section generated for {exe_file}\n')
-            conf_file.write('[autoexec]\n')
-            folder, exe = os.path.split(exe_file)
-            conf_file.write(f'mount C {folder}\n')
-            conf_file.write('C:\n')
-            conf_file.write(f'{exe}\n')
-            conf_file.write('exit\n')
-        else:
-            conf_file.write(f'# Section adapted from {orig_conf_file}\n')
-            conf_file.write('[autoexec]\n')
-            for line in convert_autoexec_section(original_config):
+            for line in convert_autoexec_section(conf):
                 conf_file.write(line + '\n')
 
 
