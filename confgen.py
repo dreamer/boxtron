@@ -101,21 +101,28 @@ class DosboxConfiguration(dict):
         dict.__init__(self)
         self['autoexec'] = []
         self.raw_autoexec = self['autoexec']
+        self.file_tree = file_tree
 
-        for win_path in conf_files:
+        for win_path in (conf_files or self.__get_default_conf__()):
             path = file_tree.get_posix_path(win_path)
             conf = parse_dosbox_config(path)
-            autoexec = conf['autoexec']
-            self.raw_autoexec.extend(line for line in autoexec)
+            if conf.has_section('autoexec'):
+                self.raw_autoexec.extend(line for line in conf['autoexec'])
 
         self.raw_autoexec.extend(cmd for cmd in commands)
 
         if exe:
-            folder, file = os.path.split(exe)
-            path = file_tree.get_posix_path(folder)
+            posix_path = file_tree.get_posix_path(exe)
+            path, file = os.path.split(posix_path)
             self.raw_autoexec.append(f'mount C {path or "."}')
             self.raw_autoexec.append('C:')
             self.raw_autoexec.append(file)
+
+    def __get_default_conf__(self):
+        path = self.file_tree.get_posix_path('dosbox.conf')
+        if path and os.path.isfile(path):
+            return [path]
+        return []
 
     def sections(self):
         """Return a list of section names."""
