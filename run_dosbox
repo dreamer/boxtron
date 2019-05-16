@@ -139,6 +139,7 @@ def run(cmd_line, wait=False):
         # Executable is unrecognised, but at least there's a dosbox.conf
         # let's pretend it was passed to dosbox.exe:
         name = get_steam_dos_conf(['-conf', 'dosbox.conf'])
+        configure_midi()
         run_dosbox(['-conf', name, '-conf', confgen.create_audio_conf()])
 
     else:
