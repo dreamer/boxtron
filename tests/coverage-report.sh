@@ -5,4 +5,4 @@ coverage3 erase
 for tfile in tests/test_*.py ; do
 	PYTHONPATH=. coverage3 run "$tfile"
 done
-coverage3 report --fail-under=60 "$@"
+coverage3 report --fail-under=70 "$@"
