@@ -3,7 +3,7 @@
 # major.minor part of version of this release
 # TODO inject it into .vdf files, so manual tweak won't be
 # needed. Also, make sure it's compatible with the latest tag.
-version_major_minor = 0.1
+version_major_minor = 0.2
 
 tool_dir = steam-dos-$(version_major_minor)
 
