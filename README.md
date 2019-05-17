@@ -44,14 +44,14 @@ on modern displays.  It also seems to be performing much better than DOSBox defa
 If you want to modify DOSBox settings for a game, edit `steam_dos_<appid>_<id>.conf`
 file in game's installation dir. Remove it to force steam-dos to create a new one.
 
-Settings for steam-dos can be found in `/.config/steam-dos.conf` (or wherever
+Settings for steam-dos can be found in `~/.config/steam-dos.conf` (or wherever
 `XDG_CONFIG_HOME` points to).
 
 ## MIDI support
 
 TiMidity++ (or FluidSynth) are started and closed automatically, unless they are already
 working in the background.  You can turn it off by changing an option in settings file
-(`/.config/steam-dos.conf`) or using `SDOS_NO_MIDI=1` environment variable.
+(`~/.config/steam-dos.conf`) or using `SDOS_NO_MIDI=1` environment variable.
 Soundfont `FluidR3_GM.sf2` is used by default - you can change it by editing settings file.
 
 NOTE: Sythesiser running does not automagically turn on MIDI music in your game,
