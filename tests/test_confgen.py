@@ -177,5 +177,5 @@ class TestDosboxConfiguration(unittest.TestCase):
         self.assertEqual(list(confgen.to_linux_autoexec(old)), new)
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':  # pragma: no cover
     unittest.main()
