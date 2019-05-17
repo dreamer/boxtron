@@ -29,14 +29,21 @@ DEFAULT_MIDI_SOUNDFONT = 'FluidR3_GM.sf2'
 
 DEFAULT_SETTINGS = f"""
 [confgen]
-# TODO comment
+# Set this value to 'true' if you want steam-dos to re-create
+# DOSBox configuration on every run.
 force = {str(DEFAULT_CONFGEN_FORCE).lower()}
 
 [midi]
-# TODO comment
+# You can disable MIDI support here.
 enable = {str(DEFAULT_MIDI_ENABLE).lower()}
 
-# TODO comment
+# steam-dos will look for a soundfont in following directories:
+# /usr/share/soundfonts/
+# /usr/share/sounds/sf2/
+# /usr/local/share/soundfonts/
+# /usr/local/share/sounds/sf2/
+# ~/.local/share/sounds/sf2/  (or wherever XDG_DATA_HOME points)
+# ~/.local/share/soundfonts/  (or wherever XDG_DATA_HOME points)
 soundfont = {DEFAULT_MIDI_SOUNDFONT}
 """.lstrip()
 
