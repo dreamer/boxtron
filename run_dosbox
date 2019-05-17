@@ -75,7 +75,7 @@ def configure_midi():
 
 def get_steam_dos_conf(args):
     name = confgen.uniq_conf_name(STEAM_APP_ID, args)
-    if not os.path.isfile(name):
+    if settings.get_confgen_force() or not os.path.isfile(name):
         print_err(f'run_dosbox: generating {name} based on {args}')
         confgen.create_conf_file(name, args)
     return name
