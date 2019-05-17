@@ -10,16 +10,14 @@ import sys
 import confgen
 import midi
 
-# pylint: disable=wildcard-import
-from toolbox import *
-
+from settings import SETTINGS as settings
+from toolbox import print_err
+from toolbox import which
 from tweaks import TWEAKS_DB, tweak_command
 
 STEAM_APP_ID = os.environ.get('SteamAppId')
 
 PID_FILE = f'/tmp/steam_dos_{STEAM_APP_ID}'
-
-MIDI_DISABLED = enabled_in_env('SDOS_NO_MIDI')
 
 RUN_EXE = os.environ.get('SDOS_RUN_EXE')
 
@@ -58,18 +56,15 @@ def cleanup_pid_file():
 
 def configure_midi():
     """Detect or run and configure software MIDI synthesiser."""
-    if MIDI_DISABLED:
-        # User decided to disable MIDI support.
+    if not settings.get_midi_on():
         return
+
     if midi.detect_software_synthesiser(r'timidity|fluid'):
         # Synthesiser is already running (maybe as a service).
         # There's no reason to start our own.
         return
 
-    # pylint: disable=wrong-spelling-in-comment
-    # TODO assure sound font exists
-    # sfont = '/usr/share/soundfonts/timbres-of-heaven.sf2'
-    sfont = '/usr/share/soundfonts/FluidR3_GM.sf2'
+    sfont = settings.get_midi_soundfont()
     if which('timidity'):
         midi.start_timidity(sfont)
     elif which('fluidsynth'):

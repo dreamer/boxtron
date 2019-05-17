@@ -10,6 +10,7 @@ tool_dir = steam-dos-$(version_major_minor)
 files = run_dosbox \
 	confgen.py \
 	midi.py \
+	settings.py \
 	toolbox.py \
 	tweaks.py \
 	compatibilitytool.vdf \
@@ -22,8 +23,8 @@ install_dir = $(steam_dir)/compatibilitytools.d/$(tool_dir)
 
 lint:
 	shellcheck $(shell find . -name *.sh)
-	pycodestyle-3 run_dosbox *.py tests/*.py
 	pylint --rcfile=.pylint run_dosbox *.py tests/*.py
+	pycodestyle-3 run_dosbox *.py tests/*.py
 
 test:
 	python3 -m unittest discover -v -s tests
