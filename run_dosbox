@@ -9,10 +9,10 @@ import sys
 
 import confgen
 import midi
+import toolbox
 
-from settings import SETTINGS as settings
 from toolbox import print_err
-from toolbox import which
+from settings import SETTINGS as settings
 from tweaks import TWEAKS_DB, tweak_command
 
 STEAM_APP_ID = os.environ.get('SteamAppId')
@@ -65,9 +65,9 @@ def configure_midi():
         return
 
     sfont = settings.get_midi_soundfont()
-    if which('timidity'):
+    if toolbox.which('timidity'):
         midi.start_timidity(sfont)
-    elif which('fluidsynth'):
+    elif toolbox.which('fluidsynth'):
         midi.start_fluidsynth(sfont)
     else:
         print_err('steam-dos: warn: no software MIDI synthesiser available')
@@ -126,6 +126,13 @@ def run(cmd_line, wait=False):
         # generate new .conf file.  When dosbox without parameters
         # is called, it implies: -conf dosbox.conf
         dosbox_args = cmd_line[1:] or ['-conf', 'dosbox.conf']
+        name = get_steam_dos_conf(dosbox_args)
+        configure_midi()
+        run_dosbox(['-conf', name, '-conf', confgen.create_audio_conf()])
+
+    elif STEAM_APP_ID and toolbox.is_trivial_batch(exe):
+        # Publisher uploaded a .bat file to run dosbox
+        dosbox_args = toolbox.read_trivial_batch(exe)
         name = get_steam_dos_conf(dosbox_args)
         configure_midi()
         run_dosbox(['-conf', name, '-conf', confgen.create_audio_conf()])

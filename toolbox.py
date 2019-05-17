@@ -26,3 +26,11 @@ def which(cmd):
         return subprocess.check_output(['which', cmd]).decode('utf-8').strip()
     except subprocess.CalledProcessError:
         return None
+
+
+def is_trivial_batch(_file):
+    return False
+
+
+def read_trivial_batch(_file):
+    return []
