@@ -9,6 +9,7 @@ import sys
 
 import confgen
 import midi
+import version
 import toolbox
 
 from toolbox import print_err
@@ -147,9 +148,13 @@ def main():
     group.add_argument('--get-native-path', action='store_true')
     group.add_argument('--get-compat-path', action='store_true')
     group.add_argument('--wait-before-run', action='store_true')
+    group.add_argument('--version', action='store_true')
     group.add_argument('--get-current-step')
     args, run_cmd_line = parser.parse_known_args()
 
+    if args.version:
+        print(f'steam-dos version {version.VERSION[1:]}')
+        sys.exit(0)
     if args.get_native_path:
         # TODO convert single path: Windows -> Linux
         sys.exit(1)

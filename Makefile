@@ -1,4 +1,4 @@
-.PHONY: lint test coverage install uninstall clean version
+.PHONY: lint test coverage install uninstall clean version.py
 
 # major.minor part of version of this release
 # TODO inject it into .vdf files, so manual tweak won't be
@@ -13,15 +13,15 @@ files = run_dosbox \
 	settings.py \
 	toolbox.py \
 	tweaks.py \
+	version.py \
 	compatibilitytool.vdf \
 	toolmanifest.vdf \
-	LICENSE \
-	version
+	LICENSE
 
 steam_dir = ${HOME}/.local/share/Steam
 install_dir = $(steam_dir)/compatibilitytools.d/$(tool_dir)
 
-lint:
+lint: version.py
 	shellcheck $(shell find . -name *.sh)
 	pylint --rcfile=.pylint run_dosbox *.py tests/*.py
 	pycodestyle-3 run_dosbox *.py tests/*.py
@@ -32,8 +32,10 @@ test:
 coverage:
 	./tests/coverage-report.sh
 
-version:
-	git describe --tags --dirty --long > version
+version.py:
+	@printf "# pylint: disable=missing-docstring\n" > $@
+	@printf "VERSION = '%s'\n" \
+		$(shell git describe --tags --dirty --long) >> $@
 
 $(tool_dir).zip: $(files)
 	mkdir -p $(tool_dir)
@@ -52,6 +54,7 @@ install: $(files)
 	cp --reflink=auto -t $(install_dir) $^
 
 clean:
+	rm -f version.py
 	rm -f $(tool_dir).tar.xz
 	rm -f $(tool_dir).zip
 
