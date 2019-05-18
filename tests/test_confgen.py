@@ -44,6 +44,16 @@ class TestDosboxConfiguration(unittest.TestCase):
         self.assertIn('autoexec', cfg.sections())
         self.assertEqual(cfg['autoexec'], ['mount C .', 'C:', 'file.exe'])
 
+    # $ dosbox file.bat
+    # Z:\>mount C .
+    # Z:\>call file.bat
+    #
+    def test_autoexec_single_bat(self):
+        os.chdir('tests/files/no_conf')
+        cfg = confgen.DosboxConfiguration(exe='file.bat')
+        self.assertIn('autoexec', cfg.sections())
+        self.assertEqual(cfg['autoexec'], ['mount C .', 'C:', 'call file.bat'])
+
     # $ dosbox -conf c1.conf
     # <autoexec section from c1.conf>
     #

@@ -117,7 +117,10 @@ class DosboxConfiguration(dict):
             path, file = os.path.split(posix_path)
             self.raw_autoexec.append(f'mount C {path or "."}')
             self.raw_autoexec.append('C:')
-            self.raw_autoexec.append(file)
+            if file.lower().endswith('.bat'):
+                self.raw_autoexec.append(f'call {file}')
+            else:
+                self.raw_autoexec.append(file)
             if exit_after_exe:
                 self.raw_autoexec.append('exit')
 
