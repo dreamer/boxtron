@@ -9,17 +9,6 @@ import re
 from toolbox import print_err
 
 TWEAKS_DB = {
-    # DOOM II: Hell on Earth
-    '2300': {
-        'commands': {
-            r'.*doom2 \+ mouse.bat$':  {
-                'args': ['-conf', 'base\\doom2m.conf'],
-            },
-            r'.*doom2.bat$': {
-                'args': ['-conf', 'base\\doom2.conf'],
-            },
-        },
-    },
     # Jagged Alliance Gold
     '283270': {
         'commands': {
