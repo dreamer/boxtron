@@ -3,8 +3,8 @@
 # pylint: disable=missing-docstring
 # pylint: disable=wrong-spelling-in-comment
 
-import unittest
 import os
+import unittest
 
 import confgen
 

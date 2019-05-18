@@ -1,0 +1,1 @@
+dosbox.exe -c "MOUNT c Installed" -c "IMGMOUNT d cd.iso -t cdrom" -c "c:" -c "cd jagged" -c "ja.bat" -c "exit"

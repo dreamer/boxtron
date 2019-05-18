@@ -5,6 +5,7 @@ Useful functions and classes
 """
 
 import os
+import pathlib
 import subprocess
 import sys
 
@@ -28,9 +29,25 @@ def which(cmd):
         return None
 
 
-def is_trivial_batch(_file):
+def is_trivial_batch(file):
+    if not file.lower().endswith('.bat'):
+        return False
+    if os.stat(file).st_size > 512:
+        return False
+    with open(file, 'r') as bat_file:
+        lines = bat_file.readlines(512)
+        return len(lines) <= 2
     return False
 
 
-def read_trivial_batch(_file):
+def read_trivial_batch(file):
+    with open(file, 'r') as bat_file:
+        lines = bat_file.readlines(512)
+        first_line = lines[0].strip().split(' ')  # TODO split respecting quotes
+        if len(first_line) < 2:  # we expect at least "dosbox file.exe"
+            return []
+        win_path = pathlib.PureWindowsPath(first_line[0])
+        cmd = win_path.parts[-1]
+        if cmd.lower() in ('dosbox', 'dosbox.exe'):
+            return first_line[1:]
     return []
