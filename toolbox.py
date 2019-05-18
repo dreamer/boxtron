@@ -24,12 +24,15 @@ def enabled_in_env(var):
 def which(cmd):
     """Call which(1)."""
     try:
-        return subprocess.check_output(['which', cmd]).decode('utf-8').strip()
+        out = subprocess.check_output(['which', cmd],
+                                      stderr=subprocess.DEVNULL)
+        return out.decode('utf-8').strip()
     except subprocess.CalledProcessError:
         return None
 
 
 def is_trivial_batch(file):
+    """Test if file is trivially interpretable batch file."""
     if not file.lower().endswith('.bat'):
         return False
     if os.stat(file).st_size > 512:
@@ -41,9 +44,10 @@ def is_trivial_batch(file):
 
 
 def read_trivial_batch(file):
+    """Find DOSBox command in batch file and return its argument list."""
     with open(file, 'r') as bat_file:
         lines = bat_file.readlines(512)
-        first_line = lines[0].strip().split(' ')  # TODO split respecting quotes
+        first_line = lines[0].strip().split(' ')
         if len(first_line) < 2:  # we expect at least "dosbox file.exe"
             return []
         win_path = pathlib.PureWindowsPath(first_line[0])
