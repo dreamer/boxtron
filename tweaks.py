@@ -9,25 +9,6 @@ import re
 from toolbox import print_err
 
 TWEAKS_DB = {
-    # Jagged Alliance Gold
-    '283270': {
-        'commands': {
-            r'.*/Jagged Alliance/run.bat': {
-                'args': ['-c', 'mount C Installed',
-                         '-c', 'imgmount D cd.iso -t cdrom',
-                         '-c', 'C:',
-                         '-c', 'cd jagged',
-                         '-c', 'ja.bat'],
-            },
-            r'.*/Jagged Alliance Deadly Games/run.bat': {
-                'args': ['-c', 'mount C Installed',
-                         '-c', 'imgmount D cd.iso -t cdrom',
-                         '-c', 'C:',
-                         '-c', 'cd deadly',
-                         '-c', 'deadly.bat'],
-            },
-        },
-    },
     # MegaRace 2
     '733760': {
         'commands': {

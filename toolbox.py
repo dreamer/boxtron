@@ -6,6 +6,7 @@ Useful functions and classes
 
 import os
 import pathlib
+import shlex
 import subprocess
 import sys
 
@@ -43,11 +44,20 @@ def is_trivial_batch(file):
     return False
 
 
+def argsplit_windows(line):
+    """Convert Windows-style string to list of arguments."""
+    def unquote(x):
+        if len(x) >= 2 and x.startswith('"') and x.endswith('"'):
+            return x[1:-1]
+        return x
+    return [unquote(x) for x in shlex.split(line, posix=False)]
+
+
 def read_trivial_batch(file):
     """Find DOSBox command in batch file and return its argument list."""
     with open(file, 'r') as bat_file:
         lines = bat_file.readlines(512)
-        first_line = lines[0].strip().split(' ')
+        first_line = argsplit_windows(lines[0])
         if len(first_line) < 2:  # we expect at least "dosbox file.exe"
             return []
         win_path = pathlib.PureWindowsPath(first_line[0])

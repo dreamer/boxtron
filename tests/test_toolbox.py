@@ -37,10 +37,22 @@ class TestBatchFileDetection(unittest.TestCase):
     def test_worms(self):
         os.chdir('tests/files/bat/worms')
         self.assertTrue(toolbox.is_trivial_batch('runworms.bat'))
+        args = toolbox.read_trivial_batch('runworms.bat')
+        self.assertEqual(args, [r'.\drivec\goworms.bat',
+                                '-conf', r'.\worms.conf',
+                                '-fullscreen',
+                                '-exit'])
 
     def test_jagged_alliance(self):
         os.chdir('tests/files/bat/jagged-alliance')
         self.assertTrue(toolbox.is_trivial_batch('run.bat'))
+        args = toolbox.read_trivial_batch('run.bat')
+        self.assertEqual(args, ['-c', 'MOUNT c Installed',
+                                '-c', 'IMGMOUNT d cd.iso -t cdrom',
+                                '-c', 'c:',
+                                '-c', 'cd jagged',
+                                '-c', 'ja.bat',
+                                '-c', 'exit'])
 
     def test_stargunner(self):
         os.chdir('tests/files/bat/stargunner')
