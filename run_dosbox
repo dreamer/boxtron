@@ -73,20 +73,21 @@ def configure_midi():
         print_err('steam-dos: warn: no software MIDI synthesiser available')
 
 
-def get_steam_dos_conf(args):
-    name = confgen.uniq_conf_name(STEAM_APP_ID, args)
-    if settings.get_confgen_force() or not os.path.isfile(name):
-        print_err(f'run_dosbox: generating {name} based on {args}')
-        confgen.create_conf_file(name, args)
-    return name
-
-
 def run_dosbox(args):
     create_pid_file()
     print_err('run_dosbox:', ['dosbox'] + args)
     sys.stderr.flush()
     subprocess.call(['dosbox'] + args)
     cleanup_pid_file()
+
+
+def run_dosbox_with_conf(args):
+    name = confgen.uniq_conf_name(STEAM_APP_ID, args)
+    if settings.get_confgen_force() or not os.path.isfile(name):
+        print_err(f'run_dosbox: generating {name} based on {args}')
+        confgen.create_conf_file(name, args)
+    configure_midi()
+    run_dosbox(['-conf', name, '-conf', confgen.create_audio_conf()])
 
 
 def run(cmd_line, wait=False):
@@ -117,32 +118,24 @@ def run(cmd_line, wait=False):
         tweaked_cmd = tweak_command(STEAM_APP_ID, cmd_line)
         if not tweaked_cmd:
             sys.exit(1)
-        name = get_steam_dos_conf(tweaked_cmd)
-        configure_midi()
-        run_dosbox(['-conf', name, '-conf', confgen.create_audio_conf()])
+        run_dosbox_with_conf(tweaked_cmd)
 
     elif STEAM_APP_ID and exe.lower() == 'dosbox.exe':
         # When dosbox with parameters is called, use them to
         # generate new .conf file.  When dosbox without parameters
         # is called, it implies: -conf dosbox.conf
         dosbox_args = cmd_line[1:] or ['-conf', 'dosbox.conf']
-        name = get_steam_dos_conf(dosbox_args)
-        configure_midi()
-        run_dosbox(['-conf', name, '-conf', confgen.create_audio_conf()])
+        run_dosbox_with_conf(dosbox_args)
 
     elif STEAM_APP_ID and toolbox.is_trivial_batch(exe):
         # Publisher uploaded a .bat file to run dosbox
         dosbox_args = toolbox.read_trivial_batch(exe)
-        name = get_steam_dos_conf(dosbox_args)
-        configure_midi()
-        run_dosbox(['-conf', name, '-conf', confgen.create_audio_conf()])
+        run_dosbox_with_conf(dosbox_args)
 
     elif STEAM_APP_ID and os.path.isfile('dosbox.conf'):
         # Executable is unrecognised, but at least there's a dosbox.conf
         # let's pretend it was passed to dosbox.exe:
-        name = get_steam_dos_conf(['-conf', 'dosbox.conf'])
-        configure_midi()
-        run_dosbox(['-conf', name, '-conf', confgen.create_audio_conf()])
+        run_dosbox_with_conf(['-conf', 'dosbox.conf'])
 
     else:
         print_err('run_dosbox: ignoring command:', cmd_line)
