@@ -16,6 +16,16 @@ class TestConfGenerator(unittest.TestCase):
         self.assertEqual(name, 'steam_dos_1234_a63add.conf')
 
 
+class TestDosboxArgParser(unittest.TestCase):
+
+    # All Apogee titles have hanging '-c' as last argument.
+    #
+    def test_hanging_command(self):
+        dargs = confgen.parse_dosbox_arguments(['-conf', r'..\\STARGUN.conf',
+                                                '-noconsole', '-c'])
+        self.assertEqual(dargs.c, [])
+
+
 class TestDosboxConfiguration(unittest.TestCase):
 
     def setUp(self):

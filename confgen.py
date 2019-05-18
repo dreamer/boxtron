@@ -206,13 +206,16 @@ def parse_dosbox_arguments(args):
     """Parse subset of DOSBox command line arguments."""
     parser = argparse.ArgumentParser()
     parser.add_argument('-conf', action='append')
-    parser.add_argument('-c', action='append')
+    parser.add_argument('-c', action='append', nargs='?')
     parser.add_argument('-noautoexec', action='store_true')
     parser.add_argument('-noconsole', action='store_true')
     parser.add_argument('-fullscreen', action='store_true')
     parser.add_argument('-exit', action='store_true')
     parser.add_argument('file', nargs='?')
-    return parser.parse_args(args)
+    args = parser.parse_args(args)
+    cmds = list(filter(lambda x: x, args.c))
+    args.c = cmds
+    return args
 
 
 def create_conf_file(name, dosbox_args):
@@ -225,7 +228,7 @@ def create_conf_file(name, dosbox_args):
     assert name
     args = parse_dosbox_arguments(dosbox_args)
     conf = DosboxConfiguration(conf_files=(args.conf or []),
-                               commands=(args.c or []),
+                               commands=args.c,
                                exe=args.file,
                                noautoexec=args.noautoexec,
                                exit_after_exe=args.exit)
