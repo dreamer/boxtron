@@ -36,6 +36,8 @@ def is_trivial_batch(file):
     """Test if file is trivially interpretable batch file."""
     if not file.lower().endswith('.bat'):
         return False
+    if not os.path.isfile(file):
+        return False
     if os.stat(file).st_size > 512:
         return False
     with open(file, 'r') as bat_file:

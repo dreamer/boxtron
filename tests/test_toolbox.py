@@ -26,6 +26,14 @@ class TestBatchFileDetection(unittest.TestCase):
     def tearDown(self):
         os.chdir(self.original_dir)
 
+    def test_missing_file(self):
+        os.chdir('tests/files/bat/doom2')
+        self.assertFalse(toolbox.is_trivial_batch('I_do_not_exist.bat'))
+
+    def test_different_extension(self):
+        os.chdir('tests/files/no_conf')
+        self.assertFalse(toolbox.is_trivial_batch('file.exe'))
+
     def test_doom2_1(self):
         os.chdir('tests/files/bat/doom2')
         self.assertTrue(toolbox.is_trivial_batch('doom2.bat'))
@@ -57,6 +65,15 @@ class TestBatchFileDetection(unittest.TestCase):
     def test_stargunner(self):
         os.chdir('tests/files/bat/stargunner')
         self.assertFalse(toolbox.is_trivial_batch('Stargunner.bat'))
+
+
+class TestEnabledInEnv(unittest.TestCase):
+
+    def test_enabled_in_env_on(self):
+        self.assertTrue(toolbox.enabled_in_env('HOME'))
+
+    def test_enabled_in_env_off(self):
+        self.assertFalse(toolbox.enabled_in_env('THIS_VAR_DOES_NOT_EXIST'))
 
 
 if __name__ == '__main__':  # pragma: no cover
