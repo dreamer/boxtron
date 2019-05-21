@@ -24,13 +24,13 @@ install_dir = $(steam_dir)/compatibilitytools.d/$(tool_dir)
 lint: version.py
 	shellcheck $(shell find . -name *.sh)
 	pylint --rcfile=.pylint run_dosbox *.py tests/*.py
-	pycodestyle-3 run_dosbox *.py tests/*.py
+	pycodestyle run_dosbox *.py tests/*.py
 
 test:
 	python3 -m unittest discover -v -s tests
 
 coverage:
-	./tests/coverage-report.sh
+	bash tests/coverage-report.sh
 
 version.py:
 	@printf "# pylint: disable=missing-docstring\n" > $@

@@ -1,0 +1,25 @@
+image: python:3.6.8-stretch
+
+stages:
+  - analyse
+  - test
+
+before_script:
+  - apt-get update -qq && apt-get install -y -qq myspell-en-gb enchant shellcheck pycodestyle python3-pip
+  - pip3 -q install pyenchant pylint
+
+Static analysis:
+  stage: analyse
+  script:
+  - python --version
+  - python3 --version
+  - shellcheck --version
+  - pylint --version
+  - pycodestyle --version
+  - make lint
+
+## TODO It would be nice to run 'make coverage', but it's impossible on Debian
+## stable at the moment; add it once Buster becomes stable.
+Unit tests:
+  stage: test
+  script: make test
