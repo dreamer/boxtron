@@ -4,6 +4,10 @@ Compatibility tool to run DOS games on Steam through native Linux DOSBox version
 
 ![steam-dos](https://user-images.githubusercontent.com/3967/57303584-f448b600-70dd-11e9-91f9-e7f45a8157f5.png)
 
+Official mirrors:
+[GitHub](https://github.com/dreamer/steam-dos),
+[GitLab](https://gitlab.com/dreamer-tan/steam-dos).
+
 ## Prerequisites
 
 You will need Python (>= 3.6), DOSBox (>= 0.74) and inotify-tools.
