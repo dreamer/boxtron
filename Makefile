@@ -1,4 +1,4 @@
-.PHONY: lint test coverage install uninstall clean version.py
+.PHONY: lint test coverage install uninstall clean version.py shortlog
 
 # major.minor part of version of this release
 # TODO inject it into .vdf files, so manual tweak won't be
@@ -60,3 +60,7 @@ clean:
 
 uninstall:
 	rm -rf $(install_dir)
+
+# Summary to be included in CHANGELOG.md
+shortlog:
+	git shortlog $(shell git describe --tags --abbrev=0)..HEAD
