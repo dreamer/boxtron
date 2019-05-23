@@ -1,0 +1,143 @@
+#!/usr/bin/env python3
+
+# pylint: disable=invalid-name
+# pylint: disable=missing-docstring
+
+import argparse
+import glob
+import json
+import os
+import subprocess
+import sys
+import tempfile
+import shutil
+
+
+DATA_HOME = os.environ.get('XDG_DATA_HOME') or \
+            os.path.expanduser('~/.local/share')
+
+
+# TODO wine 3.16 or newer
+
+def run_setup_file(setup_exe, pfx):
+    tmp_env = os.environ
+    tmp_env.update({'WINEDLLOVERRIDES': 'winemenubuilder.exe=d',
+                    'WINEPREFIX': pfx})
+    inno_flags = ['/NOGUI', '/SUPPRESSMSGBOXES', '/SILENT', '/DIR=C:\\game']
+    cmd = ['wine', setup_exe] + inno_flags
+    process = subprocess.run(cmd, env=tmp_env, stderr=subprocess.DEVNULL)
+    if process.returncode != 0:
+        print(f'{setup_exe} finished with code {process.returncode}')
+        sys.exit(10 + process.returncode)
+
+
+def find_gog_info(game_dir):
+    info_files = glob.glob(game_dir + '/goggame-*.info')
+    if not info_files:
+        print('goggame-*.info file not found')
+        sys.exit(3)
+    with open(info_files[0], 'r') as gog_info_file:
+        info = json.load(gog_info_file)
+        return info
+    return None
+
+
+# Trying to emulate GOG name -> slug conversion as close as possible:
+#
+def name_to_slug(name):
+    name = name.strip()
+    if name.endswith(', The'):
+        name = 'The ' + name[:-5]
+    name = name + '_'  # to make it easier to transform Roman numerals
+    name = name.replace('&', 'and')
+    name = name.translate(str.maketrans(' ', '_', r""":™®,."-'!?"""))
+    name = name.replace('_IX_', '_9_')
+    name = name.replace('_VIII_', '_8_')
+    name = name.replace('_VII_', '_7_')
+    name = name.replace('_VI_', '_6_')
+    name = name.replace('_V_', '_5_')
+    name = name.replace('_IV_', '_4_')
+    name = name.replace('_III_', '_3_')
+    name = name.replace('_II_', '_2_')
+    name = name.replace('__', '_')
+    name = name.strip('_')
+    return name.lower()
+
+
+def available_dir(dirname):
+    if not os.path.exists(dirname):
+        return True
+    if os.path.isdir(dirname) and any(True for _ in os.scandir(dirname)):
+        return False
+    return True
+
+
+def create_launcher_files(path, gog_info):
+    name = gog_info['name']
+    slug = name_to_slug(name)
+    task = gog_info['playTasks'][0]
+    args = task['arguments']
+    wdir = task['workingDir'].replace('\\', '/')
+    launcher_bat = os.path.join(path, wdir, f'{slug}.bat')
+    exe = 'DOSBox.exe'
+
+    with open(launcher_bat, 'w') as batch:
+        batch.write(f'{exe} {args}\n')
+
+    os.chmod(launcher_bat, 0o775)
+
+    with open(f'{path}/{name}.desktop', 'w') as entry:
+        entry.write('[Desktop Entry]\n')
+        entry.write(f'Name={name}\n')
+        entry.write(f'Type=Application\n')
+        entry.write(f'Exec={launcher_bat}\n')
+        entry.write(f'Encoding=UTF-8\n')
+        entry.write(f'StartupNotify=true\n')
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('setup_exe_file')
+    args = parser.parse_args()
+
+    setup_exe = args.setup_exe_file
+
+    if not os.path.isfile(setup_exe):
+        print(f'File {setup_exe} does not exist', file=sys.stderr)
+        sys.exit(1)
+
+    if not setup_exe.lower().endswith('.exe'):
+        print(f'Only .exe installers supported', file=sys.stderr)
+        sys.exit(1)
+
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        print(f'Unpacking game files to temporary directory: {tmp_dir}')
+        run_setup_file(setup_exe, tmp_dir)
+        game_dir = os.path.join(tmp_dir, 'drive_c/game')
+        gog_info = find_gog_info(game_dir)
+        game_name = gog_info['name']
+        game_slug = name_to_slug(game_name)
+        install_path = os.path.join(DATA_HOME, 'games', game_slug)
+
+        if not available_dir(install_path):
+            print(f'Path {install_path} is occupied already')
+            sys.exit(4)
+
+        # ensure all directories leading to install_path exist
+        os.makedirs(install_path, exist_ok=True)
+        os.rmdir(install_path)
+
+        print(f'Movig game files to {install_path}')
+        shutil.move(game_dir, install_path)
+        os.chmod(install_path, 0o775)
+
+        create_launcher_files(install_path, gog_info)
+
+        print('\nInstallation finished.\n')
+        print('Select the following file when adding non-Steam game',
+              'to your library:')
+        print(f'{install_path}/{game_name}.desktop')
+
+
+if __name__ == "__main__":
+    main()

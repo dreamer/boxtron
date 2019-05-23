@@ -8,6 +8,7 @@ version_major_minor = 0.2
 tool_dir = steam-dos-$(version_major_minor)
 
 files = run_dosbox \
+	install-gog-game \
 	confgen.py \
 	midi.py \
 	settings.py \
@@ -23,8 +24,8 @@ install_dir = $(steam_dir)/compatibilitytools.d/$(tool_dir)
 
 lint: version.py
 	shellcheck $(shell find . -name *.sh)
-	pylint --rcfile=.pylint run_dosbox *.py tests/*.py
-	pycodestyle run_dosbox *.py tests/*.py
+	pylint --rcfile=.pylint run_dosbox install-gog-game *.py tests/*.py
+	pycodestyle run_dosbox install-gog-game *.py tests/*.py
 
 test:
 	python3 -m unittest discover -v -s tests
