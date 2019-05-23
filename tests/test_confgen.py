@@ -196,6 +196,23 @@ class TestDosboxConfiguration(unittest.TestCase):
         new = ['imgmount C "Dir/file"', 'imgmount D "Dir/file"']
         self.assertEqual(list(confgen.to_linux_autoexec(old)), new)
 
+    # Warcraft: Orcs & Humans
+    #
+    # Using .conf files distributed through GOG after being added
+    # as non-Steam game to Steam library:
+    #
+    def test_gog_warcraft(self):
+        os.chdir('tests/files/gog/warcraft_orcs_and_humans/DOSBOX')
+        cmd_line = ['-conf', '..\\dosbox_warcraft.conf',
+                    '-conf', '..\\dosbox_warcraft_single.conf',
+                    '-noconsole', '-c', 'exit']
+        args = confgen.parse_dosbox_arguments(cmd_line)
+        conf = confgen.DosboxConfiguration(conf_files=(args.conf or []),
+                                           commands=args.c,
+                                           exe=args.file,
+                                           noautoexec=args.noautoexec,
+                                           exit_after_exe=args.exit)
+
 
 if __name__ == '__main__':  # pragma: no cover
     unittest.main()
