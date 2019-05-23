@@ -212,6 +212,8 @@ class TestDosboxConfiguration(unittest.TestCase):
                                            exe=args.file,
                                            noautoexec=args.noautoexec,
                                            exit_after_exe=args.exit)
+        # at the very least, autoexec should be filled
+        self.assertTrue(conf['autoexec'])
 
 
 if __name__ == '__main__':  # pragma: no cover

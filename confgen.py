@@ -170,9 +170,26 @@ def parse_dosbox_config(conf_file):
     """Parse DOSBox configuration file."""
     if conf_file is None:
         return None
-    config = configparser.ConfigParser(allow_no_value=True, delimiters='=')
+    config = configparser.ConfigParser(allow_no_value=True,
+                                       delimiters='=',
+                                       strict=False)
     config.optionxform = str
-    config.read(conf_file)
+    try:
+        # Try simply reading a .conf file, assuming it's utf-8 encoded,
+        # as any modern text editor will likely create utf-8 file by
+        # default.
+        #
+        config.read(conf_file)
+
+    except UnicodeDecodeError:
+        # Failed decoding from utf-8 means, that likely there are some
+        # graphical glyphs in autoexec section of a .conf file.
+        #
+        # This seems to be a common case for .conf files distributed
+        # with GOG games. Just retry with specific old encoding.
+        #
+        config.read(conf_file, encoding='cp1250')
+
     return config
 
 
