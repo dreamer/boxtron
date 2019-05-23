@@ -3,6 +3,10 @@
 # pylint: disable=invalid-name
 # pylint: disable=missing-docstring
 
+"""
+Install DOS games from gog.com into the Steam library.
+"""
+
 import argparse
 import glob
 import json
@@ -72,21 +76,28 @@ def available_dir(dirname):
     return True
 
 
+def remove_prefix(pfx, word):
+    if word.startswith(pfx):
+        return word[len(pfx):]
+    return word
+
+
 def create_launcher_files(path, gog_info):
     name = gog_info['name']
     slug = name_to_slug(name)
     task = gog_info['playTasks'][0]
-    args = task['arguments']
-    wdir = task['workingDir'].replace('\\', '/')
+    args = task.get('arguments') or ''
+    wdir = task.get('workingDir') or ''
     launcher_bat = os.path.join(path, wdir, f'{slug}.bat')
-    exe = 'DOSBox.exe'
+    gog_path = task.get('path')
+    exe = remove_prefix(wdir+'\\', gog_path) if wdir else gog_path
 
     with open(launcher_bat, 'w') as batch:
         batch.write(f'{exe} {args}\n')
 
     os.chmod(launcher_bat, 0o775)
 
-    with open(f'{path}/{name}.desktop', 'w') as entry:
+    with open(f'{path}/{slug}.desktop', 'w') as entry:
         entry.write('[Desktop Entry]\n')
         entry.write(f'Name={name}\n')
         entry.write(f'Type=Application\n')
@@ -96,11 +107,11 @@ def create_launcher_files(path, gog_info):
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('setup_exe_file')
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('setup_file', help='.exe installer for GOG game')
     args = parser.parse_args()
 
-    setup_exe = args.setup_exe_file
+    setup_exe = args.setup_file
 
     if not os.path.isfile(setup_exe):
         print(f'File {setup_exe} does not exist', file=sys.stderr)
@@ -136,7 +147,7 @@ def main():
         print('\nInstallation finished.\n')
         print('Select the following file when adding non-Steam game',
               'to your library:')
-        print(f'{install_path}/{game_name}.desktop')
+        print(f'{install_path}/{game_slug}.desktop')
 
 
 if __name__ == "__main__":
