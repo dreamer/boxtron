@@ -25,6 +25,13 @@ class TestDosboxArgParser(unittest.TestCase):
                                                 '-noconsole', '-c'])
         self.assertEqual(dargs.c, [])
 
+    # X-COM: Terror from the Deep has no special parameters at all:
+    #
+    def test_no_commands(self):
+        dargs = confgen.parse_dosbox_arguments(['-conf', 'dosbox.conf'])
+        self.assertEqual(dargs.c, [])
+        self.assertEqual(dargs.conf, ['dosbox.conf'])
+
 
 class TestDosboxConfiguration(unittest.TestCase):
 

@@ -235,7 +235,7 @@ def parse_dosbox_arguments(args):
     parser.add_argument('-exit', action='store_true')
     parser.add_argument('file', nargs='?')
     args = parser.parse_args(args)
-    cmds = list(filter(lambda x: x, args.c))
+    cmds = list(filter(lambda x: x, args.c or []))
     args.c = cmds
     return args
 
