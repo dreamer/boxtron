@@ -102,11 +102,14 @@ class DosboxConfiguration(dict):
         self['autoexec'] = []
         self.raw_autoexec = self['autoexec']
         self.file_tree = FileTree(pfx)
+        self.encoding = 'utf-8'
 
         for win_path in (conf_files or self.__get_default_conf__()):
             path = self.file_tree.get_posix_path(win_path)
-            conf = parse_dosbox_config(path)
+            conf, enc = parse_dosbox_config(path)
             self.__import_ini_sections__(conf)
+            if enc != 'utf-8':
+                self.encoding = enc
             if not noautoexec and conf.has_section('autoexec'):
                 self.raw_autoexec.extend(line for line in conf['autoexec'])
 
@@ -174,6 +177,7 @@ def parse_dosbox_config(conf_file):
                                        delimiters='=',
                                        strict=False)
     config.optionxform = str
+    encoding = 'utf-8'
     try:
         # Try simply reading a .conf file, assuming it's utf-8 encoded,
         # as any modern text editor will likely create utf-8 file by
@@ -188,9 +192,10 @@ def parse_dosbox_config(conf_file):
         # This seems to be a common case for .conf files distributed
         # with GOG games. Just retry with specific old encoding.
         #
-        config.read(conf_file, encoding='cp1250')
+        encoding = 'cp1250'
+        config.read(conf_file, encoding=encoding)
 
-    return config
+    return config, encoding
 
 
 def to_linux_autoexec(autoexec):
@@ -249,7 +254,7 @@ def create_conf_file(name, dosbox_args):
                                exe=args.file,
                                noautoexec=args.noautoexec,
                                exit_after_exe=args.exit)
-    with open(name, 'w') as conf_file:
+    with open(name, 'w', encoding=conf.encoding) as conf_file:
         conf_file.write(COMMENT_SECTION.format(dosbox_args))
         conf_file.write(SDL_SECTION.format(dosbox_args))
         if conf.has_section('mixer'):

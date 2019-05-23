@@ -213,7 +213,7 @@ class TestDosboxConfiguration(unittest.TestCase):
                                            noautoexec=args.noautoexec,
                                            exit_after_exe=args.exit)
         # at the very least, autoexec should be filled
-        self.assertTrue(conf['autoexec'])
+        self.assertEqual(conf.encoding, 'cp1250')
 
 
 if __name__ == '__main__':  # pragma: no cover
