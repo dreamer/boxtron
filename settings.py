@@ -27,15 +27,15 @@ DEFAULT_MIDI_ENABLE = True
 
 DEFAULT_MIDI_SOUNDFONT = 'FluidR3_GM.sf2'
 
-DEFAULT_SETTINGS = f"""
+DEFAULT_SETTINGS = """
 [confgen]
 # Set this value to 'true' if you want steam-dos to re-create
 # DOSBox configuration on every run.
-force = {str(DEFAULT_CONFGEN_FORCE).lower()}
+force = {confgen_force}
 
 [midi]
 # You can disable MIDI support here.
-enable = {str(DEFAULT_MIDI_ENABLE).lower()}
+enable = {midi_enable}
 
 # steam-dos will look for a soundfont in following directories:
 # /usr/share/soundfonts/
@@ -44,8 +44,10 @@ enable = {str(DEFAULT_MIDI_ENABLE).lower()}
 # /usr/local/share/sounds/sf2/
 # ~/.local/share/sounds/sf2/  (or wherever XDG_DATA_HOME points)
 # ~/.local/share/soundfonts/  (or wherever XDG_DATA_HOME points)
-soundfont = {DEFAULT_MIDI_SOUNDFONT}
-""".lstrip()
+soundfont = {midi_soundfont}
+""".format(confgen_force=str(DEFAULT_CONFGEN_FORCE).lower(),
+           midi_enable=str(DEFAULT_MIDI_ENABLE).lower(),
+           midi_soundfont=DEFAULT_MIDI_SOUNDFONT).lstrip()
 
 
 class Settings():
@@ -105,8 +107,8 @@ class Settings():
             return
         _, found_file = os.path.split(use_sf2)
         if found_file != sf2:
-            print_err(f'steam-dos: warning: {sf2} soundfont not found.',
-                      f'Using {found_file} instead.')
+            print_err(('steam-dos: warning: {0} soundfont not found. '
+                       'Using {1} instead.').format(sf2, found_file))
         self.store.set('midi', 'soundfont', use_sf2)
 
 

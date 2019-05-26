@@ -40,7 +40,8 @@ def list_alsa_sequencer_ports():
                 port = match.group(1)
                 desc = match.group(2)
                 flags = match.group(3)
-                yield MidiPort(f'{client}:{port}', name, desc, space, flags)
+                yield MidiPort('{0}:{1}'.format(client, port), name,
+                               desc, space, flags)
 
 
 def detect_software_synthesiser(name_expr):
@@ -57,10 +58,10 @@ def detect_software_synthesiser(name_expr):
 
 def start_timidity(sfont):
     """Start TiMidity++ process."""
-    cmd = ['timidity', '-iA', '-x', f'soundfont {sfont}']
+    cmd = ['timidity', '-iA', '-x', 'soundfont {0}'.format(sfont)]
     proc = subprocess.Popen(cmd, shell=False, stdout=subprocess.DEVNULL)
-    print_err(f'steam-dos: Starting MIDI client (pid: {proc.pid})')
-    print_err(f'steam-dos: Using soundfont: {sfont}')
+    print_err('steam-dos: Starting MIDI client (pid: {0})'.format(proc.pid))
+    print_err('steam-dos: Using soundfont: {0}'.format(sfont))
     time.sleep(0.5)  # TODO properly wait until sequencer is online
     atexit.register(stop_software_midi_synth, proc.pid)
 
@@ -69,13 +70,13 @@ def start_fluidsynth(sfont):
     """Start FluidSynth process."""
     cmd = ['fluidsynth', '-a', 'pulseaudio', sfont]
     proc = subprocess.Popen(cmd, shell=False, stdout=subprocess.DEVNULL)
-    print_err(f'steam-dos: Starting MIDI client (pid: {proc.pid})')
-    print_err(f'steam-dos: Using soundfont: {sfont}')
+    print_err('steam-dos: Starting MIDI client (pid: {0})'.format(proc.pid))
+    print_err('steam-dos: Using soundfont: {}'.format(sfont))
     time.sleep(1.0)  # TODO properly wait until sequencer is online
     atexit.register(stop_software_midi_synth, proc.pid)
 
 
 def stop_software_midi_synth(pid):
     """Stop software synthesiser process."""
-    print_err(f'steam-dos: Stopping MIDI client {pid}')
+    print_err('steam-dos: Stopping MIDI client {0}'.format(pid))
     os.kill(pid, signal.SIGTERM)  # TODO ProcessLookupError:
