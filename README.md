@@ -10,7 +10,7 @@ Official mirrors:
 
 ## Prerequisites
 
-You will need Python (>= 3.6), DOSBox (>= 0.74) and inotify-tools.
+You will need Python (>= 3.5), DOSBox (>= 0.74) and inotify-tools.
 Optionally for MIDI support: TiMidity++ or FluidSynth and a soundfont.
 
 #### Fedora
