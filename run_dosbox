@@ -76,6 +76,7 @@ def configure_midi():
 
 def run_dosbox(args):
     create_pid_file()
+    print_err('run_dosbox: working dir: "{}"'.format(os.getcwd()))
     print_err('run_dosbox:', ['dosbox'] + args)
     sys.stderr.flush()
     subprocess.call(['dosbox'] + args)
