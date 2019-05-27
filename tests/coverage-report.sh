@@ -1,6 +1,14 @@
 #!/bin/env bash
 
+coverage_py () {
+	if command -v coverage >/dev/null ; then
+		coverage "$@"
+		return $?
+	fi
+	python3-coverage "$@"
+}
+
 cd "$(git rev-parse --show-toplevel)" || exit
-python3-coverage erase
-python3-coverage run -m unittest discover -v -s tests
-python3-coverage report --fail-under=80 "$@"
+coverage_py erase
+coverage_py run -m unittest discover -v -s tests
+coverage_py report --fail-under=80 "$@"

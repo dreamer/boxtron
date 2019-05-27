@@ -1,0 +1,19 @@
+language: python
+
+before_install:
+  - sudo apt-get install -y myspell-en-gb enchant
+
+install:
+  - pip install -r requirements.txt
+
+jobs:
+  include:
+    - stage: analyze
+      name: "Run Linters"
+      script: make lint
+    - stage: test
+      name: "Unit Tests"
+      script: make test
+    - stage: test
+      name: "Unit Tests Coverage"
+      script: make coverage
