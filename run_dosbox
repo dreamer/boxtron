@@ -95,6 +95,8 @@ def run_dosbox_with_conf(args):
 
 def run(cmd_line, wait=False):
 
+    print_err('steam-dos: original command:', cmd_line)
+
     if wait:
         wait_for_previous_process()
 
