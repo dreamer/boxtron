@@ -79,6 +79,12 @@ preconfig.tar: $(shell find preconfig -type f | sed 's/\ /\\ /g')
 	    -cf $@ $(shell find preconfig -type f | sed 's/\ /\\ /g' | sort) \
 	    --transform='s|DIR_UP|..|'
 
+stop_overlay.o: stop_overlay.c
+	gcc -Wall -fPIC -DPIC -c $<
+
+stop_overlay.so: stop_overlay.o
+	ld -shared -o $@ $< -ldl
+
 $(tool_dir).zip: $(files)
 	mkdir -p $(tool_dir)
 	cp --reflink=auto -t $(tool_dir) $^
