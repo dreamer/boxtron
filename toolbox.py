@@ -67,3 +67,21 @@ def read_trivial_batch(file):
             return first_line[1:]
     assert False, 'error processing .bat file'
     return []
+
+
+class PidFile:
+    """Helper class to create and remove PID file"""
+
+    def __init__(self, file_name):
+        self.file_name = file_name
+
+    def __enter__(self):
+        with open(self.file_name, 'w') as pid_file:
+            pid_file.write(str(os.getpid()))
+        return self
+
+    def __exit__(self, exc_type, exc_value, exc_tb):
+        try:
+            os.remove(self.file_name)
+        except FileNotFoundError:
+            pass

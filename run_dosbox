@@ -16,7 +16,7 @@ from toolbox import print_err
 from settings import SETTINGS as settings
 from tweaks import TWEAKS_DB, tweak_command
 
-STEAM_APP_ID = os.environ.get('SteamAppId')
+STEAM_APP_ID = os.environ.get('SteamAppId', '0')
 
 PID_FILE = '/tmp/steam_dos_{0}'.format(STEAM_APP_ID)
 
@@ -24,8 +24,6 @@ RUN_EXE = os.environ.get('SDOS_RUN_EXE')
 
 
 def wait_for_previous_process():
-    if not STEAM_APP_ID:
-        return
     pid = 0
     try:
         with open(PID_FILE, 'r') as pid_file:
@@ -36,23 +34,6 @@ def wait_for_previous_process():
         print_err('run_dosbox: waiting for process {0} to '.format(pid),
                   'stop and delete file {0}'.format(PID_FILE))
         subprocess.call(['inotifywait', '-e', 'delete', PID_FILE])
-
-
-# TODO rewrite this as __enter__, __exit__ to be used in 'with' statement
-def create_pid_file():
-    if not STEAM_APP_ID:
-        return
-    with open(PID_FILE, 'w') as pid_file:
-        pid_file.write(str(os.getpid()))
-
-
-def cleanup_pid_file():
-    if not STEAM_APP_ID:
-        return
-    try:
-        os.remove(PID_FILE)
-    except FileNotFoundError:
-        pass
 
 
 def configure_midi():
@@ -75,12 +56,11 @@ def configure_midi():
 
 
 def run_dosbox(args):
-    create_pid_file()
     print_err('run_dosbox: working dir: "{}"'.format(os.getcwd()))
     print_err('run_dosbox:', ['dosbox'] + args)
     sys.stderr.flush()
-    subprocess.call(['dosbox'] + args)
-    cleanup_pid_file()
+    with toolbox.PidFile(PID_FILE):
+        subprocess.call(['dosbox'] + args)
 
 
 def run_dosbox_with_conf(args):
@@ -127,19 +107,19 @@ def run(cmd_line, wait=False):
             sys.exit(1)
         run_dosbox_with_conf(tweaked_cmd)
 
-    elif STEAM_APP_ID and exe.lower() == 'dosbox.exe':
+    elif exe.lower() == 'dosbox.exe':
         # When dosbox with parameters is called, use them to
         # generate new .conf file.  When dosbox without parameters
         # is called, it implies: -conf dosbox.conf
         dosbox_args = cmd_line[1:] or ['-conf', 'dosbox.conf']
         run_dosbox_with_conf(dosbox_args)
 
-    elif STEAM_APP_ID and toolbox.is_trivial_batch(exe):
+    elif toolbox.is_trivial_batch(exe):
         # Publisher uploaded a .bat file to run dosbox
         dosbox_args = toolbox.read_trivial_batch(exe)
         run_dosbox_with_conf(dosbox_args)
 
-    elif STEAM_APP_ID and os.path.isfile('dosbox.conf'):
+    elif os.path.isfile('dosbox.conf'):
         # Executable is unrecognised, but at least there's a dosbox.conf
         # let's pretend it was passed to dosbox.exe:
         run_dosbox_with_conf(['-conf', 'dosbox.conf'])

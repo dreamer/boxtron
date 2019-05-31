@@ -76,5 +76,15 @@ class TestEnabledInEnv(unittest.TestCase):
         self.assertFalse(toolbox.enabled_in_env('THIS_VAR_DOES_NOT_EXIST'))
 
 
+class TestPidfile(unittest.TestCase):
+
+    def test_file_created(self):
+        pidf_path = 'tests/files/pid_file'
+        self.assertFalse(os.path.isfile(pidf_path))
+        with toolbox.PidFile(pidf_path):
+            self.assertTrue(os.path.isfile(pidf_path))
+        self.assertFalse(os.path.isfile(pidf_path))
+
+
 if __name__ == '__main__':  # pragma: no cover
     unittest.main()
