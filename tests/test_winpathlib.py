@@ -5,10 +5,21 @@
 
 import unittest
 
+from winpathlib import to_posix_parts
 from winpathlib import to_posix_path
 
 
 class TestPathConversion(unittest.TestCase):
+
+    def test_empty(self):
+        self.assertEqual(to_posix_path(''), '')
+
+    def test_path_none(self):
+        with self.assertRaises(TypeError):
+            to_posix_path(None)
+
+    def test_parts_none(self):
+        self.assertEqual(to_posix_parts(None), None)
 
     def test_dot(self):
         self.assertEqual(to_posix_path('.'), '.')
@@ -36,6 +47,10 @@ class TestPathConversion(unittest.TestCase):
 
     def test_missing_path(self):
         win_path = 'tests\\files\\case\\dosbox.confz'
+        self.assertEqual(to_posix_path(win_path), None)
+
+    def test_missing_path_2(self):
+        win_path = 'tests_XXX\\files\\case\\dosbox.confz'
         self.assertEqual(to_posix_path(win_path), None)
 
     @unittest.skip("implementation is too slow")
