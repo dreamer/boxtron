@@ -70,6 +70,24 @@ class TestPathConversion(unittest.TestCase):
         self.assertFalse(os.path.exists('tests/files/case/a/B/C'))
         self.assertEqual(to_posix_path(win_path), lin_path)
 
+    def test_ambiguous_path_lenient(self):
+        win_path = 'tests\\files\\CASE\\a\\B\\file'
+        lin_path_1 = 'tests/files/case/A/b/file'
+        lin_path_2 = 'tests/files/case/a/B/file'
+        self.assertTrue(os.path.exists(lin_path_1))
+        self.assertTrue(os.path.exists(lin_path_2))
+        self.assertIn(to_posix_path(win_path, strict=False),
+                      (lin_path_1, lin_path_2))
+
+    def test_ambiguous_path_strict(self):
+        win_path = 'tests\\files\\CASE\\a\\B\\file'
+        lin_path_1 = 'tests/files/case/A/b/file'
+        lin_path_2 = 'tests/files/case/a/B/file'
+        self.assertTrue(os.path.exists(lin_path_1))
+        self.assertTrue(os.path.exists(lin_path_2))
+        with self.assertRaises(FileNotFoundError):
+            to_posix_path(win_path, strict=True)
+
 
 if __name__ == '__main__':  # pragma: no cover
     unittest.main()

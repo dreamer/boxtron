@@ -8,19 +8,28 @@ import os
 import pathlib
 
 
-def to_posix_path(windows_path_str):
-    """Convert a string representing case-insensitive path to a string
-    representing path to an existing file.
+def to_posix_path(windows_path_str, *, strict=True):
+    """Convert a string representing case-insensitive path to a posix path
+    to an existing file or directory.
+
+    Return None when there's no file nor directory, that could be
+    referenced as this windows path.
+
+    If windows path is ambiguous and can be mapped to more than one
+    file, then raise FileNotFoundError.  When strict is set to False, then
+    first file will be returned instead.
     """
     if windows_path_str == '.':
         return '.'
-
     win_path = pathlib.PureWindowsPath(windows_path_str)
-
-    xs = list(__posix_paths_matching__(win_path.parts))
-    if xs:
-        return xs[0]
-    return None
+    paths = __posix_paths_matching__(win_path.parts)
+    path_1 = next(paths, None)
+    path_2 = next(paths, None)
+    if strict and path_2 is not None:
+        err = "Windows path '{}' is ambiguous. " \
+              "It can be '{}' or '{}'.".format(win_path, path_1, path_2)
+        raise FileNotFoundError(err)
+    return path_1
 
 
 def __posix_paths_matching__(parts):
