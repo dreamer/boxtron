@@ -31,8 +31,8 @@ def wait_for_previous_process():
     except FileNotFoundError:
         pass
     if pid and os.path.isfile('/proc/{0}/cmdline'.format(pid)):
-        print_err('run_dosbox: waiting for process {0} to '.format(pid),
-                  'stop and delete file {0}'.format(PID_FILE))
+        print_err('run_dosbox: waiting for process', pid, 'to stop',
+                  'and delete file', PID_FILE)
         subprocess.call(['inotifywait', '-e', 'delete', PID_FILE])
 
 
@@ -66,8 +66,7 @@ def run_dosbox(args):
 def run_dosbox_with_conf(args):
     name = confgen.uniq_conf_name(STEAM_APP_ID, args)
     if settings.get_confgen_force() or not os.path.isfile(name):
-        print_err('run_dosbox: generating {0} based on {1}'.format(
-            name, args))
+        print_err('run_dosbox: generating', name, 'based on', args)
         confgen.create_conf_file(name, args)
     configure_midi()
     run_dosbox(['-conf', name, '-conf', confgen.create_audio_conf()])
@@ -100,8 +99,7 @@ def run(cmd_line, wait=False):
     elif STEAM_APP_ID in TWEAKS_DB:
         # If AppId is included in known tweaks, then modify command line
         # before handing it over to .conf generator:
-        print_err('run_dosbox: tweaking command for app ',
-                  '{0}'.format(STEAM_APP_ID))
+        print_err('run_dosbox: tweaking command for app', STEAM_APP_ID)
         tweaked_cmd = tweak_command(STEAM_APP_ID, cmd_line)
         if not tweaked_cmd:
             sys.exit(1)
