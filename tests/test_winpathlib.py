@@ -6,7 +6,6 @@
 import os
 import unittest
 
-from winpathlib import to_posix_parts
 from winpathlib import to_posix_path
 
 
@@ -18,9 +17,6 @@ class TestPathConversion(unittest.TestCase):
     def test_path_none(self):
         with self.assertRaises(TypeError):
             to_posix_path(None)
-
-    def test_parts_none(self):
-        self.assertEqual(to_posix_parts(None), None)
 
     def test_dot(self):
         self.assertEqual(to_posix_path('.'), '.')
@@ -46,6 +42,11 @@ class TestPathConversion(unittest.TestCase):
         lin_path = 'tests/files/case/DoSbOx.CoNf'
         self.assertEqual(to_posix_path(win_path), lin_path)
 
+    def test_longer_paths_3(self):
+        win_path = 'tests\\files\\..\\files\\.\\.\\case\\dosbox.conf'
+        lin_path = 'tests/files/../files/case/DoSbOx.CoNf'
+        self.assertEqual(to_posix_path(win_path), lin_path)
+
     def test_missing_path(self):
         win_path = 'tests\\files\\case\\dosbox.confz'
         self.assertEqual(to_posix_path(win_path), None)
@@ -54,7 +55,6 @@ class TestPathConversion(unittest.TestCase):
         win_path = 'tests_XXX\\files\\case\\dosbox.confz'
         self.assertEqual(to_posix_path(win_path), None)
 
-    @unittest.skip("implementation is too slow")
     def test_really_long_path(self):
         path = 'tests/files/somewhat_long_path/'
         file = 'With Much Much Longer Path Inside ' + \
