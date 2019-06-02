@@ -15,6 +15,7 @@ files = run_dosbox \
 	toolbox.py \
 	tweaks.py \
 	version.py \
+	winpathlib.py \
 	compatibilitytool.vdf \
 	toolmanifest.vdf \
 	LICENSE
