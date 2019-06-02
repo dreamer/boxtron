@@ -3,6 +3,7 @@
 # pylint: disable=missing-docstring
 # pylint: disable=wrong-spelling-in-comment
 
+import os
 import unittest
 
 from winpathlib import to_posix_parts
@@ -60,6 +61,14 @@ class TestPathConversion(unittest.TestCase):
                'AbcDefGhiJklMnoPqrStuVwxYz_0123456789.tXt'
         win_path = (path + file).replace('\\', '/').upper()
         self.assertEqual(to_posix_path(win_path), path + file)
+
+    def test_tricky_path(self):
+        win_path = 'tests\\files\\CASE\\a\\B\\c'
+        lin_path = 'tests/files/case/A/b/C'
+        self.assertTrue(os.path.exists(lin_path))
+        self.assertTrue(os.path.exists('tests/files/case/a/B'))
+        self.assertFalse(os.path.exists('tests/files/case/a/B/C'))
+        self.assertEqual(to_posix_path(win_path), lin_path)
 
 
 if __name__ == '__main__':  # pragma: no cover
