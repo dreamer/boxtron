@@ -10,11 +10,11 @@ import sys
 import confgen
 import midi
 import version
+import tweaks
 import toolbox
 
 from toolbox import print_err
 from settings import SETTINGS as settings
-from tweaks import TWEAKS_DB, tweak_command
 
 STEAM_APP_ID = os.environ.get('SteamAppId', '0')
 
@@ -79,7 +79,11 @@ def run(cmd_line, wait=False):
     if wait:
         wait_for_previous_process()
 
-    _folder, exe = os.path.split(cmd_line[0]) if cmd_line else (None, '')
+    dir_name, exe = os.path.split(cmd_line[0]) if cmd_line else (None, '')
+
+    if tweaks.workdir_tweak_needed(STEAM_APP_ID):
+        print_err('run_dosbox: changing working dir to', dir_name)
+        os.chdir(dir_name)
 
     if exe == 'iscriptevaluator.exe':
         print_err('run_dosbox: skipping Steam script:', cmd_line)
@@ -96,11 +100,11 @@ def run(cmd_line, wait=False):
             run_dosbox(['-conf', confgen.create_audio_conf(),
                         '-c', '@echo File not found: {0}'.format(exe_path)])
 
-    elif STEAM_APP_ID in TWEAKS_DB:
+    elif tweaks.command_tweak_needed(STEAM_APP_ID):
         # If AppId is included in known tweaks, then modify command line
         # before handing it over to .conf generator:
         print_err('run_dosbox: tweaking command for app', STEAM_APP_ID)
-        tweaked_cmd = tweak_command(STEAM_APP_ID, cmd_line)
+        tweaked_cmd = tweaks.tweak_command(STEAM_APP_ID, cmd_line)
         if not tweaked_cmd:
             sys.exit(1)
         run_dosbox_with_conf(tweaked_cmd)
