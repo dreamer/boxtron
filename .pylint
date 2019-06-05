@@ -381,9 +381,11 @@ spelling-dict=en_GB
 # List of comma separated words that should not be checked.
 spelling-ignore-words=alsa,
                       autoexec,
-                      conf,
+                      chdir,
                       com,
+                      conf,
                       ctypes,
+                      dir,
                       dosbox,
                       exe,
                       gog,

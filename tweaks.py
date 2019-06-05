@@ -5,8 +5,14 @@ Game-specific tweaks and workarounds
 
 """
 
+import os
+import pathlib
 import re
+
+import confgen
+
 from toolbox import print_err
+from winpathlib import to_posix_path
 
 TWEAKS_DB = {
     # Duke Nukem 2
@@ -51,3 +57,52 @@ def tweak_command(app_id, cmd_line):
             raise KeyError
     print_err('run_dosbox: error: no suitable tweak found for:', cmd_line)
     return []
+
+
+# Normally, Steam is changing working dir to the sub-directory of game
+# installation dir (which is specified by the game publisher) and then runs
+# command as an absolute path.
+#
+# If Steam fails to chdir into the correct directory before running the game
+# (which might happen - either as a result of Steam bug or publisher submitting
+# broken path), then steam-dos and DOSBox are going to fail because .conf files
+# will not be in their expected location.
+#
+def check_cwd(command_line):
+    """Test if current working directory is appropriate to launch the game.
+
+    Returns (False, path) if all .conf files referenced in dosbox command line
+    can be found (path is the same as current working dir in such case).
+
+    Returns (True, path) if all .conf files can be found in path, and path
+    is not a working dir (changing dir is required).
+
+    Returns (False, None) if .conf files couldn't be found at all.
+    """
+    prog, args = command_line[0], command_line[1:]
+    prog_path = pathlib.PurePosixPath(prog)
+    if not prog_path.is_absolute():
+        return False, None
+
+    dbox_args = confgen.parse_dosbox_arguments(args)
+    conf_paths = (dbox_args.conf or [])
+
+    def paths_found():
+        return all(to_posix_path(p, strict=False) for p in conf_paths)
+
+    if paths_found():
+        return False, os.getcwd()
+
+    orig_cwd = os.getcwd()
+
+    while True:
+        prog_path, _ = os.path.split(prog_path)
+        os.chdir(prog_path)
+        if paths_found():
+            os.chdir(orig_cwd)
+            return True, prog_path
+        if prog_path in (os.path.expanduser('~'), '/'):
+            break
+
+    os.chdir(orig_cwd)
+    return False, None  # TODO show nice error to the user
