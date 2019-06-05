@@ -15,10 +15,6 @@ from toolbox import print_err
 from winpathlib import to_posix_path
 
 TWEAKS_DB = {
-    # Duke Nukem 2
-    '240180': {
-        'chdir': True,
-    },
     # MegaRace 2
     '733760': {
         'commands': {
@@ -33,11 +29,6 @@ TWEAKS_DB = {
         },
     },
 }
-
-
-def workdir_tweak_needed(app_id):
-    """Return true if game's working directory needs to be changed."""
-    return app_id in TWEAKS_DB and 'chdir' in TWEAKS_DB[app_id]
 
 
 def command_tweak_needed(app_id):

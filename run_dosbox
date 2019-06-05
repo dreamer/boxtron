@@ -56,7 +56,6 @@ def configure_midi():
 
 
 def run_dosbox(args):
-    print_err('run_dosbox: working dir: "{}"'.format(os.getcwd()))
     print_err('run_dosbox:', ['dosbox'] + args)
     sys.stderr.flush()
     with toolbox.PidFile(PID_FILE):
@@ -73,22 +72,35 @@ def run_dosbox_with_conf(args):
 
 
 def run(cmd_line, wait=False):
-
+    print_err('steam-dos: working dir: "{}"'.format(os.getcwd()))
     print_err('steam-dos: original command:', cmd_line)
 
     if wait:
         wait_for_previous_process()
 
-    dir_name, exe = os.path.split(cmd_line[0]) if cmd_line else (None, '')
-
-    if tweaks.workdir_tweak_needed(STEAM_APP_ID):
-        print_err('run_dosbox: changing working dir to', dir_name)
-        os.chdir(dir_name)
+    _, exe = os.path.split(cmd_line[0]) if cmd_line else (None, '')
 
     if exe == 'iscriptevaluator.exe':
         print_err('run_dosbox: skipping Steam script:', cmd_line)
+        return
 
-    elif RUN_EXE:
+    chdir_tweak_needed, path = tweaks.check_cwd(cmd_line)
+    if chdir_tweak_needed:
+        if path:
+            print_err('run_dosbox: warning: game not found in', os.getcwd())
+            print_err('run_dosbox: warning: changing working dir to', path)
+            os.chdir(path)
+        else:
+            print_err("run_dosbox: error: can't figure out what to do with",
+                      "this command:")
+            sys.exit(2)
+
+    run_file(exe, cmd_line)
+
+
+def run_file(exe, cmd_line):
+
+    if RUN_EXE:
         # User wants to run different executable than the one
         # selected by Steam (e.g. sound setup).
         exe = RUN_EXE
