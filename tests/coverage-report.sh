@@ -1,5 +1,7 @@
 #!/bin/env bash
 
+readonly test_config="$(pwd)/tests/files/xdg_config_home"
+
 coverage_py () {
 	if command -v coverage >/dev/null ; then
 		coverage "$@"
@@ -10,5 +12,5 @@ coverage_py () {
 
 cd "$(git rev-parse --show-toplevel)" || exit
 coverage_py erase
-coverage_py run -m unittest discover -v -s tests
+XDG_CONFIG_HOME="$test_config" coverage_py run -m unittest discover -v -s tests
 coverage_py report --fail-under=80 "$@"

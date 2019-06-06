@@ -27,10 +27,12 @@ DEFAULT_MIDI_ENABLE = True
 
 DEFAULT_MIDI_SOUNDFONT = 'FluidR3_GM.sf2'
 
+DEFAULT_DOSBOX_BINARY = 'dosbox'
+
 DEFAULT_SETTINGS = """
 [confgen]
-# Set this value to 'true' if you want steam-dos to re-create
-# DOSBox configuration on every run.
+# Set this value to 'true' if you want steam-dos to re-create DOSBox
+# configuration on every run.
 force = {confgen_force}
 
 [midi]
@@ -45,6 +47,10 @@ enable = {midi_enable}
 # ~/.local/share/sounds/sf2/  (or wherever XDG_DATA_HOME points)
 # ~/.local/share/soundfonts/  (or wherever XDG_DATA_HOME points)
 soundfont = {midi_soundfont}
+
+[dosbox]
+# Uncomment following line to specify a different DOSBox build:
+# bin = ~/projects/dosbox/src/dosbox
 """.format(confgen_force=str(DEFAULT_CONFGEN_FORCE).lower(),
            midi_enable=str(DEFAULT_MIDI_ENABLE).lower(),
            midi_soundfont=DEFAULT_MIDI_SOUNDFONT).lstrip()
@@ -54,6 +60,9 @@ class Settings():
 
     def __init__(self):
         self.store = configparser.ConfigParser()
+        self.store.add_section('confgen')
+        self.store.add_section('midi')
+        self.store.add_section('dosbox')
         self.store.read(SETTINGS_FILE)
         midi_on = self.get_midi_on()
         if midi_on:
@@ -75,6 +84,10 @@ class Settings():
 
     def get_midi_soundfont(self):
         return self.__get_str__('midi', 'soundfont', DEFAULT_MIDI_SOUNDFONT)
+
+    def get_dosbox_bin(self):
+        dosbox = self.__get_str__('dosbox', 'bin', DEFAULT_DOSBOX_BINARY)
+        return os.path.expanduser(dosbox)
 
     def __assure_sf2_exists__(self):
         sf2 = self.get_midi_soundfont()

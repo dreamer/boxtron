@@ -29,6 +29,7 @@ lint: version.py
 	pycodestyle run_dosbox install-gog-game *.py tests/*.py
 
 test:
+	XDG_CONFIG_HOME=$(shell pwd)/tests/files/xdg_config_home \
 	python3 -m unittest discover -v -s tests
 
 coverage:

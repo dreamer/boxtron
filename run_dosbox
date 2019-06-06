@@ -56,11 +56,15 @@ def configure_midi():
 
 
 def run_dosbox(args):
+    cmd = [settings.get_dosbox_bin()]
     print_err('run_dosbox: working dir: "{}"'.format(os.getcwd()))
-    print_err('run_dosbox:', ['dosbox'] + args)
+    print_err('run_dosbox:', cmd + args)
     sys.stderr.flush()
     with toolbox.PidFile(PID_FILE):
-        subprocess.call(['dosbox'] + args)
+        try:
+            subprocess.call(cmd + args)
+        except FileNotFoundError as err:
+            print_err('run_dosbox: error:', err)
 
 
 def run_dosbox_with_conf(args):
