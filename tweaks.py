@@ -86,13 +86,14 @@ def check_cwd(command_line):
 
     orig_cwd = os.getcwd()
 
+    prefix = str(prog_path)
     while True:
-        prog_path, _ = os.path.split(prog_path)
-        os.chdir(prog_path)
+        prefix, _ = os.path.split(prefix)
+        os.chdir(prefix)
         if paths_found():
             os.chdir(orig_cwd)
-            return True, prog_path
-        if prog_path in (os.path.expanduser('~'), '/'):
+            return True, prefix
+        if prefix in (os.path.expanduser('~'), '/'):
             break
 
     os.chdir(orig_cwd)
