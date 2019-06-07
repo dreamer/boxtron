@@ -1,11 +1,6 @@
 .PHONY: lint test coverage install uninstall clean version.py shortlog
 
-# major.minor part of version of this release
-# TODO inject it into .vdf files, so manual tweak won't be
-# needed. Also, make sure it's compatible with the latest tag.
-version_major_minor = 0.2
-
-tool_dir = steam-dos-$(version_major_minor)
+tool_dir = steam-dos
 
 files = run_dosbox \
 	install-gog-game \
@@ -18,7 +13,8 @@ files = run_dosbox \
 	winpathlib.py \
 	compatibilitytool.vdf \
 	toolmanifest.vdf \
-	LICENSE
+	LICENSE \
+	README.md
 
 steam_dir = ${HOME}/.local/share/Steam
 install_dir = $(steam_dir)/compatibilitytools.d/$(tool_dir)

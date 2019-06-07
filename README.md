@@ -45,7 +45,7 @@ Optionally for MIDI support: TiMidity++ or FluidSynth and a soundfont.
 
 ## Features
 
-Steam-dos will start DOSBox in native desktop resolution and with OpenGL backend.
+steam-dos will start DOSBox in native desktop resolution and with OpenGL backend.
 These options are needed for Steam Overlay support and to prevent changing resolution
 on modern displays.  It also seems to be performing much better than DOSBox defaults.
 
@@ -79,4 +79,4 @@ Music/device: "General MIDI", Music Port: **330**
 
 ## Development
 
-Read all about it in [contributing guide](CONTRIBUTING.md) :)
+Read all about it in the [contributing guide](https://github.com/dreamer/steam-dos/blob/master/CONTRIBUTING.md) :)
