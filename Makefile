@@ -2,7 +2,7 @@
 
 tool_dir = steam-dos
 
-files = run_dosbox \
+files = run-dosbox \
 	install-gog-game \
 	confgen.py \
 	midi.py \
@@ -21,8 +21,8 @@ install_dir = $(steam_dir)/compatibilitytools.d/$(tool_dir)
 
 lint: version.py
 	shellcheck codestyle.sh tests/coverage-report.sh
-	pylint --rcfile=.pylint run_dosbox install-gog-game *.py tests/*.py
-	bash codestyle.sh run_dosbox install-gog-game *.py tests/*.py
+	pylint --rcfile=.pylint run-dosbox install-gog-game *.py tests/*.py
+	bash codestyle.sh run-dosbox install-gog-game *.py tests/*.py
 
 test:
 	XDG_CONFIG_HOME=$(shell pwd)/tests/files/xdg_config_home \
