@@ -8,12 +8,15 @@ install:
 
 jobs:
   include:
-    - stage: analyze
-      name: "Run Linters"
+    - name: "Run Linters"
+      stage: analyze
       script: make lint
-    - stage: test
-      name: "Unit Tests"
+    - name: "Unit Tests"
+      stage: test
       script: make test
-    - stage: test
-      name: "Unit Tests Coverage"
+    - name: "Unit Tests Coverage"
+      stage: test
       script: make coverage
+    - name: "Check Formatting"
+      stage: format
+      script: make check-formatting

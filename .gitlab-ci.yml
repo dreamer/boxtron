@@ -16,6 +16,7 @@ before_script:
 stages:
   - analyse
   - test
+  - format
 
 Run Linters:
   stage: analyse
@@ -28,3 +29,7 @@ Unit Tests:
 Unit Tests Coverage:
   stage: test
   script: make coverage
+
+Check Formatting:
+  stage: format
+  script: make check-formatting
