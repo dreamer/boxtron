@@ -56,7 +56,7 @@ def run_setup_file(setup_exe, pfx):
     cmd = ['wine', setup_exe] + inno_flags
     process = subprocess.run(cmd, env=tmp_env, stderr=subprocess.DEVNULL)
     if process.returncode != 0:
-        print(f'{setup_exe} finished with code {process.returncode}')
+        print('{} finished with code {}'.format(setup_exe, process.returncode))
         sys.exit(10 + process.returncode)
 
 
@@ -113,22 +113,22 @@ def create_launcher_files(path, gog_info):
     task = gog_info['playTasks'][0]
     args = task.get('arguments') or ''
     wdir = task.get('workingDir') or ''
-    launcher_bat = os.path.join(path, wdir, f'{slug}.bat')
+    launcher_bat = os.path.join(path, wdir, '{}.bat'.format(slug))
     gog_path = task.get('path')
     exe = remove_prefix(wdir+'\\', gog_path) if wdir else gog_path
 
     with open(launcher_bat, 'w') as batch:
-        batch.write(f'{exe} {args}\n')
+        batch.write('{} {}\n'.format(exe, args))
 
     os.chmod(launcher_bat, 0o775)
 
-    with open(f'{path}/{slug}.desktop', 'w') as entry:
+    with open('{path}/{slug}.desktop'.format(**locals()), 'w') as entry:
         entry.write('[Desktop Entry]\n')
-        entry.write(f'Name={name}\n')
-        entry.write(f'Type=Application\n')
-        entry.write(f'Exec={launcher_bat}\n')
-        entry.write(f'Encoding=UTF-8\n')
-        entry.write(f'StartupNotify=true\n')
+        entry.write('Name={name}\n'.format(**locals()))
+        entry.write('Type=Application\n')
+        entry.write('Exec={launcher_bat}\n'.format(**locals()))
+        entry.write('Encoding=UTF-8\n')
+        entry.write('StartupNotify=true\n')
 
 
 def main():
@@ -139,15 +139,16 @@ def main():
     setup_exe = args.setup_file
 
     if not os.path.isfile(setup_exe):
-        print(f'File {setup_exe} does not exist', file=sys.stderr)
+        print('File {} does not exist'.format(setup_exe), file=sys.stderr)
         sys.exit(1)
 
     if not setup_exe.lower().endswith('.exe'):
-        print(f'Only .exe installers supported', file=sys.stderr)
+        print('Only .exe installers supported', file=sys.stderr)
         sys.exit(1)
 
     with tempfile.TemporaryDirectory() as tmp_dir:
-        print(f'Unpacking game files to temporary directory: {tmp_dir}')
+        print('Unpacking game files to temporary directory:', tmp_dir,
+              file=sys.stderr)
         run_setup_file(setup_exe, tmp_dir)
         game_dir = os.path.join(tmp_dir, 'drive_c/game')
         gog_info = find_gog_info(game_dir)
@@ -156,14 +157,14 @@ def main():
         install_path = os.path.join(DATA_HOME, 'games', game_slug)
 
         if not available_dir(install_path):
-            print(f'Path {install_path} is occupied already')
+            print('Path {} is occupied already'.format(install_path))
             sys.exit(4)
 
         # ensure all directories leading to install_path exist
         os.makedirs(install_path, exist_ok=True)
         os.rmdir(install_path)
 
-        print(f'Movig game files to {install_path}')
+        print('Movig game files to {}'.format(install_path))
         shutil.move(game_dir, install_path)
         os.chmod(install_path, 0o775)
 
@@ -172,7 +173,7 @@ def main():
         print('\nInstallation finished.\n')
         print('Select the following file when adding non-Steam game',
               'to your library:')
-        print(f'{install_path}/{game_slug}.desktop')
+        print('{}/{}.desktop'.format(install_path, game_slug))
 
 
 if __name__ == "__main__":
