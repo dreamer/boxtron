@@ -45,7 +45,7 @@ Optionally for MIDI support: TiMidity++ or FluidSynth and a soundfont.
 
 ## Features
 
-Steam-dos will start DOSBox in native desktop resolution and with OpenGL backend.
+steam-dos will start DOSBox in native desktop resolution and with OpenGL backend.
 These options are needed for Steam Overlay support and to prevent changing resolution
 on modern displays.  It also seems to be performing much better than DOSBox defaults.
 
@@ -79,19 +79,4 @@ Music/device: "General MIDI", Music Port: **330**
 
 ## Development
 
-Makefile default target (`lint`) runs linters on project files, use it.
-Run `make install` to easily put files in Steam's `compatibilitytools.d`
-directory.
-
-Steam will detect new tool being installed after you restart the client.
-As long as you don't touch .vdf files, there's no need to keep restarting
-it, though.
-
-To run unit tests:
-
-    make test
-
-For coverage report, install [Coverage.py](https://coverage.readthedocs.io/)
-(Fedora package `python3-coverage`).
-
-    make coverage
+Read all about it in the [contributing guide](https://github.com/dreamer/steam-dos/blob/master/CONTRIBUTING.md) :)
