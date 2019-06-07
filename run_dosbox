@@ -10,11 +10,11 @@ import sys
 import confgen
 import midi
 import version
+import tweaks
 import toolbox
 
 from toolbox import print_err
 from settings import SETTINGS as settings
-from tweaks import TWEAKS_DB, tweak_command
 
 STEAM_APP_ID = os.environ.get('SteamAppId', '0')
 
@@ -77,18 +77,35 @@ def run_dosbox_with_conf(args):
 
 
 def run(cmd_line, wait=False):
-
+    print_err('steam-dos: working dir: "{}"'.format(os.getcwd()))
     print_err('steam-dos: original command:', cmd_line)
 
     if wait:
         wait_for_previous_process()
 
-    _folder, exe = os.path.split(cmd_line[0]) if cmd_line else (None, '')
+    _, exe = os.path.split(cmd_line[0]) if cmd_line else (None, '')
 
     if exe == 'iscriptevaluator.exe':
         print_err('run_dosbox: skipping Steam script:', cmd_line)
+        return
 
-    elif RUN_EXE:
+    chdir_tweak_needed, path = tweaks.check_cwd(cmd_line)
+    if chdir_tweak_needed:
+        if path:
+            print_err('run_dosbox: warning: game not found in', os.getcwd())
+            print_err('run_dosbox: warning: changing working dir to', path)
+            os.chdir(path)
+        else:
+            print_err("run_dosbox: error: can't figure out what to do with",
+                      "this command:")
+            sys.exit(2)
+
+    run_file(exe, cmd_line)
+
+
+def run_file(exe, cmd_line):
+
+    if RUN_EXE:
         # User wants to run different executable than the one
         # selected by Steam (e.g. sound setup).
         exe = RUN_EXE
@@ -100,11 +117,11 @@ def run(cmd_line, wait=False):
             run_dosbox(['-conf', confgen.create_audio_conf(),
                         '-c', '@echo File not found: {0}'.format(exe_path)])
 
-    elif STEAM_APP_ID in TWEAKS_DB:
+    elif tweaks.command_tweak_needed(STEAM_APP_ID):
         # If AppId is included in known tweaks, then modify command line
         # before handing it over to .conf generator:
         print_err('run_dosbox: tweaking command for app', STEAM_APP_ID)
-        tweaked_cmd = tweak_command(STEAM_APP_ID, cmd_line)
+        tweaked_cmd = tweaks.tweak_command(STEAM_APP_ID, cmd_line)
         if not tweaked_cmd:
             sys.exit(1)
         run_dosbox_with_conf(tweaked_cmd)
