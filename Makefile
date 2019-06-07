@@ -24,9 +24,9 @@ steam_dir = ${HOME}/.local/share/Steam
 install_dir = $(steam_dir)/compatibilitytools.d/$(tool_dir)
 
 lint: version.py
-	shellcheck $(shell find . -name *.sh)
+	shellcheck codestyle.sh tests/coverage-report.sh
 	pylint --rcfile=.pylint run_dosbox install-gog-game *.py tests/*.py
-	pycodestyle run_dosbox install-gog-game *.py tests/*.py
+	bash codestyle.sh run_dosbox install-gog-game *.py tests/*.py
 
 test:
 	XDG_CONFIG_HOME=$(shell pwd)/tests/files/xdg_config_home \
