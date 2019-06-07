@@ -79,19 +79,4 @@ Music/device: "General MIDI", Music Port: **330**
 
 ## Development
 
-Makefile default target (`lint`) runs linters on project files, use it.
-Run `make install` to easily put files in Steam's `compatibilitytools.d`
-directory.
-
-Steam will detect new tool being installed after you restart the client.
-As long as you don't touch .vdf files, there's no need to keep restarting
-it, though.
-
-To run unit tests:
-
-    make test
-
-For coverage report, install [Coverage.py](https://coverage.readthedocs.io/)
-(Fedora package `python3-coverage`).
-
-    make coverage
+Read all about it in [contributing guide](CONTRIBUTING.md) :)

@@ -4,3 +4,5 @@ version.py
 *.swp
 *.pyc
 .coverage
+Pipfile
+Pipfile.lock
