@@ -28,7 +28,7 @@ TWEAKS_DB = {
             },
         },
     },
-}
+}  # yapf: disable
 
 
 def command_tweak_needed(app_id):

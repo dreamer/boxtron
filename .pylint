@@ -403,7 +403,8 @@ spelling-ignore-words=alsa,
                       stderr,
                       sublicense,
                       toolmanifest,
-                      tuple
+                      tuple,
+                      yapf
 
 # A path to a file that contains private dictionary; one word per line.
 spelling-private-dict-file=

@@ -8,8 +8,8 @@ Some additional packages cannot be installed through `pip` alone, though
 
 ### Fedora
 
-    $ sudo dnf install python3-pylint python3-pycodestyle python3-coverage \
-                       python3-enchant ShellCheck make
+    $ sudo dnf install python3-coverage python3-enchant python3-pycodestyle \
+                       python3-pylint python3-yapf make ShellCheck
 
 ### pipenv
 

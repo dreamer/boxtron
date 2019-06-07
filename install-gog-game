@@ -19,7 +19,6 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-
 """
 Install DOS games from gog.com into the Steam library.
 
@@ -40,13 +39,15 @@ import shutil
 DATA_HOME = os.environ.get('XDG_DATA_HOME') or \
             os.path.expanduser('~/.local/share')
 
-
 # TODO Check for Wine 3.16 or newer; older Wine will leave desktop entries.
+
 
 def run_setup_file(setup_exe, pfx):
     tmp_env = os.environ
-    tmp_env.update({'WINEDLLOVERRIDES': 'winemenubuilder.exe=d',
-                    'WINEPREFIX': pfx})
+    tmp_env.update({
+        'WINEDLLOVERRIDES': 'winemenubuilder.exe=d',
+        'WINEPREFIX': pfx
+    })
     inno_flags = ['/NOGUI', '/SUPPRESSMSGBOXES', '/SILENT', '/DIR=C:\\game']
     cmd = ['wine', setup_exe] + inno_flags
     process = subprocess.run(cmd, env=tmp_env, stderr=subprocess.DEVNULL)
@@ -110,7 +111,7 @@ def create_launcher_files(path, gog_info):
     wdir = task.get('workingDir') or ''
     launcher_bat = os.path.join(path, wdir, '{}.bat'.format(slug))
     gog_path = task.get('path')
-    exe = remove_prefix(wdir+'\\', gog_path) if wdir else gog_path
+    exe = remove_prefix(wdir + '\\', gog_path) if wdir else gog_path
 
     with open(launcher_bat, 'w') as batch:
         batch.write('{} {}\n'.format(exe, args))
@@ -142,7 +143,7 @@ def main():
         sys.exit(1)
 
     with tempfile.TemporaryDirectory() as tmp_dir:
-        print('Unpacking game files to temporary directory:', tmp_dir,
+        print('Unpacking game files to temporary directory: ' + tmp_dir,
               file=sys.stderr)
         run_setup_file(setup_exe, tmp_dir)
         game_dir = os.path.join(tmp_dir, 'drive_c/game')

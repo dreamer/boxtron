@@ -131,8 +131,8 @@ def run_file(exe, cmd_line):
             run_dosbox(['-conf', confgen.create_audio_conf(), exe, '-exit'])
         else:
             exe_path = os.path.join(os.getcwd(), exe)
-            run_dosbox(['-conf', confgen.create_audio_conf(),
-                        '-c', '@echo File not found: {0}'.format(exe_path)])
+            echo_msg = '@echo File not found: ' + exe_path
+            run_dosbox(['-conf', confgen.create_audio_conf(), '-c', echo_msg])
 
     elif tweaks.command_tweak_needed(STEAM_APP_ID):
         # If AppId is included in known tweaks, then modify command line

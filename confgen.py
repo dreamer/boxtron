@@ -69,7 +69,6 @@ MIDI_INFO_NA = """
 
 
 class DosboxConfiguration(dict):
-
     """Class representing DOSBox configuration.
 
     Autoexec section represents commands from default .conf files,
@@ -81,8 +80,13 @@ class DosboxConfiguration(dict):
     values seen in previous configuration files.
     """
 
-    def __init__(self, *, commands=[], conf_files=[], exe=None,
-                 noautoexec=False, exit_after_exe=False):
+    def __init__(self,
+                 *,
+                 commands=[],
+                 conf_files=[],
+                 exe=None,
+                 noautoexec=False,
+                 exit_after_exe=False):
         assert commands or conf_files or exe
         dict.__init__(self)
         self['autoexec'] = []
@@ -267,8 +271,8 @@ def create_audio_conf():
         base, irq, dma, hdma = 220, 7, 1, 5  # DOSBox defaults
         print_err('steam-dos: Setting up DOSBox audio:')
         print_err(SBLASTER_INFO.format(base=base, irq=irq, dma=dma))
-        audio.write(SBLASTER_SECTION.format(base=base, irq=irq,
-                                            dma=dma, hdma=hdma))
+        audio.write(SBLASTER_SECTION.format(base=base, irq=irq, dma=dma,
+                                            hdma=hdma))  # yapf: disable
         if mport:
             print_err(MIDI_INFO)
             audio.write(MIDI_SECTION.format(port=mport.addr))

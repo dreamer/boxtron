@@ -40,8 +40,7 @@ def list_alsa_sequencer_ports():
                 port = match.group(1)
                 desc = match.group(2)
                 flags = match.group(3)
-                yield MidiPort('{0}:{1}'.format(client, port), name,
-                               desc, space, flags)
+                yield MidiPort(client + ':' + port, name, desc, space, flags)
 
 
 def detect_software_synthesiser(name_expr):

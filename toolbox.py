@@ -48,10 +48,12 @@ def is_trivial_batch(file):
 
 def argsplit_windows(line):
     """Convert Windows-style string to list of arguments."""
+
     def unquote(x):
         if len(x) >= 2 and x.startswith('"') and x.endswith('"'):
             return x[1:-1]
         return x
+
     return [unquote(x) for x in shlex.split(line, posix=False)]
 
 

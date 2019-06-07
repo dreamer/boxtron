@@ -1,4 +1,5 @@
-.PHONY: lint test coverage install uninstall clean version.py shortlog
+.PHONY: lint test coverage install uninstall clean version.py shortlog \
+	check-formatting pretty-code
 
 tool_dir = steam-dos
 
@@ -63,3 +64,10 @@ uninstall:
 # Summary to be included in CHANGELOG.md
 shortlog:
 	git shortlog $(shell git describe --tags --abbrev=0)..HEAD
+
+check-formatting:
+	yapf -d -vv run-dosbox install-gog-game *.py
+
+pretty-code:
+	yapf -i -vv run-dosbox install-gog-game *.py
+	git status

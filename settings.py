@@ -57,7 +57,6 @@ soundfont = {midi_soundfont}
 
 
 class Settings():
-
     def __init__(self):
         self.store = configparser.ConfigParser()
         self.store.add_section('confgen')
