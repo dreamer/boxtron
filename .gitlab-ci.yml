@@ -1,26 +1,30 @@
 image: python:3.5-jessie
 
-stages:
-  - analyse
-  - test
+variables:
+  GIT_STRATEGY: fetch
 
 before_script:
   - apt-get update -qq
   - apt-get install -y -qq myspell-en-gb enchant shellcheck python3-pip
   - pip3 -q install -r requirements.txt
-
-Static analysis:
-  stage: analyse
-  script:
   - python --version
   - python3 --version
   - shellcheck --version
   - pylint --version
   - pycodestyle --version
-  - make lint
 
-## TODO It would be nice to run 'make coverage', but it's impossible on Debian
-## stable at the moment; add it once Buster becomes stable.
-Unit tests:
+stages:
+  - analyse
+  - test
+
+Run Linters:
+  stage: analyse
+  script: make lint
+
+Unit Tests:
   stage: test
   script: make test
+
+Unit Tests Coverage:
+  stage: test
+  script: make coverage
