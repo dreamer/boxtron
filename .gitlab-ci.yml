@@ -1,12 +1,13 @@
-image: python:3.6.8-stretch
+image: python:3.5-jessie
 
 stages:
   - analyse
   - test
 
 before_script:
-  - apt-get update -qq && apt-get install -y -qq myspell-en-gb enchant shellcheck pycodestyle python3-pip
-  - pip3 -q install pyenchant pylint
+  - apt-get update -qq
+  - apt-get install -y -qq myspell-en-gb enchant shellcheck python3-pip
+  - pip3 -q install -r requirements.txt
 
 Static analysis:
   stage: analyse
