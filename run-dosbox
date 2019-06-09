@@ -32,6 +32,7 @@ import toolbox
 
 from toolbox import print_err
 from settings import SETTINGS as settings
+from fsl import SierraLauncherConfig
 
 STEAM_APP_ID = os.environ.get('SteamAppId', '0')
 
@@ -100,7 +101,7 @@ def run(cmd_line, wait=False):
     if wait:
         wait_for_previous_process()
 
-    _, exe = os.path.split(cmd_line[0]) if cmd_line else (None, '')
+    exe_path, exe = os.path.split(cmd_line[0]) if cmd_line else (None, '')
 
     if exe == 'iscriptevaluator.exe':
         print_err('run_dosbox: skipping Steam script:', cmd_line)
@@ -117,10 +118,10 @@ def run(cmd_line, wait=False):
                       "this command:")
             sys.exit(2)
 
-    run_file(exe, cmd_line)
+    run_file(exe_path, exe, cmd_line)
 
 
-def run_file(exe, cmd_line):
+def run_file(path, exe, cmd_line):
 
     if RUN_EXE:
         # User wants to run different executable than the one
@@ -159,6 +160,19 @@ def run_file(exe, cmd_line):
         # Executable is unrecognised, but at least there's a dosbox.conf
         # let's pretend it was passed to dosbox.exe:
         run_dosbox_with_conf(['-conf', 'dosbox.conf'])
+
+    elif exe.lower() == 'sierralauncher.exe':
+        # A lot of games owned by Activision use Sierra Launcher
+        # instead of running the DOSBox directly.
+        ini_file = os.path.join(path, 'SierraLauncher.ini')
+        if not os.path.isfile(ini_file):
+            print_err('run_dosbox: Sierra Launcher configuration file missing')
+            sys.exit(1)
+        launcher = SierraLauncherConfig(ini_file=ini_file)
+        print_err('run_dosbox: launching the first game defined in', ini_file)
+        game = launcher.games[0]
+        launcher.chdir(0)
+        run_dosbox_with_conf(game['args'])
 
     else:
         print_err('run_dosbox: ignoring command:', cmd_line)

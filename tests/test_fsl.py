@@ -18,7 +18,6 @@ class TestLauncherParser(unittest.TestCase):
                          'Gabriel Knight - Sins of the Fathers')
         self.assertEqual(launcher.games_number(), 1)
         game = launcher.games[0]
-        self.assertEqual(game['exe'], 'DOSBox.exe')
         self.assertEqual(game['path'], path + 'GK1/DOSBOX')
         self.assertEqual(game['args'], ['-conf', 'dosboxGK.conf',
                                         '-conf', 'dosboxGK_single.conf',

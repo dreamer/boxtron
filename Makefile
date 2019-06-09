@@ -6,6 +6,7 @@ tool_dir = steam-dos
 files = run-dosbox \
 	install-gog-game \
 	confgen.py \
+	fsl.py \
 	midi.py \
 	settings.py \
 	toolbox.py \

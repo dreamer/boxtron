@@ -19,10 +19,10 @@ class SierraLauncherConfig:
     """
 
     def __init__(self, *, ini_file):
+        assert ini_file
         self.name = ''
         self.games = {}
         self.games_num = 0
-        ini_file = to_posix_path(ini_file)
         path, _ = os.path.split(ini_file)
         self.__parse_config__(ini_file, path)
 
@@ -39,15 +39,14 @@ class SierraLauncherConfig:
         self.games_num = int(launcher['numbuttons'])
         for i in range(0, self.games_num):
             path = launcher['game{}path'.format(i + 1)]
-            exe = launcher['game{}exe'.format(i + 1)]
             args = launcher['game{}cmd'.format(i + 1)]
-            exe_path = to_posix_path(os.path.join(ini_dir, path, exe))
-            real_path, real_exe = os.path.split(exe_path)
+            orig_cwd = os.getcwd()
+            os.chdir(ini_dir)
             self.games[i] = {
-                'path': real_path,
-                'exe': real_exe,
+                'path': os.path.join(ini_dir, to_posix_path(path)),
                 'args': argsplit_windows(args),
             }
+            os.chdir(orig_cwd)
 
     def chdir(self, game_num):
         """Change working directory to the one defined for game game_num."""
