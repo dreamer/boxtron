@@ -3,7 +3,6 @@
 # pylint: disable=missing-docstring
 # pylint: disable=wrong-spelling-in-comment
 
-import os
 import unittest
 
 import fsl
@@ -17,6 +16,7 @@ class TestLauncherParser(unittest.TestCase):
         launcher = fsl.SierraLauncherConfig(ini_file=ini)
         self.assertEqual(launcher.name,
                          'Gabriel Knight - Sins of the Fathers')
+        self.assertEqual(launcher.games_number(), 1)
         game = launcher.games[0]
         self.assertEqual(game['exe'], 'DOSBox.exe')
         self.assertEqual(game['path'], path + 'GK1/DOSBOX')
