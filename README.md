@@ -36,7 +36,7 @@ Optionally for MIDI support: TiMidity++ or FluidSynth and a soundfont.
 2. Download and unpack tarball:
 
        $ cd ~/.local/share/Steam/compatibilitytools.d/ || cd ~/.steam/root/compatibilitytools.d/
-       $ curl -L https://github.com/dreamer/steam-dos/releases/download/v0.2.1/steam-dos-0.2.tar.xz | tar xJf -
+       $ curl -L https://github.com/dreamer/steam-dos/releases/download/v0.3.0/steam-dos.tar.xz | tar xJf -
 
 3. Start Steam.
 4. In game properties window select "Force the use of a specific Steam Play
@@ -55,7 +55,20 @@ file in game's installation dir. Remove it to force steam-dos to create a new on
 Settings for steam-dos can be found in `~/.config/steam-dos.conf` (or wherever
 `XDG_CONFIG_HOME` points to).
 
-## MIDI support
+### GOG Games
+
+To easily install a DOS game from GOG to your Steam library, use included script:
+
+    $ ./install-gog-game ~/Downloads/setup_warcraft_orcs__humans_1.2_\(28330\).exe
+
+It will unpack the game to `~/.local/share/games`, prepare a setup that works around all
+known Steam bugs and generate `.desktop` file to be added to your Steam library. After
+that you can play the game using steam-dos or Proton.
+
+Installation script depends only on Python standard library, you can put it in your
+PATH or wherever you like.
+
+### MIDI support
 
 TiMidity++ (or FluidSynth) are started and closed automatically, unless they are already
 working in the background.  You can turn it off by changing an option in settings file
@@ -67,6 +80,13 @@ you need to enable it manually (usually there's a file called `SETUP.EXE`,
 `IMUSE.EXE` or similar somewhere in the game directory). Use following settings:
 
 Music/device: "General MIDI", Music Port: **330**
+
+### Selecting different DOSBox builds
+
+In `~/.config/steam-dos.conf`:
+
+    [dosbox]
+    bin = ~/path_to_dosbox/src/dosbox
 
 ## Caution!
 

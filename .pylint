@@ -379,7 +379,7 @@ max-spelling-suggestions=4
 spelling-dict=en_GB
 
 # List of comma separated words that should not be checked.
-spelling-ignore-words=alsa, autoexec,
+spelling-ignore-words=activision, alsa, autoexec,
                       bool,
                       chdir, com, conf, ctypes,
                       dict, dir, dosbox,
@@ -390,9 +390,9 @@ spelling-ignore-words=alsa, autoexec,
                       obara, online,
                       patryk, pid, posix, procfs,
                       regex,
-                      setup, stderr, sublicense, struct,
+                      setup, stderr, struct, sublicense,
                       toolmanifest, tuple,
-                      xfree, xinerama, xineramaqueryscreens, xopendisplay, xclosedisplay,
+                      xclosedisplay, xfree, xinerama, xineramaqueryscreens, xopendisplay,
                       yapf,
 
 # A path to a file that contains private dictionary; one word per line.

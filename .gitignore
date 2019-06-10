@@ -6,3 +6,5 @@ version.py
 .coverage
 Pipfile
 Pipfile.lock
+steam-dos.tar.xz
+steam-dos.zip
