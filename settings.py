@@ -9,6 +9,8 @@ Settings file creation and handling.
 import configparser
 import os
 
+import xlib
+
 from toolbox import print_err
 from toolbox import enabled_in_env
 
@@ -66,6 +68,26 @@ class Settings():
         midi_on = self.get_midi_on()
         if midi_on:
             self.__assure_sf2_exists__()
+
+        all_screens = xlib.query_screens()
+        if all_screens == {}:
+            print_err('steam-dos: error: no screens detected')
+        for number, info in all_screens.items():
+            print_err("steam-dos: screen '{}': {}x{}".format(
+                number, info.width, info.height))
+
+        screen = os.environ.get('SDL_VIDEO_FULLSCREEN_HEAD', '0')
+        screen = os.environ.get('SDL_VIDEO_FULLSCREEN_DISPLAY', screen)
+        os.putenv('SDL_VIDEO_FULLSCREEN_DISPLAY', screen)
+        os.putenv('SDL_VIDEO_FULLSCREEN_HEAD', screen)
+        self.fullresolution = 'desktop'
+        if screen in all_screens:
+            print_err("steam-dos: selected screen '{}'".format(screen))
+            info = all_screens[screen]
+            self.fullresolution = '{}x{}'.format(info.width, info.height)
+        else:
+            print_err("steam-dos: screen '{}' not found".format(screen))
+            print_err("steam-dos: using '" + self.fullresolution + "' instead")
 
     def __get_bool__(self, section, val, default):
         return self.store.getboolean(section, val, fallback=default)

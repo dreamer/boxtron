@@ -105,7 +105,7 @@ class Xinerama:
 
 
 def query_screens():
-    """Return list of ScreenInfo objects describing available screens."""
+    """Return dict of ScreenInfo objects describing available screens."""
     xlib = Xlib()
     dpy_ptr = xlib.open_display()
     if dpy_ptr is None:
@@ -113,7 +113,7 @@ def query_screens():
     xinerama = Xinerama(xlib)
     all_screens = xinerama.query_screens() if xinerama.is_active() else []
     xlib.close_display()
-    return all_screens
+    return {str(screen.number): screen for screen in all_screens}
 
 
 print(query_screens())

@@ -12,6 +12,7 @@ import re
 
 import midi
 
+from settings import SETTINGS as settings
 from toolbox import print_err
 from winpathlib import to_posix_path
 
@@ -25,7 +26,7 @@ COMMENT_SECTION = """
 SDL_SECTION = """
 [sdl]
 fullscreen=true
-fullresolution=desktop
+fullresolution={resolution}
 output=opengl
 autolock=false
 waitonerror=true
@@ -244,7 +245,7 @@ def create_conf_file(name, dosbox_args):
                                exit_after_exe=args.exit)
     with open(name, 'w', encoding=conf.encoding) as conf_file:
         conf_file.write(COMMENT_SECTION.format(dosbox_args))
-        conf_file.write(SDL_SECTION.format(dosbox_args))
+        conf_file.write(SDL_SECTION.format(resolution=settings.fullresolution))
         if conf.has_section('mixer'):
             conf_file.write('[mixer]\n')
             for key, val in conf['mixer'].items():

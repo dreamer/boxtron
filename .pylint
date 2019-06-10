@@ -382,7 +382,7 @@ spelling-dict=en_GB
 spelling-ignore-words=alsa, autoexec,
                       bool,
                       chdir, com, conf, ctypes,
-                      dir, dosbox,
+                      dict, dir, dosbox,
                       exe,
                       gmail, gog,
                       inc, int,
