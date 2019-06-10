@@ -109,7 +109,7 @@ def query_screens():
     xlib = Xlib()
     dpy_ptr = xlib.open_display()
     if dpy_ptr is None:
-        return []
+        return {}
     xinerama = Xinerama(xlib)
     all_screens = xinerama.query_screens() if xinerama.is_active() else []
     xlib.close_display()
