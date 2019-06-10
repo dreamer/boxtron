@@ -114,6 +114,3 @@ def query_screens():
     all_screens = xinerama.query_screens() if xinerama.is_active() else []
     xlib.close_display()
     return {str(screen.number): screen for screen in all_screens}
-
-
-print(query_screens())
