@@ -86,12 +86,13 @@ def run_dosbox(args):
 
 
 def run_dosbox_with_conf(args):
+    confgen.cleanup_old_conf_files(STEAM_APP_ID, args)
     name = confgen.uniq_conf_name(STEAM_APP_ID, args)
     if settings.get_confgen_force() or not os.path.isfile(name):
         print_err('run_dosbox: generating', name, 'based on', args)
         confgen.create_conf_file(name, args)
     configure_midi()
-    run_dosbox(['-conf', name, '-conf', confgen.create_audio_conf()])
+    run_dosbox(['-conf', confgen.create_audio_conf(), '-conf', name])
 
 
 def run(cmd_line, wait=False):

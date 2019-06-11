@@ -13,7 +13,7 @@ class TestConfGenerator(unittest.TestCase):
 
     def test_uniq_name(self):
         name = confgen.uniq_conf_name('1234', ['foo'])
-        self.assertEqual(name, 'steam_dos_1234_a63add.conf')
+        self.assertEqual(name, 'steam_dos_1234_4eaf56.conf')
 
 
 class TestDosboxArgParser(unittest.TestCase):

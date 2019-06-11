@@ -153,9 +153,26 @@ class DosboxConfiguration(dict):
         self[section][option] = value
 
 
+def cleanup_old_conf_files(app_id, args):
+    """Remove old unused, versions of .conf files."""
+    for name in 'steam_dos_audio.conf', uniq_conf_name_v0(app_id, args):
+        if os.path.isfile(name):
+            os.remove(name)
+
+
 def uniq_conf_name(app_id, args):
     """Return unique .conf file name for given SteamAppId and arguments."""
-    uid_line = app_id + ''.join(args)
+    return uniq_conf_name_salted(app_id, args, 'v1')
+
+
+def uniq_conf_name_v0(app_id, args):
+    """Return unique .conf file name for given SteamAppId and arguments."""
+    return uniq_conf_name_salted(app_id, args, '')
+
+
+def uniq_conf_name_salted(app_id, args, salt):
+    """Implements .conf name generator."""
+    uid_line = app_id + ''.join(args) + salt
     uid = hashlib.sha1(uid_line.encode('utf-8')).hexdigest()[:6]
     return 'steam_dos_{0}_{1}.conf'.format(app_id, uid)
 
