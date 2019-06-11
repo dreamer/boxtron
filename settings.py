@@ -31,6 +31,8 @@ DEFAULT_MIDI_SOUNDFONT = 'FluidR3_GM.sf2'
 
 DEFAULT_DOSBOX_BINARY = 'dosbox'
 
+DEFAULT_FULLSCREEN_MODE = 'screen 0'
+
 DEFAULT_SETTINGS = """
 [confgen]
 # Set this value to 'true' if you want steam-dos to re-create DOSBox
@@ -51,11 +53,24 @@ enable = {midi_enable}
 soundfont = {midi_soundfont}
 
 [dosbox]
+# Available modes:
+# - screen 0, screen 1, etc:
+#   The game will use fullscreen on selected screen, without changing
+#   the native resolution of your display.  Mouse will be locked to the screen.
+#   Default is '{fullscreen_mode}', which is your primary display.
+#   You can override this selection per-game with SDOS_SCREEN environment
+#   variable, e.g: 'SDOS_SCREEN=2 %command%'
+# - desktop:
+#   The whole desktop area will be used (all displays) with the game centred,
+#   the native resolution of your displays will be preserved.
+fullscreenmode = {fullscreen_mode}
+
 # Uncomment following line to specify a different DOSBox build:
 # bin = ~/projects/dosbox/src/dosbox
 """.format(confgen_force=str(DEFAULT_CONFGEN_FORCE).lower(),
            midi_enable=str(DEFAULT_MIDI_ENABLE).lower(),
-           midi_soundfont=DEFAULT_MIDI_SOUNDFONT).lstrip()
+           midi_soundfont=DEFAULT_MIDI_SOUNDFONT,
+           fullscreen_mode=DEFAULT_FULLSCREEN_MODE).lstrip()
 
 
 class Settings():
@@ -68,26 +83,46 @@ class Settings():
         midi_on = self.get_midi_on()
         if midi_on:
             self.__assure_sf2_exists__()
+        self.setup_fullscreen()
 
+    def setup_fullscreen(self):
+        self.fullresolution = 'desktop'
+        user_choice = self.get_dosbox_fullscreenmode()
+        env_override = 'SDOS_SCREEN' in os.environ or \
+                       'SDL_VIDEO_FULLSCREEN_DISPLAY' in os.environ or \
+                       'SDL_VIDEO_FULLSCREEN_HEAD' in os.environ
+
+        if user_choice == 'desktop' and not env_override:
+            return
+
+        screen = self.get_screen_number()
         all_screens = xlib.query_screens()
+
         if all_screens == {}:
             print_err('steam-dos: error: no screens detected')
         for number, info in all_screens.items():
             print_err("steam-dos: screen '{}': {}x{}".format(
                 number, info.width, info.height))
 
-        screen = os.environ.get('SDL_VIDEO_FULLSCREEN_HEAD', '0')
-        screen = os.environ.get('SDL_VIDEO_FULLSCREEN_DISPLAY', screen)
-        os.putenv('SDL_VIDEO_FULLSCREEN_DISPLAY', screen)
-        os.putenv('SDL_VIDEO_FULLSCREEN_HEAD', screen)
-        self.fullresolution = 'desktop'
         if screen in all_screens:
             print_err("steam-dos: selected screen '{}'".format(screen))
+            os.putenv('SDL_VIDEO_FULLSCREEN_DISPLAY', screen)  # SDL >= 1.2.14
+            os.putenv('SDL_VIDEO_FULLSCREEN_HEAD', screen)  # SDL >= 1.2.10
             info = all_screens[screen]
             self.fullresolution = '{}x{}'.format(info.width, info.height)
         else:
             print_err("steam-dos: screen '{}' not found".format(screen))
             print_err("steam-dos: using '" + self.fullresolution + "' instead")
+
+    def get_screen_number(self):
+        tokens = self.get_dosbox_fullscreenmode().split()
+        screen = '0'
+        if len(tokens) >= 2 and tokens[0] == 'screen':
+            screen = tokens[1]
+        screen = os.environ.get('SDL_VIDEO_FULLSCREEN_HEAD', screen)
+        screen = os.environ.get('SDL_VIDEO_FULLSCREEN_DISPLAY', screen)
+        screen = os.environ.get('SDOS_SCREEN', screen)
+        return screen
 
     def __get_bool__(self, section, val, default):
         return self.store.getboolean(section, val, fallback=default)
@@ -109,6 +144,10 @@ class Settings():
     def get_dosbox_bin(self):
         dosbox = self.__get_str__('dosbox', 'bin', DEFAULT_DOSBOX_BINARY)
         return os.path.expanduser(dosbox)
+
+    def get_dosbox_fullscreenmode(self):
+        return self.__get_str__('dosbox', 'fullscreenmode',
+                                DEFAULT_FULLSCREEN_MODE)
 
     def __assure_sf2_exists__(self):
         sf2 = self.get_midi_soundfont()
@@ -135,7 +174,7 @@ class Settings():
                 os_default = default2_path
         use_sf2 = selected or default or os_default
         if not use_sf2:
-            print_err('steam-dos: warning: Not suitable soundfont found.',
+            print_err('steam-dos: warning: No suitable soundfont found.',
                       'Disabling MIDI support.')
             self.store.set('midi', 'enable', 'False')
             return
