@@ -104,15 +104,20 @@ class Settings():
             print_err("steam-dos: screen '{}': {}x{}".format(
                 number, info.width, info.height))
 
-        if screen in all_screens:
-            print_err("steam-dos: selected screen '{}'".format(screen))
-            os.putenv('SDL_VIDEO_FULLSCREEN_DISPLAY', screen)  # SDL >= 1.2.14
-            os.putenv('SDL_VIDEO_FULLSCREEN_HEAD', screen)  # SDL >= 1.2.10
-            info = all_screens[screen]
-            self.fullresolution = '{}x{}'.format(info.width, info.height)
-        else:
+        if screen not in all_screens:
             print_err("steam-dos: screen '{}' not found".format(screen))
-            print_err("steam-dos: using '" + self.fullresolution + "' instead")
+            if '0' in all_screens:
+                screen = '0'
+                print_err("steam-dos: using '" + screen + "' instead")
+            else:
+                print_err("steam-dos: using desktop as screen instead")
+                return
+
+        print_err("steam-dos: selected screen '{}'".format(screen))
+        os.putenv('SDL_VIDEO_FULLSCREEN_DISPLAY', screen)  # SDL >= 1.2.14
+        os.putenv('SDL_VIDEO_FULLSCREEN_HEAD', screen)  # SDL >= 1.2.10
+        info = all_screens[screen]
+        self.fullresolution = '{}x{}'.format(info.width, info.height)
 
     def get_screen_number(self):
         tokens = self.get_dosbox_fullscreenmode().split()
