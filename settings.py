@@ -122,6 +122,8 @@ class Settings():
     def get_screen_number(self):
         tokens = self.get_dosbox_fullscreenmode().split()
         screen = '0'
+        if tokens == [] or tokens[0] != 'screen':
+            print_err('steam-dos: error: unknown option value:', tokens[0])
         if len(tokens) >= 2 and tokens[0] == 'screen':
             screen = tokens[1]
         screen = os.environ.get('SDL_VIDEO_FULLSCREEN_HEAD', screen)

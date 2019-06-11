@@ -92,7 +92,7 @@ def run_dosbox_with_conf(args):
         print_err('run_dosbox: generating', name, 'based on', args)
         confgen.create_conf_file(name, args)
     configure_midi()
-    run_dosbox(['-conf', confgen.create_audio_conf(), '-conf', name])
+    run_dosbox(['-conf', confgen.create_auto_conf_file(), '-conf', name])
 
 
 def run(cmd_line, wait=False):
@@ -130,11 +130,13 @@ def run_file(path, exe, cmd_line):
         exe = RUN_EXE
         configure_midi()
         if os.path.isfile(exe):
-            run_dosbox(['-conf', confgen.create_audio_conf(), exe, '-exit'])
+            run_dosbox(['-conf', confgen.create_auto_conf_file(),
+                        exe, '-exit'])  # yapf: disable
         else:
             exe_path = os.path.join(os.getcwd(), exe)
-            echo_msg = '@echo File not found: ' + exe_path
-            run_dosbox(['-conf', confgen.create_audio_conf(), '-c', echo_msg])
+            msg = 'File not found: ' + exe_path
+            run_dosbox(['-conf', confgen.create_auto_conf_file(),
+                        '-c', '@echo ' + msg])  # yapf: disable
 
     elif tweaks.command_tweak_needed(STEAM_APP_ID):
         # If AppId is included in known tweaks, then modify command line

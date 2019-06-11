@@ -45,15 +45,20 @@ Optionally for MIDI support: TiMidity++ or FluidSynth and a soundfont.
 
 ## Features
 
-steam-dos will start DOSBox in native desktop resolution and with OpenGL backend.
-These options are needed for Steam Overlay support and to prevent changing resolution
-on modern displays.  It also seems to be performing much better than DOSBox defaults.
-
-If you want to modify DOSBox settings for a game, edit `steam_dos_<appid>_<id>.conf`
-file in game's installation dir. Remove it to force steam-dos to create a new one.
-
 Settings for steam-dos can be found in `~/.config/steam-dos.conf` (or wherever
-`XDG_CONFIG_HOME` points to).
+`XDG_CONFIG_HOME` points to).  New versions of steam-dos add new documentation
+and options to that file - remove it to force steam-dos to create a fresh one
+with documentation for all new options.
+
+steam-dos will start DOSBox in fullscreen on your primary display, without changing
+resolution of your screens.  You can pick different screen by changing option
+`dosbox.fullscreenmode` in settings file or using `SDOS_SCREEN=<num>` environment
+variable.
+
+If you want to modify DOSBox settings for a specific game, edit
+`steam_dos_<appid>_<id>.conf` file in game's installation dir. Remove it to
+force steam-dos to create a new one.
+
 
 ### GOG Games
 
