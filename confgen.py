@@ -335,8 +335,7 @@ def create_auto_conf_file():
                 resolution=settings.get_dosbox_fullresolution()))
 
         auto.write(
-            RENDER_SECTION_1.format(
-                scaler=settings.get_dosbox_scaler()))
+            RENDER_SECTION_1.format(scaler=settings.get_dosbox_scaler()))
 
         base, irq, dma, hdma = 220, 7, 1, 5  # DOSBox defaults
         print_err('steam-dos: Setting up DOSBox audio:')
