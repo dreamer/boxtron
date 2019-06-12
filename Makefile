@@ -19,7 +19,11 @@ files = run-dosbox \
 	LICENSE \
 	README.md
 
+ifeq ($(origin, DESTDIR), undefined)
 steam_dir = ${HOME}/.local/share/Steam
+else
+steam_dir = $(DESTDIR)/usr/share/Steam
+endif
 install_dir = $(steam_dir)/compatibilitytools.d/$(tool_dir)
 
 lint: version.py
