@@ -1,5 +1,8 @@
-.PHONY: lint test coverage install uninstall clean version.py shortlog \
-	check-formatting pretty-code
+.PHONY: lint test coverage \
+	check-formatting pretty-code \
+	install uninstall \
+	user-install user-uninstall \
+	clean version.py shortlog
 
 tool_dir = steam-dos
 
@@ -19,12 +22,17 @@ files = run-dosbox \
 	LICENSE \
 	README.md
 
-ifeq ($(origin, DESTDIR), undefined)
-steam_dir = ${HOME}/.local/share/Steam
+ifeq ($(origin XDG_DATA_HOME), undefined)
+	data_home := ${HOME}/.local/share
 else
-steam_dir = $(DESTDIR)/usr/share/Steam
+	data_home := ${XDG_DATA_HOME}
 endif
-install_dir = $(steam_dir)/compatibilitytools.d/$(tool_dir)
+
+# to be overriden by packagers: make --prefix=/usr install
+prefix = /usr/local
+install_dir = $(DESTDIR)$(prefix)/share/steam/compatibilitytools.d/$(tool_dir)
+devel_install_dir = $(data_home)/Steam/compatibilitytools.d/$(tool_dir)-dev
+
 
 lint: version.py
 	shellcheck codestyle.sh tests/coverage-report.sh
@@ -54,17 +62,25 @@ $(tool_dir).tar.xz: $(files)
 	tar -cJf $@ $(tool_dir)
 	rm -rf $(tool_dir)
 
+# TODO install-gog-game should actually go into a bindir
 install: $(files)
 	mkdir -p $(install_dir)
 	cp --reflink=auto -t $(install_dir) $^
+
+uninstall:
+	rm -rf $(install_dir)
+
+user-install: $(files)
+	mkdir -p $(devel_install_dir)
+	cp --reflink=auto -t $(devel_install_dir) $^
+
+user-uninstall:
+	rm -rf $(devel_install_dir)
 
 clean:
 	rm -f version.py
 	rm -f $(tool_dir).tar.xz
 	rm -f $(tool_dir).zip
-
-uninstall:
-	rm -rf $(install_dir)
 
 # Summary to be included in CHANGELOG.md
 shortlog:

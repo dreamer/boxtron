@@ -63,13 +63,17 @@ it, though.
 
 To install/remove development version of steam-dos:
 
-    $ make install
-    $ make uninstall
+    $ make user-install
+    $ make user-uninstall
 
-To create packages:
+To create tarballs:
 
     $ make steam-dos.tar.xz
     $ make steam-dos.zip
+
+Target `install` is reserved for distro packagers, to be used as such:
+
+    $ make --prefix=/usr install
 
 
 # Logs
