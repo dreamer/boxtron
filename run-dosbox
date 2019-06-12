@@ -205,6 +205,7 @@ def main():
         # toolmanifest…
         sys.exit(1)
     else:
+        settings.setup()
         run(run_cmd_line, wait=args.wait_before_run)
 
 

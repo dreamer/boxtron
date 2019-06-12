@@ -80,13 +80,23 @@ class Settings():
         self.store.add_section('midi')
         self.store.add_section('dosbox')
         self.store.read(SETTINGS_FILE)
+        self.fullresolution = 'desktop'
+        self.finalized = False
+
+    def setup(self):
+        """Finalize settings initialization on request.
+
+        Some settings need more involved initialization/detection procedure,
+        which might fail or leave extensive logs on stderr.  We want this
+        part of settings initialization only when actually needed.
+        """
         midi_on = self.get_midi_on()
         if midi_on:
             self.__assure_sf2_exists__()
-        self.setup_fullscreen()
+        self.__setup_fullscreen__()
+        self.finalized = True
 
-    def setup_fullscreen(self):
-        self.fullresolution = 'desktop'
+    def __setup_fullscreen__(self):
         user_choice = self.get_dosbox_fullscreenmode()
         env_override = 'SDOS_SCREEN' in os.environ or \
                        'SDL_VIDEO_FULLSCREEN_DISPLAY' in os.environ or \
@@ -95,7 +105,7 @@ class Settings():
         if user_choice == 'desktop' and not env_override:
             return
 
-        screen = self.get_screen_number()
+        screen = self.__get_screen_number__()
         all_screens = xlib.query_screens()
 
         if all_screens == {}:
@@ -119,7 +129,7 @@ class Settings():
         info = all_screens[screen]
         self.fullresolution = '{}x{}'.format(info.width, info.height)
 
-    def get_screen_number(self):
+    def __get_screen_number__(self):
         tokens = self.get_dosbox_fullscreenmode().split()
         screen = '0'
         if tokens == [] or tokens[0] != 'screen':
@@ -146,6 +156,7 @@ class Settings():
         return self.__get_bool__('midi', 'enable', DEFAULT_MIDI_ENABLE)
 
     def get_midi_soundfont(self):
+        assert self.finalized
         return self.__get_str__('midi', 'soundfont', DEFAULT_MIDI_SOUNDFONT)
 
     def get_dosbox_bin(self):
@@ -155,6 +166,10 @@ class Settings():
     def get_dosbox_fullscreenmode(self):
         return self.__get_str__('dosbox', 'fullscreenmode',
                                 DEFAULT_FULLSCREEN_MODE)
+
+    def get_dosbox_fullresolution(self):
+        assert self.finalized
+        return self.fullresolution
 
     def __assure_sf2_exists__(self):
         sf2 = self.get_midi_soundfont()

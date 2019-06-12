@@ -300,7 +300,9 @@ def create_auto_conf_file():
         auto.write('# This file is re-created on every run\n')
         auto.write('\n')
 
-        auto.write(SDL_SECTION_1.format(resolution=settings.fullresolution))
+        auto.write(
+            SDL_SECTION_1.format(
+                resolution=settings.get_dosbox_fullresolution()))
 
         base, irq, dma, hdma = 220, 7, 1, 5  # DOSBox defaults
         print_err('steam-dos: Setting up DOSBox audio:')
