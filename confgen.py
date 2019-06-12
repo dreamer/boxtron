@@ -41,7 +41,12 @@ SDL_SECTION_2 = """
 
 """.lstrip()
 
-RENDER_SECTION = """
+RENDER_SECTION_1 = """
+[render]
+scaler={scaler}
+""".lstrip()
+
+RENDER_SECTION_2 = """
 [render]
 # aspect: Do aspect correction for games using 320x200 resolution.
 #         Read more: https://www.dosbox.com/wiki/Dosbox.conf#aspect
@@ -287,9 +292,16 @@ def create_conf_file(name, dosbox_args):
             conf_file.write('\n')
 
         if conf.has_section('render'):
-            conf_file.write(RENDER_SECTION)
+            conf_file.write(RENDER_SECTION_2)
             for key, val in conf['render'].items():
-                if key == 'frameskip':  # this option is useless, hide it
+                if key == 'frameskip':
+                    # This option is useless nowadays, let's hide it.
+                    continue
+                if key == 'scaler':
+                    # Publishers sometimes pick weird scalers by default.
+                    # We don't want their choice, but let's signal to the
+                    # user, that here's the place to override the value.
+                    conf_file.write('# {0}={1}\n'.format(key, val))
                     continue
                 conf_file.write('{0}={1}\n'.format(key, val))
             conf_file.write('\n')
@@ -321,6 +333,10 @@ def create_auto_conf_file():
         auto.write(
             SDL_SECTION_1.format(
                 resolution=settings.get_dosbox_fullresolution()))
+
+        auto.write(
+            RENDER_SECTION_1.format(
+                scaler=settings.get_dosbox_scaler()))
 
         base, irq, dma, hdma = 220, 7, 1, 5  # DOSBox defaults
         print_err('steam-dos: Setting up DOSBox audio:')

@@ -33,6 +33,8 @@ DEFAULT_DOSBOX_BINARY = 'dosbox'
 
 DEFAULT_FULLSCREEN_MODE = 'screen 0'
 
+DEFAULT_SCALER = 'normal3x'
+
 DEFAULT_SETTINGS = """
 [confgen]
 # Set this value to 'true' if you want steam-dos to re-create DOSBox
@@ -65,12 +67,19 @@ soundfont = {midi_soundfont}
 #   the native resolution of your displays will be preserved.
 fullscreenmode = {fullscreen_mode}
 
+# Pick the default scaler, that you want to use for all games.
+# You can override selection per-game by changing option render.scaler in file
+# steam_dos_<appid>_<id>.conf in game's installation dir.
+# Here's comparison of different scalers: https://www.dosbox.com/wiki/Scaler
+scaler = {scaler}
+
 # Uncomment following line to specify a different DOSBox build:
 # bin = ~/projects/dosbox/src/dosbox
 """.format(confgen_force=str(DEFAULT_CONFGEN_FORCE).lower(),
            midi_enable=str(DEFAULT_MIDI_ENABLE).lower(),
            midi_soundfont=DEFAULT_MIDI_SOUNDFONT,
-           fullscreen_mode=DEFAULT_FULLSCREEN_MODE).lstrip()
+           fullscreen_mode=DEFAULT_FULLSCREEN_MODE,
+           scaler=DEFAULT_SCALER).lstrip()
 
 
 class Settings():
@@ -170,6 +179,9 @@ class Settings():
     def get_dosbox_fullresolution(self):
         assert self.finalized
         return self.fullresolution
+
+    def get_dosbox_scaler(self):
+        return self.__get_str__('dosbox', 'scaler', DEFAULT_SCALER)
 
     def __assure_sf2_exists__(self):
         sf2 = self.__get_str__('midi', 'soundfont', DEFAULT_MIDI_SOUNDFONT)
