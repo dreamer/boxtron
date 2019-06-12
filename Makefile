@@ -25,7 +25,6 @@ install_dir = $(steam_dir)/compatibilitytools.d/$(tool_dir)
 lint: version.py
 	shellcheck codestyle.sh tests/coverage-report.sh
 	pylint --rcfile=.pylint run-dosbox install-gog-game *.py tests/*.py
-	bash codestyle.sh run-dosbox install-gog-game *.py tests/*.py
 
 test:
 	XDG_CONFIG_HOME=$(shell pwd)/tests/files/xdg_config_home \
@@ -68,6 +67,7 @@ shortlog:
 	git shortlog $(shell git describe --tags --abbrev=0)..HEAD
 
 check-formatting:
+	bash codestyle.sh run-dosbox install-gog-game *.py tests/*.py
 	yapf -d -vv run-dosbox install-gog-game *.py
 
 pretty-code:
