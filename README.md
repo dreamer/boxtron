@@ -12,6 +12,10 @@ Official mirrors:
 [GitHub](https://github.com/dreamer/steam-dos),
 [GitLab](https://gitlab.com/dreamer-tan/steam-dos).
 
+Game compatibility reports:
+[Steam](https://github.com/dreamer/steam-dos/wiki/Compatibility-reports-(Steam)),
+[GOG](https://github.com/dreamer/steam-dos/wiki/Compatibility-reports-(GOG)).
+
 ## Prerequisites
 
 You will need Python (>= 3.5), DOSBox (>= 0.74) and inotify-tools.
@@ -48,17 +52,19 @@ Optionally for MIDI support: TiMidity++ or FluidSynth and a soundfont.
 Settings for steam-dos can be found in `~/.config/steam-dos.conf` (or wherever
 `XDG_CONFIG_HOME` points to).  New versions of steam-dos add new documentation
 and options to that file - remove it to force steam-dos to create a fresh one
-with documentation for all new options.
-
-steam-dos will start DOSBox in fullscreen on your primary display, without changing
-resolution of your screens.  You can pick different screen by changing option
-`dosbox.fullscreenmode` in settings file or using `SDOS_SCREEN=<num>` environment
-variable.
+(including documentation for all new options).
 
 If you want to modify DOSBox settings for a specific game, edit
 `steam_dos_<appid>_<id>.conf` file in game's installation dir. Remove it to
 force steam-dos to create a new one.
 
+### Proper fullscreen support
+
+steam-dos will start DOSBox in fullscreen on your primary display, without changing
+resolution of your screens - just as any modern game does by default.
+
+You can pick different screen by changing option `dosbox.fullscreenmode` in settings
+file or using `SDOS_SCREEN=<num>` environment variable.
 
 ### GOG Games
 
@@ -76,8 +82,8 @@ PATH or wherever you like.
 ### MIDI support
 
 TiMidity++ (or FluidSynth) are started and closed automatically, unless they are already
-working in the background.  You can turn it off by changing an option in settings file
-(`~/.config/steam-dos.conf`) or using `SDOS_NO_MIDI=1` environment variable.
+working in the background.  You can turn this feature off by changing an option in
+settings file (`~/.config/steam-dos.conf`) or using `SDOS_NO_MIDI=1` environment variable.
 Soundfont `FluidR3_GM.sf2` is used by default - you can change it by editing settings file.
 
 NOTE: Sythesiser running does not automagically turn on MIDI music in your game,
