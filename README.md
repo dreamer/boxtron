@@ -1,8 +1,8 @@
 # steam-dos
 
 [![Build Status](https://travis-ci.com/dreamer/steam-dos.svg?branch=master)](https://travis-ci.com/dreamer/steam-dos)
+[![steam-dos discord](https://img.shields.io/discord/514567252864008206.svg?label=discord)](https://discord.gg/8mFhUPX)
 [![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/dreamer)
-
 
 Compatibility tool to run DOS games on Steam through native Linux DOSBox version.
 
