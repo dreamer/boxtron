@@ -44,6 +44,7 @@ SDL_SECTION_2 = """
 RENDER_SECTION_1 = """
 [render]
 scaler={scaler}
+
 """.lstrip()
 
 RENDER_SECTION_2 = """
