@@ -41,6 +41,15 @@ SDL_SECTION_2 = """
 
 """.lstrip()
 
+RENDER_SECTION = """
+[render]
+# aspect: Do aspect correction for games using 320x200 resolution.
+#         Read more: https://www.dosbox.com/wiki/Dosbox.conf#aspect
+# scaler: Specifies which scaler is used to enlarge and enhance low resolution
+#         modes, before any scaling done through OpenGL.
+#         Read more: https://www.dosbox.com/wiki/Dosbox.conf#scaler
+""".lstrip()
+
 SBLASTER_SECTION = """
 [sblaster]
 sbtype=sb16
@@ -276,6 +285,15 @@ def create_conf_file(name, dosbox_args):
             for key, val in conf['mixer'].items():
                 conf_file.write('{0}={1}\n'.format(key, val))
             conf_file.write('\n')
+
+        if conf.has_section('render'):
+            conf_file.write(RENDER_SECTION)
+            for key, val in conf['render'].items():
+                if key == 'frameskip':  # this option is useless, hide it
+                    continue
+                conf_file.write('{0}={1}\n'.format(key, val))
+            conf_file.write('\n')
+
         if conf.has_section('autoexec'):
             conf_file.write('[autoexec]\n')
             for line in to_linux_autoexec(conf['autoexec']):
