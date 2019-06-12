@@ -14,6 +14,8 @@ import time
 
 from toolbox import print_err
 
+ALSA_SEQ_CLIENTS = '/proc/asound/seq/clients'
+
 MidiPort = collections.namedtuple('MidiPort', 'addr name desc space flags')
 
 
@@ -22,9 +24,9 @@ MidiPort = collections.namedtuple('MidiPort', 'addr name desc space flags')
 # as symbols (they are all macros), making it somewhat difficult to use
 # from Python.
 #
-def list_alsa_sequencer_ports():
+def list_alsa_sequencer_ports(alsa_seq_clients=ALSA_SEQ_CLIENTS):
     """List all sequencer ports visible through ALSA procfs."""
-    with open('/proc/asound/seq/clients') as clients:
+    with open(alsa_seq_clients) as clients:
         client_pattern = re.compile(r'^Client +(\d+) : "(.*)" \[(.*)\]')
         port_pattern = re.compile(r'^  Port +(\d+) : "(.*)" \((.{4})\)')
         client, name, space, port, desc, flags = '', '', '', '', '', ''
@@ -43,10 +45,10 @@ def list_alsa_sequencer_ports():
                 yield MidiPort(client + ':' + port, name, desc, space, flags)
 
 
-def detect_software_synthesiser(name_expr):
+def detect_software_synthesiser(name_expr, alsa_seq_clients=ALSA_SEQ_CLIENTS):
     """Return an input port, where client name matches expression."""
     client_name_pattern = re.compile(name_expr)
-    for port in list_alsa_sequencer_ports():
+    for port in list_alsa_sequencer_ports(alsa_seq_clients):
         if port.flags[1] != 'W':
             continue
         match = client_name_pattern.match(port.name.lower())

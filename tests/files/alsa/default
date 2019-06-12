@@ -1,0 +1,11 @@
+Client info
+  cur  clients : 2
+  peak clients : 2
+  max  clients : 192
+
+Client   0 : "System" [Kernel]
+  Port   0 : "Timer" (Rwe-)
+  Port   1 : "Announce" (R-e-)
+Client  14 : "Midi Through" [Kernel]
+  Port   0 : "Midi Through Port-0" (RWe-)
+  Port   1 : "Fake" (--e-)
