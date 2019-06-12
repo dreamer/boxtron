@@ -16,6 +16,11 @@ class TestSettings(unittest.TestCase):
         expected = os.path.expanduser('~/bin/my-awesome-dosbox')
         self.assertEqual(settings.get_dosbox_bin(), expected)
 
+    def test_dosbox_setup(self):
+        self.assertFalse(settings.finalized)
+        settings.setup()
+        self.assertTrue(settings.finalized)
+
 
 if __name__ == '__main__':  # pragma: no cover
     unittest.main()

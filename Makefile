@@ -32,7 +32,7 @@ test:
 	python3 -m unittest discover -v -s tests
 
 coverage:
-	bash tests/coverage-report.sh
+	bash tests/coverage-report.sh 2> /dev/null
 
 version.py:
 	@printf "# pylint: disable=missing-docstring\n" > $@

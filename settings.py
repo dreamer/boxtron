@@ -172,7 +172,7 @@ class Settings():
         return self.fullresolution
 
     def __assure_sf2_exists__(self):
-        sf2 = self.get_midi_soundfont()
+        sf2 = self.__get_str__('midi', 'soundfont', DEFAULT_MIDI_SOUNDFONT)
         sf2_search = [
             ['/usr/share/sounds/sf2'],
             ['/usr/share/soundfonts'],
