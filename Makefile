@@ -28,8 +28,14 @@ else
 	data_home := ${XDG_DATA_HOME}
 endif
 
-# to be overriden by packagers: make --prefix=/usr install
+# These two variables are to be overriden by packagers, for situations
+# when source code is downloaded as a tarball, e.g.:
+#
+# make prefix=/usr version=v%{version} install
+#
 prefix = /usr/local
+version = $(shell git describe --tags --dirty)
+
 install_dir = $(DESTDIR)$(prefix)/share/steam/compatibilitytools.d/$(tool_dir)
 devel_install_dir = $(data_home)/Steam/compatibilitytools.d/$(tool_dir)-dev
 
@@ -46,9 +52,8 @@ coverage:
 	bash tests/coverage-report.sh 2> /dev/null
 
 version.py:
-	@printf "# pylint: disable=missing-docstring\n" > $@
-	@printf "VERSION = '%s'\n" \
-		$(shell git describe --tags --dirty --long) >> $@
+	@echo "# pylint: disable=missing-docstring" > $@
+	@echo "VERSION = '$(version)'" >> $@
 
 $(tool_dir).zip: $(files)
 	mkdir -p $(tool_dir)
