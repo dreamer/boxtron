@@ -110,7 +110,8 @@ class DosboxConfiguration(dict):
                  conf_files=[],
                  exe=None,
                  noautoexec=False,
-                 exit_after_exe=False):
+                 exit_after_exe=False,
+                 tweak_conf={}):
         assert commands or conf_files or exe
         dict.__init__(self)
         self['autoexec'] = []
@@ -127,6 +128,10 @@ class DosboxConfiguration(dict):
                 self.raw_autoexec.extend(line for line in conf['autoexec'])
 
         self.raw_autoexec.extend(cmd for cmd in commands)
+
+        tweak = configparser.ConfigParser()
+        tweak.read_dict(tweak_conf)
+        self.__import_ini_sections__(tweak)
 
         if exe:
             posix_path = to_posix_path(exe)
@@ -269,7 +274,7 @@ def parse_dosbox_arguments(args):
     return args
 
 
-def create_conf_file(name, dosbox_args):
+def create_conf_file(name, dosbox_args, tweak_conf):
     """Create DOSBox configuration file for user.
 
     Different sections are chosen either by this module, copied from
@@ -282,7 +287,8 @@ def create_conf_file(name, dosbox_args):
                                commands=args.c,
                                exe=args.file,
                                noautoexec=args.noautoexec,
-                               exit_after_exe=args.exit)
+                               exit_after_exe=args.exit,
+                               tweak_conf=tweak_conf)
     with open(name, 'w', encoding=conf.encoding) as conf_file:
         conf_file.write(COMMENT_SECTION.format(dosbox_args))
         conf_file.write(SDL_SECTION_2)

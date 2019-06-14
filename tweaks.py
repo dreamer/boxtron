@@ -15,6 +15,14 @@ from toolbox import print_err
 from winpathlib import to_posix_path
 
 TWEAKS_DB = {
+    # STAR WARS™ - Dark Forces
+    '32400': {
+        'conf': {
+            'render': {
+                'aspect': 'true',
+            },
+        },
+    },
     # MegaRace 2
     '733760': {
         'commands': {
@@ -48,6 +56,18 @@ def tweak_command(app_id, cmd_line):
             raise KeyError
     print_err('run_dosbox: error: no suitable tweak found for:', cmd_line)
     return []
+
+
+def get_conf_tweak(app_id):
+    """Return dictionary used to overwrite publisher-supplied defaults.
+
+    Use this tweak for games, where defaults are clearly wrong.
+    """
+    if app_id not in TWEAKS_DB:
+        return {}
+    if 'conf' not in TWEAKS_DB[app_id]:
+        return {}
+    return TWEAKS_DB[app_id]['conf']
 
 
 # Normally, Steam is changing working dir to the sub-directory of game

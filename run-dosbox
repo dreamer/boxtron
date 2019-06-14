@@ -88,9 +88,12 @@ def run_dosbox(args):
 def run_dosbox_with_conf(args):
     confgen.cleanup_old_conf_files(STEAM_APP_ID, args)
     name = confgen.uniq_conf_name(STEAM_APP_ID, args)
+    tweaked_conf = tweaks.get_conf_tweak(STEAM_APP_ID)
     if settings.get_confgen_force() or not os.path.isfile(name):
-        print_err('run_dosbox: generating', name, 'based on', args)
-        confgen.create_conf_file(name, args)
+        print_err('steam-dos: generating', name, 'based on', args)
+        if tweaked_conf:
+            print_err('steam-dos: tweaking configuration for', STEAM_APP_ID)
+        confgen.create_conf_file(name, args, tweaked_conf)
     configure_midi()
     run_dosbox(['-conf', confgen.create_auto_conf_file(), '-conf', name])
 
