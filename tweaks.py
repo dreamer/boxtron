@@ -15,6 +15,14 @@ from toolbox import print_err
 from winpathlib import to_posix_path
 
 TWEAKS_DB = {
+    # Ultimate Doom
+    '2280': {
+        'conf': {
+            'render': {
+                'aspect': 'true',
+            },
+        },
+    },
     # STAR WARS™ - Dark Forces
     '32400': {
         'conf': {
