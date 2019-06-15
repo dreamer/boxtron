@@ -89,13 +89,13 @@ def run_dosbox_with_conf(args):
     confgen.cleanup_old_conf_files(STEAM_APP_ID, args)
     name = confgen.uniq_conf_name(STEAM_APP_ID, args)
     tweaked_conf = tweaks.get_conf_tweak(STEAM_APP_ID)
+    static_conf = confgen.create_dosbox_configuration(args, tweaked_conf)
     if settings.get_confgen_force() or not os.path.isfile(name):
-        print_err('steam-dos: generating', name, 'based on', args)
-        if tweaked_conf:
-            print_err('steam-dos: tweaking configuration for', STEAM_APP_ID)
-        confgen.create_conf_file(name, args, tweaked_conf)
+        print_err('steam-dos: saving', name, 'based on', args)
+        confgen.create_user_conf_file(name, static_conf, args)
     configure_midi()
-    run_dosbox(['-conf', confgen.create_auto_conf_file(), '-conf', name])
+    auto_conf = confgen.create_auto_conf_file(static_conf)
+    run_dosbox(['-conf', auto_conf, '-conf', name])
 
 
 def run(cmd_line, wait=False):
@@ -133,12 +133,12 @@ def run_file(path, exe, cmd_line):
         exe = RUN_EXE
         configure_midi()
         if os.path.isfile(exe):
-            run_dosbox(['-conf', confgen.create_auto_conf_file(),
+            run_dosbox(['-conf', confgen.create_auto_conf_file({}),
                         exe, '-exit'])  # yapf: disable
         else:
             exe_path = os.path.join(os.getcwd(), exe)
             msg = 'File not found: ' + exe_path
-            run_dosbox(['-conf', confgen.create_auto_conf_file(),
+            run_dosbox(['-conf', confgen.create_auto_conf_file({}),
                         '-c', '@echo ' + msg])  # yapf: disable
 
     elif tweaks.command_tweak_needed(STEAM_APP_ID):

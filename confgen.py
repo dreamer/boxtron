@@ -43,6 +43,7 @@ SDL_SECTION_2 = """
 
 RENDER_SECTION_1 = """
 [render]
+aspect={aspect}
 scaler={scaler}
 
 """.lstrip()
@@ -274,14 +275,8 @@ def parse_dosbox_arguments(args):
     return args
 
 
-def create_conf_file(name, dosbox_args, tweak_conf):
-    """Create DOSBox configuration file for user.
-
-    Different sections are chosen either by this module, copied from
-    existing .conf files, generated based on '-c' DOSBox argument or
-    generated from a file pointed to be run.
-    """
-    assert name
+def create_dosbox_configuration(dosbox_args, tweak_conf):
+    """Interpret DOSBox configuration."""
     args = parse_dosbox_arguments(dosbox_args)
     conf = DosboxConfiguration(conf_files=(args.conf or []),
                                commands=args.c,
@@ -289,6 +284,17 @@ def create_conf_file(name, dosbox_args, tweak_conf):
                                noautoexec=args.noautoexec,
                                exit_after_exe=args.exit,
                                tweak_conf=tweak_conf)
+    return conf
+
+
+def create_user_conf_file(name, conf, dosbox_args):
+    """Create DOSBox configuration file for user.
+
+    Different sections are chosen either by this module, copied from
+    existing .conf files, generated based on '-c' DOSBox argument or
+    generated from a file pointed to be run.
+    """
+    assert name
     with open(name, 'w', encoding=conf.encoding) as conf_file:
         conf_file.write(COMMENT_SECTION.format(dosbox_args))
         conf_file.write(SDL_SECTION_2)
@@ -319,7 +325,7 @@ def create_conf_file(name, dosbox_args, tweak_conf):
                 conf_file.write(line + '\n')
 
 
-def create_auto_conf_file():
+def create_auto_conf_file(conf):
     """Create DOSBox configuration file based on environment.
 
     Different sections are either hard-coded or generated based on
@@ -337,12 +343,16 @@ def create_auto_conf_file():
         auto.write('# This file is re-created on every run\n')
         auto.write('\n')
 
-        auto.write(
-            SDL_SECTION_1.format(
-                resolution=settings.get_dosbox_fullresolution()))
+        sdl_fullresolution = settings.get_dosbox_fullresolution()
+        auto.write(SDL_SECTION_1.format(resolution=sdl_fullresolution))
 
+        render_scaler = settings.get_dosbox_scaler()
+        render_aspect = 'false'
+        if conf and conf.has_section('render'):
+            render_aspect = conf['render'].get('aspect', 'false')
         auto.write(
-            RENDER_SECTION_1.format(scaler=settings.get_dosbox_scaler()))
+            RENDER_SECTION_1.format(scaler=render_scaler,
+                                    aspect=render_aspect))
 
         base, irq, dma, hdma = 220, 7, 1, 5  # DOSBox defaults
         print_err('steam-dos: Setting up DOSBox audio:')
