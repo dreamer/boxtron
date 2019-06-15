@@ -31,6 +31,22 @@ TWEAKS_DB = {
             },
         },
     },
+    # Tomb Raider I
+    # As of 0.74-2, upstream DOSBox does not support GLide acceleration.
+    # This tweak starts the game without hardware acceleration.
+    '224960': {
+        'commands': {
+            r'.*':  {
+                'args': ['-conf', 'dosboxtr.conf', '-noautoexec',
+                         '-c', 'mount C .',
+                         '-c', 'imgmount D GAME.DAT -t iso -fs iso',
+                         '-c', 'C:',
+                         '-c', 'cd TOMBRAID',
+                         '-c', 'TOMBNO~1.EXE',
+                         '-c', 'exit'],
+            },
+        },
+    },
     # MegaRace 2
     '733760': {
         'commands': {
