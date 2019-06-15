@@ -38,14 +38,17 @@ class SierraLauncherConfig:
         self.name = launcher['name']
         self.games_num = int(launcher['numbuttons'])
         for i in range(0, self.games_num):
+            self.games[i] = {}
             path = launcher['game{}path'.format(i + 1)]
             args = launcher['game{}cmd'.format(i + 1)]
             orig_cwd = os.getcwd()
             os.chdir(ini_dir)
-            self.games[i] = {
-                'path': os.path.join(ini_dir, to_posix_path(path)),
-                'args': argsplit_windows(args),
-            }
+            real_path = to_posix_path(path)
+            if real_path:
+                self.games[i] = {
+                    'path': os.path.join(ini_dir, real_path),
+                    'args': argsplit_windows(args),
+                }
             os.chdir(orig_cwd)
 
     def chdir(self, game_num):

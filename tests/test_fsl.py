@@ -24,6 +24,14 @@ class TestLauncherParser(unittest.TestCase):
                                         '-noconsole',
                                         '-c', 'exit'])
 
+    def test_parser_kqc(self):
+        path = 'tests/files/sierra/kings_quest_collection/'
+        ini = path + 'SierraLauncher.ini'
+        launcher = fsl.SierraLauncherConfig(ini_file=ini)
+        self.assertEqual(launcher.name,
+                         "King's Quest Collection(TM) Legacy")
+        self.assertEqual(launcher.games_number(), 7)
+
 
 if __name__ == '__main__':  # pragma: no cover
     unittest.main()
