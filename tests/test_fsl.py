@@ -31,6 +31,7 @@ class TestLauncherParser(unittest.TestCase):
         self.assertEqual(launcher.name,
                          "King's Quest Collection(TM) Legacy")
         self.assertEqual(launcher.games_number(), 7)
+        self.assertEqual(launcher.games[0]['name'], "King's Quest 1")
 
 
 if __name__ == '__main__':  # pragma: no cover
