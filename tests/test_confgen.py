@@ -35,6 +35,8 @@ class TestDosboxArgParser(unittest.TestCase):
 
 class TestDosboxConfiguration(unittest.TestCase):
 
+    # pylint: disable=too-many-public-methods
+
     def setUp(self):
         self.original_dir = os.getcwd()
 
@@ -178,6 +180,11 @@ class TestDosboxConfiguration(unittest.TestCase):
         self.assertEqual('44100', cfg['mixer']['rate'])  # from sb2.conf
         self.assertEqual('77', cfg['sblaster']['irq'])  # from sb2.conf
         self.assertEqual('42', cfg['sblaster']['dma'])  # from sb1.conf
+
+    def test_fix_autoexec_0(self):
+        os.chdir('tests/files/confs')
+        old = ['foo', 'bar baz']
+        self.assertEqual(list(confgen.to_linux_autoexec(old)), old)
 
     def test_fix_autoexec_1(self):
         os.chdir('tests/files/confs')

@@ -208,8 +208,7 @@ def uniq_conf_name_salted(app_id, args, salt):
 
 def parse_dosbox_config(conf_file):
     """Parse DOSBox configuration file."""
-    if conf_file is None:
-        return None
+    assert conf_file
     config = configparser.ConfigParser(allow_no_value=True,
                                        delimiters='=',
                                        strict=False)
