@@ -74,6 +74,23 @@ class TestDosboxConfiguration(unittest.TestCase):
         self.assertTrue(tweaks.command_tweak_needed('2'))
         self.assertEqual(args, ['-conf', 'old'])
 
+    def test_configuration_tweak_1(self):
+        self.assertFalse('3' in tweaks.TWEAKS_DB)
+        self.assertEqual(tweaks.get_conf_tweak('3'), {})
+
+    def test_configuration_tweak_2(self):
+        tweaks.TWEAKS_DB['4'] = {'foo': {}}
+        self.assertTrue('4' in tweaks.TWEAKS_DB)
+        self.assertEqual(tweaks.get_conf_tweak('4'), {})
+
+    def test_configuration_tweak_3(self):
+        conf_tweak = {
+            'foo': {'bar': 'baz'}
+        }
+        tweaks.TWEAKS_DB['5'] = {'conf': conf_tweak}
+        self.assertTrue('5' in tweaks.TWEAKS_DB)
+        self.assertEqual(tweaks.get_conf_tweak('5'), conf_tweak)
+
 
 if __name__ == '__main__':  # pragma: no cover
     unittest.main()
