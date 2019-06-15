@@ -54,6 +54,26 @@ class TestDosboxConfiguration(unittest.TestCase):
         self.assertTrue(needed)
         self.assertEqual(new_path, os.path.join(os.getcwd(), expected_path))
 
+    def test_tweak_command_match(self):
+        tweaks.TWEAKS_DB['1'] = {
+            'commands': {
+                r'.*': {'args': ['-conf', 'new']},
+            }
+        }
+        args = tweaks.tweak_command('1', ['/path/program', '-conf', 'old'])
+        self.assertTrue(tweaks.command_tweak_needed('1'))
+        self.assertEqual(args, ['-conf', 'new'])
+
+    def test_tweak_command_no_match(self):
+        tweaks.TWEAKS_DB['2'] = {
+            'commands': {
+                r'.*launcher': {'args': ['-conf', 'new']},
+            }
+        }
+        args = tweaks.tweak_command('2', ['/path/program', '-conf', 'old'])
+        self.assertTrue(tweaks.command_tweak_needed('2'))
+        self.assertEqual(args, ['-conf', 'old'])
+
 
 if __name__ == '__main__':  # pragma: no cover
     unittest.main()

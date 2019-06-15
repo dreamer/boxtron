@@ -70,6 +70,7 @@ def command_tweak_needed(app_id):
 
 def tweak_command(app_id, cmd_line):
     """Convert command line based on TWEAKS_DB."""
+    assert len(cmd_line) >= 1
     orig_cmd = ' '.join(cmd_line)
     exec_replacements = TWEAKS_DB[app_id]['commands']
     for expr, replacement in exec_replacements.items():
@@ -78,8 +79,8 @@ def tweak_command(app_id, cmd_line):
             if 'args' in replacement:
                 return replacement['args']
             raise KeyError
-    print_err('run_dosbox: error: no suitable tweak found for:', cmd_line)
-    return []
+    print_err('steam-dos: error: no suitable tweak found for:', cmd_line)
+    return cmd_line[1:]
 
 
 def get_conf_tweak(app_id):
