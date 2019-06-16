@@ -10,6 +10,8 @@ import os
 from toolbox import argsplit_windows, print_err
 from winpathlib import to_posix_path
 
+SIERRA_GAME = os.environ.get('SDOS_SIERRA_GAME', '1')
+
 
 class SierraLauncherConfig:
     """Interpret Sierra Launcher configuration file.
@@ -23,12 +25,29 @@ class SierraLauncherConfig:
         self.name = ''
         self.games = {}
         self.games_num = 0
+        self.selected_game = 0
         path, _ = os.path.split(ini_file)
         self.__parse_config__(ini_file, path)
+        self.select_game()
 
     def games_number(self):
         """Return number of games defined in the launcher."""
         return self.games_num
+
+    def select_game(self):
+        """Select game in collection."""
+        index = 0
+        try:
+            index = int(SIERRA_GAME) - 1
+        except ValueError:
+            print_err('steam-dos: warning: SDOS_SIERRA_GAME must be',
+                      'a numerical value')
+        self.selected_game = min(max(0, index), self.games_num - 1)
+        if self.selected_game != index:
+            print_err('steam-dos: warning: game', SIERRA_GAME, 'not found.')
+            print_err('steam-dos: warning: This collection defines games',
+                      '1..' + str(self.games_num))
+            self.selected_game = 0
 
     def __parse_config__(self, ini_file, ini_dir):
         config = configparser.ConfigParser(delimiters='=')
@@ -38,23 +57,46 @@ class SierraLauncherConfig:
         self.name = launcher['name']
         self.games_num = int(launcher['numbuttons'])
         for i in range(0, self.games_num):
-            name = launcher['game{}name'.format(i + 1)]
-            self.games[i] = {'name': name}
-            print_err('found:', name)
-            path = launcher['game{}path'.format(i + 1)]
-            args = launcher['game{}cmd'.format(i + 1)]
-            orig_cwd = os.getcwd()
-            os.chdir(ini_dir)
-            real_path = to_posix_path(path)
-            if real_path:
-                self.games[i].update({
-                    'path': os.path.join(ini_dir, real_path),
-                    'args': argsplit_windows(args),
-                })
-            os.chdir(orig_cwd)
+            self.__parse_game_entry__(launcher, ini_dir, i)
 
-    def chdir(self, game_num):
+    def __parse_game_entry__(self, launcher, ini_dir, i):
+        num = i + 1
+        name = launcher['game%dname' % num]
+        prog = launcher['game%dprog' % num]
+        path = launcher['game%dpath' % num]
+        exe = launcher['game%dexe' % num]
+        cmd = launcher['game%dcmd' % num]
+        self.games[i] = {'name': name}
+        game = self.games[i]
+        orig_cwd = os.getcwd()
+        os.chdir(ini_dir)
+        real_path = to_posix_path(path)
+        if real_path:
+            game['path'] = os.path.join(ini_dir, real_path)
+        else:
+            print_err("steam-dos: error: can't find path", path)
+            game['path'] = orig_cwd
+        if prog.lower() == 'dosbox':  # used only in Legacy launcher
+            game['args'] = ['-c', 'mount C .',
+                            '-c', 'C:',
+                            '-c', exe,
+                            '-c', 'exit']  # yapf: disable
+        else:  # usually 'other', most common option
+            game['args'] = argsplit_windows(cmd)
+        os.chdir(orig_cwd)
+
+    def chdir(self):
         """Change working directory to the one defined for game game_num."""
-        assert game_num < self.games_number()
-        path = self.games[game_num]['path']
+        assert self.selected_game < self.games_number()
+        path = self.games[self.selected_game]['path']
         os.chdir(path)
+
+    def get_name(self):
+        """Return name of the selected game."""
+        assert self.selected_game < self.games_number()
+        return self.games[self.selected_game]['name']
+
+    def get_args(self):
+        """Return dosbox arguments to run the selected game."""
+        assert self.selected_game < self.games_number()
+        return self.games[self.selected_game]['args']

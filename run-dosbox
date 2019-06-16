@@ -176,10 +176,9 @@ def run_file(path, exe, cmd_line):
             sys.exit(1)
         print_err('steam-dos: parsing', ini_file)
         launcher = SierraLauncherConfig(ini_file=ini_file)
-        game = launcher.games[0]
-        print_err('steam-dos: launching', game['name'])
-        launcher.chdir(0)
-        run_dosbox_with_conf(game['args'])
+        print_err('steam-dos: launching', launcher.get_name())
+        launcher.chdir()
+        run_dosbox_with_conf(launcher.get_args())
 
     else:
         print_err('run_dosbox: ignoring command:', cmd_line)

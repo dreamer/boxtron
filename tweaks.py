@@ -18,17 +18,19 @@ TWEAKS_DB = {
     # Ultimate Doom
     '2280': {
         'conf': {
-            'render': {
-                'aspect': 'true',
-            },
+            'render': {'aspect': 'true'},
+        },
+    },
+    # King's Quest™ Collection
+    '10100': {
+        'conf': {
+            'render': {'aspect': 'true'},
         },
     },
     # STAR WARS™ - Dark Forces
     '32400': {
         'conf': {
-            'render': {
-                'aspect': 'true',
-            },
+            'render': {'aspect': 'true'},
         },
     },
     # Tomb Raider I

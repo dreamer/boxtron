@@ -66,19 +66,6 @@ resolution of your screens - just as any modern game does by default.
 You can pick different screen by changing option `dosbox.fullscreenmode` in settings
 file or using `SDOS_SCREEN=<num>` environment variable.
 
-### GOG Games
-
-To easily install a DOS game from GOG to your Steam library, use included script:
-
-    $ ./install-gog-game ~/Downloads/setup_warcraft_orcs__humans_1.2_\(28330\).exe
-
-It will unpack the game to `~/.local/share/games`, prepare a setup that works around all
-known Steam bugs and generate `.desktop` file to be added to your Steam library. After
-that you can play the game using steam-dos or Proton.
-
-Installation script depends only on Python standard library, you can put it in your
-PATH or wherever you like.
-
 ### MIDI support
 
 TiMidity++ (or FluidSynth) are started and closed automatically, unless they are already
@@ -98,6 +85,34 @@ In `~/.config/steam-dos.conf`:
 
     [dosbox]
     bin = ~/path_to_dosbox/src/dosbox
+
+### GOG Games
+
+To easily install a DOS game from GOG to your Steam library, use included script:
+
+    $ ./install-gog-game ~/Downloads/setup_warcraft_orcs__humans_1.2_\(28330\).exe
+
+It will unpack the game to `~/.local/share/games`, prepare a setup that works around all
+known Steam bugs and generate `.desktop` file to be added to your Steam library. After
+that you can play the game using steam-dos or Proton.
+
+Installation script depends only on Python standard library, you can put it in your
+PATH or wherever you like.
+
+### Sierra Launcher
+
+Some game collections on Steam use "Sierra Classics Launcher" graphical frontend.
+There's no support for graphical version of this launcher - the first game in a collection
+will be started by default. You can select different game to run with `SDOS_SIERRA_GAME`
+environment variable.
+
+For example, to start King's Quest 6 from
+[King's Quest Collection](https://store.steampowered.com/app/10100/):
+
+    SDOS_SIERRA_GAME=6 %command%
+
+Check `SierraLauncher.ini` file in game's installation dir to learn which number
+corresponds to which game.
 
 ## Caution!
 
