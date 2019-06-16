@@ -309,10 +309,15 @@ def create_user_conf_file(name, conf, dosbox_args):
                 if key == 'frameskip':
                     # This option is useless nowadays, let's hide it.
                     continue
-                if key == 'scaler':
+                if key in ('scaler', 'aspect'):
                     # Publishers sometimes pick weird scalers by default.
                     # We don't want their choice, but let's signal to the
                     # user, that here's the place to override the value.
+                    #
+                    # Same goes for aspect - it's common for publishers
+                    # to misconfigure it and we inject game-specific
+                    # default to auto.conf already.
+                    #
                     conf_file.write('# {0}={1}\n'.format(key, val))
                     continue
                 conf_file.write('{0}={1}\n'.format(key, val))
