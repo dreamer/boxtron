@@ -29,7 +29,7 @@ class TestLauncherParser(unittest.TestCase):
         ini = path + 'SierraLauncher.ini'
         launcher = fsl.SierraLauncherConfig(ini_file=ini)
         self.assertEqual(launcher.name,
-                         "King's Quest Collection(TM) Legacy")
+                         "King's Quest Collection(TM)")
         self.assertEqual(launcher.games_number(), 7)
         self.assertEqual(launcher.games[0]['name'], "King's Quest 1")
 
