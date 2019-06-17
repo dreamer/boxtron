@@ -46,11 +46,11 @@ lint: version.py
 	shellcheck codestyle.sh tests/coverage-report.sh
 	pylint --rcfile=.pylint run-dosbox install-gog-game *.py tests/*.py
 
-test:
+test: preconfig.tar
 	XDG_CONFIG_HOME=$(shell pwd)/tests/files/xdg_config_home \
 	python3 -m unittest discover -v -s tests
 
-coverage:
+coverage: preconfig.tar
 	bash tests/coverage-report.sh 2> /dev/null
 
 version.py:
