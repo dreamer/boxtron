@@ -26,3 +26,33 @@ def find_resource_file():
         xfile.name = xfile.name.replace(pfx, '')
     preconfig.extractall(path='game_dir', members=xlist, numeric_owner=True)
     return preconfig
+
+
+def open_resource(file_name):
+    """Open a ResourceFile."""
+    return ResourceFile(file_name)
+
+
+class ResourceFile:
+    """TODO."""
+
+    def __init__(self, file_name):
+        self.file_name = file_name
+        self.tar = None
+        self.members = []
+
+    def __enter__(self):
+        self.tar = tarfile.open(self.file_name, mode='r:')
+        return self
+
+    def __exit__(self, exc_type, exc_value, exc_tb):
+        self.tar.close()
+
+    def filter_pfx(self, pfx):
+        """Return iterator over objects named with prefix."""
+        return filter(lambda x: x.name.startswith(pfx), self.tar.getmembers())
+
+    def includes(self, app_id):
+        """Return iff file contains setup for app_id."""
+        pfx = 'preconfig/{}/'.format(app_id)
+        return list(self.filter_pfx(pfx)) != []

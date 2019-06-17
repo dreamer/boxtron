@@ -108,6 +108,5 @@ class TestDosboxConfiguration(unittest.TestCase):
         self.assertEqual(tweaks.get_midi_preset('9'), 'enable')
 
 
-
 if __name__ == '__main__':  # pragma: no cover
     unittest.main()
