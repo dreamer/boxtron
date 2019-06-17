@@ -10,6 +10,8 @@ import sys
 import tarfile
 import hashlib
 
+EXPECTED_CHECKSUM = '65fa262a429213eea6f50774e6885d5393d2599f'
+
 
 def find_resource_file(prog=sys.argv[0]):
     """Return path to bundled resource file."""
@@ -23,15 +25,19 @@ def find_resource_file(prog=sys.argv[0]):
     return None
 
 
-def verify():
-    """Basic verification if file originates from release."""
+def __checksum__():
     rfile = find_resource_file()
     assert rfile
     sha1sum = hashlib.sha1()
     with open(find_resource_file(), 'rb') as tar:
         block = tar.read()
         sha1sum.update(block)
-    return sha1sum.hexdigest() == '65fa262a429213eea6f50774e6885d5393d2599f'
+    return sha1sum.hexdigest()
+
+
+def verify():
+    """Basic verification if file originates from release."""
+    return __checksum__() == EXPECTED_CHECKSUM
 
 
 def open_resource(file_name):
