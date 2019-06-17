@@ -11,6 +11,8 @@ files = run-dosbox \
 	confgen.py \
 	fsl.py \
 	midi.py \
+	preconfig.py \
+	preconfig.tar \
 	settings.py \
 	toolbox.py \
 	tweaks.py \
@@ -55,6 +57,9 @@ version.py:
 	@echo "# pylint: disable=missing-docstring" > $@
 	@echo "VERSION = '$(version)'" >> $@
 
+preconfig.tar: preconfig
+	tar --owner=0 --group=0 --mtime='2019-06-17 00:13:37' -cf $@ $<
+
 $(tool_dir).zip: $(files)
 	mkdir -p $(tool_dir)
 	cp --reflink=auto -t $(tool_dir) $^
@@ -84,6 +89,7 @@ user-uninstall:
 
 clean:
 	rm -f version.py
+	rm -f preconfig.tar
 	rm -f $(tool_dir).tar.xz
 	rm -f $(tool_dir).zip
 
