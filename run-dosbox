@@ -54,7 +54,17 @@ def wait_for_previous_process():
         subprocess.call(['inotifywait', '-e', 'delete', PID_FILE])
 
 
-def configure_midi():
+def setup_midi():
+    """Handle whole MIDI setup based on user preference."""
+    if tweaks.get_midi_preset(STEAM_APP_ID) == 'auto':
+        setup_midi_game()
+    if tweaks.get_midi_preset(STEAM_APP_ID) == 'disable':
+        print_err('steam-dos: info: this game does not support MIDI music')
+        settings.set_midi_on(False)
+    setup_midi_synth()
+
+
+def setup_midi_synth():
     """Detect or run and configure software MIDI synthesiser."""
     if not settings.get_midi_on():
         return
@@ -71,6 +81,14 @@ def configure_midi():
         midi.start_fluidsynth(sfont)
     else:
         print_err('steam-dos: warn: no software MIDI synthesiser available')
+
+
+def setup_midi_game():
+    """Configure game to use (or not) MIDI."""
+    if settings.get_midi_on():
+        pass
+    else:
+        pass
 
 
 def run_dosbox(args):
@@ -93,7 +111,7 @@ def run_dosbox_with_conf(args):
     if settings.get_confgen_force() or not os.path.isfile(name):
         print_err('steam-dos: saving', name, 'based on', args)
         confgen.create_user_conf_file(name, static_conf, args)
-    configure_midi()
+    setup_midi()
     auto_conf = confgen.create_auto_conf_file(static_conf)
     run_dosbox(['-conf', auto_conf, '-conf', name])
 
@@ -131,7 +149,7 @@ def run_file(path, exe, cmd_line):
         # User wants to run different executable than the one
         # selected by Steam (e.g. sound setup).
         exe = RUN_EXE
-        configure_midi()
+        setup_midi()
         if os.path.isfile(exe):
             run_dosbox(['-conf', confgen.create_auto_conf_file({}),
                         exe, '-exit'])  # yapf: disable

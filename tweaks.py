@@ -29,6 +29,7 @@ TWEAKS_DB = {
     },
     # STAR WARS™ - Dark Forces
     '32400': {
+        'midi': 'auto',
         'conf': {
             'render': {'aspect': 'true'},
         },
@@ -51,6 +52,7 @@ TWEAKS_DB = {
     },
     # MegaRace 2
     '733760': {
+        'midi': 'disable',
         'commands': {
             r'.*':  {
                 'args': ['-conf', 'dosboxmegarace2.conf', '-noautoexec',
@@ -95,6 +97,23 @@ def get_conf_tweak(app_id):
     if 'conf' not in TWEAKS_DB[app_id]:
         return {}
     return TWEAKS_DB[app_id]['conf']
+
+
+def get_midi_preset(app_id):
+    """Return MIDI preset for given AppID.
+
+    Possible return values:
+
+    enable  - (default) turn on software midi synthesiser
+    disable - game does not support midi at all
+    auto    - pre-configure game to automatically turn midi on/off depending
+              on user preference
+    """
+    if app_id not in TWEAKS_DB:
+        return 'enable'
+    if 'midi' not in TWEAKS_DB[app_id]:
+        return 'enable'
+    return TWEAKS_DB[app_id]['midi']
 
 
 # Normally, Steam is changing working dir to the sub-directory of game
