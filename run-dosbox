@@ -56,9 +56,10 @@ def wait_for_previous_process():
 
 def setup_midi():
     """Handle whole MIDI setup based on user preference."""
-    if tweaks.get_midi_preset(STEAM_APP_ID) == 'auto':
+    midi_preset = tweaks.get_midi_preset(STEAM_APP_ID)
+    if midi_preset == 'auto':
         setup_midi_game()
-    if tweaks.get_midi_preset(STEAM_APP_ID) == 'disable':
+    if midi_preset == 'disable':
         print_err('steam-dos: info: this game does not support MIDI music')
         settings.set_midi_on(False)
     setup_midi_synth()
