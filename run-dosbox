@@ -26,8 +26,9 @@ import sys
 
 import confgen
 import midi
-import version
+import preconfig
 import tweaks
+import version
 import toolbox
 
 from toolbox import print_err
@@ -86,10 +87,24 @@ def setup_midi_synth():
 
 def setup_midi_game():
     """Configure game to use (or not) MIDI."""
-    if settings.get_midi_on():
-        pass
-    else:
-        pass
+
+    if not preconfig.verify():
+        print_err('steam-dos: error: checksum on resource file failed')
+        return
+
+    rfile_name = preconfig.find_resource_file()
+    print_err('steam-dos: using resource file', rfile_name)
+    with preconfig.open_resource(rfile_name) as rfile:
+        if not rfile.includes(STEAM_APP_ID):
+            print_err('steam-dos: error: resource file does not include',
+                      'files for', STEAM_APP_ID)
+            return
+        if settings.get_midi_on():
+            print_err('steam-dos: turning MIDI ON for', STEAM_APP_ID)
+            rfile.extract(STEAM_APP_ID, 'midi_on')
+        else:
+            print_err('steam-dos: turning MIDI OFF for', STEAM_APP_ID)
+            rfile.extract(STEAM_APP_ID, 'midi_off')
 
 
 def run_dosbox(args):
