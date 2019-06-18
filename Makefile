@@ -61,7 +61,7 @@ preconfig.tar: preconfig
 	tar --format=v7 \
 	    --mode='a+rwX,o-w' --owner=0 --group=0 --mtime='@1560859200' \
 	    -cf $@ $(shell find $< -type f | sort)
-	sha1sum preconfig.tar
+	sha256sum preconfig.tar
 
 $(tool_dir).zip: $(files)
 	mkdir -p $(tool_dir)
