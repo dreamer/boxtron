@@ -25,6 +25,10 @@ Run Linters:
 Unit Tests:
   stage: test
   script: make test
+  artifacts:
+    paths:
+    - preconfig.tar
+    expire_in: 1 day
 
 Unit Tests Coverage:
   stage: test

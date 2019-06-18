@@ -58,7 +58,10 @@ version.py:
 	@echo "VERSION = '$(version)'" >> $@
 
 preconfig.tar: preconfig
-	tar --owner=0 --group=0 --mtime='2019-06-17 00:13:37' -cf $@ $<
+	tar --format=v7 \
+	    --mode='a+rwX,o-w' --owner=0 --group=0 --mtime='@1560859200' \
+	    -cf $@ $(shell find $< -type f | sort)
+	sha1sum preconfig.tar
 
 $(tool_dir).zip: $(files)
 	mkdir -p $(tool_dir)

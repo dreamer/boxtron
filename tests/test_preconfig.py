@@ -26,6 +26,8 @@ class TestPreconfig(unittest.TestCase):
     def test_find_1(self):
         rfile = preconfig.find_resource_file()
         self.assertTrue(rfile.endswith('preconfig.tar'))
+        # with preconfig.open_resource(rfile) as resource_file:
+        #    resource_file.tar.list()
 
     def test_find_missing(self):
         sys_argv_0 = TAR_TEST_DIR + 'missing/exe'
