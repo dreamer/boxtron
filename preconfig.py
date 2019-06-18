@@ -10,7 +10,7 @@ import sys
 import tarfile
 import hashlib
 
-EXPECTED_CHECKSUM = '4d87bf7259166898f515972cb9264d147305429a'
+CHECKSUM = '71af447858138de5a30260e36d450eaa78d72988fc88660c7c8635134ca9fd3f'
 
 
 def find_resource_file(prog=sys.argv[0]):
@@ -28,7 +28,7 @@ def find_resource_file(prog=sys.argv[0]):
 def __checksum__():
     rfile = find_resource_file()
     assert rfile
-    sha1sum = hashlib.sha1()
+    sha1sum = hashlib.sha256()
     with open(find_resource_file(), 'rb') as tar:
         block = tar.read()
         sha1sum.update(block)
@@ -37,7 +37,7 @@ def __checksum__():
 
 def verify():
     """Basic verification if file originates from release."""
-    return __checksum__() == EXPECTED_CHECKSUM
+    return __checksum__() == CHECKSUM
 
 
 def open_resource(file_name):
