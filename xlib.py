@@ -73,7 +73,7 @@ class Xinerama:
 
     def __init__(self, xlib):
         self.xlib = xlib
-        self.lib = CDLL("libXinerama.so")
+        self.lib = CDLL("libXinerama.so.1")
         self.lib.XineramaIsActive.argtypes = [c_void_p]
         self.lib.XineramaIsActive.restype = c_bool
         self.lib.XineramaQueryScreens.argtypes = [c_void_p, POINTER(c_int)]
