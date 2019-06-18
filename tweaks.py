@@ -21,6 +21,10 @@ TWEAKS_DB = {
             'render': {'aspect': 'true'},
         },
     },
+    # X-COM: UFO Defence / UFO: Enemy Unknown
+    '7760': {
+        'midi': 'auto',
+    },
     # King's Quest™ Collection
     '10100': {
         'conf': {
