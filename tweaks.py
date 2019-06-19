@@ -21,6 +21,10 @@ TWEAKS_DB = {
             'render': {'aspect': 'true'},
         },
     },
+    # X-COM: Terror from the Deep
+    '7650': {
+        'midi': 'auto',
+    },
     # X-COM: UFO Defence / UFO: Enemy Unknown
     '7760': {
         'midi': 'auto',
