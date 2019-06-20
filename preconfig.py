@@ -10,8 +10,7 @@ import sys
 import tarfile
 import hashlib
 
-CHECKSUM = '9f4ad048e982397ae6582d4897abb8fb9df3a9315b0719aae973838dd97a19ee'
-
+CHECKSUM = 'bf1d6950b01026d174ccac2a2ac5cd4877c964a0e4237a1422d53000c276a91c'
 
 def find_resource_file(prog=sys.argv[0]):
     """Return path to bundled resource file."""

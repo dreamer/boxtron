@@ -58,6 +58,11 @@ TWEAKS_DB = {
             },
         },
     },
+    # Jagged Alliance Gold
+    # Jagged Alliance Deadly Games
+    '283270': {
+        'midi': 'auto',
+    },
     # MegaRace 2
     '733760': {
         'midi': 'disable',
