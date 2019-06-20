@@ -38,7 +38,7 @@ class TestPreconfig(unittest.TestCase):
         self.assertIsNone(preconfig.find_resource_file(sys_argv_0))
 
     def test_verify_preconfig(self):
-        self.assertEqual(preconfig.__checksum__(), preconfig.CHECKSUM)
+        self.assertEqual(preconfig.CHECKSUM, preconfig.__checksum__())
         self.assertTrue(preconfig.verify())
 
     def test_file_filter(self):
