@@ -8,6 +8,7 @@ Settings file creation and handling.
 
 import configparser
 import os
+import shlex
 
 import xlib
 
@@ -169,8 +170,16 @@ class Settings():
         return self.__get_str__('midi', 'soundfont', DEFAULT_MIDI_SOUNDFONT)
 
     def get_dosbox_bin(self):
-        dosbox = self.__get_str__('dosbox', 'bin', DEFAULT_DOSBOX_BINARY)
-        return os.path.expanduser(dosbox)
+        cmd = self.__get_str__('dosbox', 'bin', DEFAULT_DOSBOX_BINARY)
+        try:
+            split = shlex.split(cmd, comments=True)
+            return [os.path.expanduser(s) for s in split]
+        except ValueError as err:
+            print_err('steam-dos: error: invalid dosbox.bin value:', err)
+            return [DEFAULT_DOSBOX_BINARY]
+
+    def set_dosbox_bin(self, value):
+        self.store.set('dosbox', 'bin', value)
 
     def get_dosbox_fullscreenmode(self):
         return self.__get_str__('dosbox', 'fullscreenmode',
