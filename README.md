@@ -77,7 +77,7 @@ NOTE: Sythesiser running does not automagically turn on MIDI music in your game,
 you need to enable it manually (usually there's a file called `SETUP.EXE`,
 `IMUSE.EXE` or similar somewhere in the game directory). Use following settings:
 
-Music/device: "General MIDI", Music Port: **330**
+Music/device: **Roland MPU401/General MIDI***, Music Port: **330**
 
 ### Selecting different DOSBox builds
 
