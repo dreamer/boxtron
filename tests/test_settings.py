@@ -57,6 +57,12 @@ class TestSettings(unittest.TestCase):
         settings.setup()
         self.assertTrue(settings.finalized)
 
+    def test_set_value(self):
+        settings.set_midi_on(False)
+        self.assertFalse(settings.get_midi_on())
+        settings.set_midi_on(True)
+        self.assertTrue(settings.get_midi_on())
+
 
 if __name__ == '__main__':  # pragma: no cover
     unittest.main()

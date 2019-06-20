@@ -11,6 +11,8 @@ files = run-dosbox \
 	confgen.py \
 	fsl.py \
 	midi.py \
+	preconfig.py \
+	preconfig.tar \
 	settings.py \
 	toolbox.py \
 	tweaks.py \
@@ -44,16 +46,21 @@ lint: version.py
 	shellcheck codestyle.sh tests/coverage-report.sh
 	pylint --rcfile=.pylint run-dosbox install-gog-game *.py tests/*.py
 
-test:
+test: preconfig.tar
 	XDG_CONFIG_HOME=$(shell pwd)/tests/files/xdg_config_home \
 	python3 -m unittest discover -v -s tests
 
-coverage:
+coverage: preconfig.tar
 	bash tests/coverage-report.sh 2> /dev/null
 
 version.py:
 	@echo "# pylint: disable=missing-docstring" > $@
 	@echo "VERSION = '$(version)'" >> $@
+
+preconfig.tar: preconfig
+	@tar --format=v7 \
+	    --mode='a+rwX,o-w' --owner=0 --group=0 --mtime='@1560859200' \
+	    -cf $@ $(shell find $< -type f | sort)
 
 $(tool_dir).zip: $(files)
 	mkdir -p $(tool_dir)
@@ -84,6 +91,7 @@ user-uninstall:
 
 clean:
 	rm -f version.py
+	rm -f preconfig.tar
 	rm -f $(tool_dir).tar.xz
 	rm -f $(tool_dir).zip
 

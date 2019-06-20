@@ -91,6 +91,22 @@ class TestDosboxConfiguration(unittest.TestCase):
         self.assertTrue('5' in tweaks.TWEAKS_DB)
         self.assertEqual(tweaks.get_conf_tweak('5'), conf_tweak)
 
+    def test_midi_preset_1(self):
+        tweaks.TWEAKS_DB['6'] = {'midi': 'auto'}
+        self.assertEqual(tweaks.get_midi_preset('6'), 'auto')
+
+    def test_midi_preset_3(self):
+        tweaks.TWEAKS_DB['7'] = {'midi': 'disable'}
+        self.assertEqual(tweaks.get_midi_preset('7'), 'disable')
+
+    def test_midi_preset_2(self):
+        tweaks.TWEAKS_DB['8'] = {'midi': 'enable'}
+        self.assertEqual(tweaks.get_midi_preset('8'), 'enable')
+
+    def test_midi_preset_4(self):
+        self.assertFalse('9' in tweaks.TWEAKS_DB)
+        self.assertEqual(tweaks.get_midi_preset('9'), 'enable')
+
 
 if __name__ == '__main__':  # pragma: no cover
     unittest.main()

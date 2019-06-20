@@ -165,6 +165,9 @@ class Settings():
             return False
         return self.__get_bool__('midi', 'enable', DEFAULT_MIDI_ENABLE)
 
+    def set_midi_on(self, value):
+        self.store.set('midi', 'enable', str(value))
+
     def get_midi_soundfont(self):
         assert self.finalized
         return self.__get_str__('midi', 'soundfont', DEFAULT_MIDI_SOUNDFONT)
