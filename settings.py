@@ -211,7 +211,7 @@ class Settings():
         for path in sf2_search:
             selected_path = os.path.join(*path, sf2)
             default1_path = os.path.join(*path, DEFAULT_MIDI_SOUNDFONT)
-            default2_path = os.path.join(*path, 'default.sf2z')
+            default2_path = os.path.join(*path, 'default.sf2')
             if os.path.isfile(selected_path):
                 selected = selected_path
             if os.path.isfile(default1_path):
