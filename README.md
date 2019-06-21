@@ -84,7 +84,7 @@ Music/device: **Roland MPU401/General MIDI**, Music Port: **330**
 In `~/.config/steam-dos.conf`:
 
     [dosbox]
-    bin = ~/path_to_dosbox/src/dosbox
+    cmd = ~/path_to_dosbox/src/dosbox
 
 ### GOG Games
 

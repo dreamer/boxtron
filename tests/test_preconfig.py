@@ -17,7 +17,7 @@ class TestPreconfig(unittest.TestCase):
 
     def setUp(self):
         if os.path.isfile('file'):
-            raise FileExistsError("remove 'file', please")
+            raise FileExistsError("remove 'file', please")  # pragma: no cover
 
     def tearDown(self):
         if os.path.isfile('file'):

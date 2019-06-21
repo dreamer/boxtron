@@ -108,7 +108,7 @@ def setup_midi_game():
 
 
 def run_dosbox(args):
-    cmd = settings.get_dosbox_bin()
+    cmd = settings.get_dosbox_cmd()
     print_err('run_dosbox: working dir: "{}"'.format(os.getcwd()))
     print_err('run_dosbox:', cmd + args)
     sys.stderr.flush()

@@ -75,7 +75,7 @@ fullscreenmode = {fullscreen_mode}
 scaler = {scaler}
 
 # Uncomment following line to specify a different DOSBox build:
-# bin = ~/projects/dosbox/src/dosbox
+# cmd = ~/projects/dosbox/src/dosbox
 """.format(confgen_force=str(DEFAULT_CONFGEN_FORCE).lower(),
            midi_enable=str(DEFAULT_MIDI_ENABLE).lower(),
            midi_soundfont=DEFAULT_MIDI_SOUNDFONT,
@@ -172,8 +172,13 @@ class Settings():
         assert self.finalized
         return self.__get_str__('midi', 'soundfont', DEFAULT_MIDI_SOUNDFONT)
 
-    def get_dosbox_bin(self):
-        cmd = self.__get_str__('dosbox', 'bin', DEFAULT_DOSBOX_BINARY)
+    def get_dosbox_cmd(self):
+        # dosbox.cmd is new name for dosbox.bin
+        dosbox_cmd = self.__get_str__('dosbox', 'cmd', None)
+        dosbox_bin = self.__get_str__('dosbox', 'bin', DEFAULT_DOSBOX_BINARY)
+        if not dosbox_cmd:
+            dosbox_cmd = dosbox_bin
+        cmd = os.environ.get('SDOS_DOSBOX_CMD', dosbox_cmd)
         try:
             split = shlex.split(cmd, comments=True)
             return [os.path.expanduser(s) for s in split]
@@ -181,8 +186,8 @@ class Settings():
             print_err('steam-dos: error: invalid dosbox.bin value:', err)
             return [DEFAULT_DOSBOX_BINARY]
 
-    def set_dosbox_bin(self, value):
-        self.store.set('dosbox', 'bin', value)
+    def set_dosbox_cmd(self, value):
+        self.store.set('dosbox', 'cmd', value)
 
     def get_dosbox_fullscreenmode(self):
         return self.__get_str__('dosbox', 'fullscreenmode',

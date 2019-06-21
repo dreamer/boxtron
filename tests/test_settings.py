@@ -13,44 +13,49 @@ from settings import SETTINGS as settings, DEFAULT_DOSBOX_BINARY
 class TestSettings(unittest.TestCase):
 
     def setUp(self):
-        self.original = settings.get_dosbox_bin()
+        self.original = settings.get_dosbox_cmd()
 
     def tearDown(self):
-        settings.set_dosbox_bin(' '.join(self.original))
+        settings.set_dosbox_cmd(' '.join(self.original))
+        os.environ.pop('SDOS_DOSBOX_CMD', None)
 
-    def test_dosbox_bin_file(self):
+    def test_dosbox_cmd_file(self):
         expected = os.path.expanduser('~/bin/my-awesome-dosbox')
-        self.assertEqual(settings.get_dosbox_bin(), [expected])
+        self.assertEqual(settings.get_dosbox_cmd(), [expected])
 
-    def test_dosbox_bin_set_get(self):
-        settings.set_dosbox_bin('dosbox')
-        self.assertEqual(settings.get_dosbox_bin(), ['dosbox'])
+    def test_dosbox_cmd_set_get(self):
+        settings.set_dosbox_cmd('dosbox')
+        self.assertEqual(settings.get_dosbox_cmd(), ['dosbox'])
 
-    def test_dosbox_bin_tilde(self):
+    def test_dosbox_cmd_tilde(self):
         expected = os.path.expanduser('~/bin/dosbox')
-        settings.set_dosbox_bin('~/bin/dosbox')
-        self.assertEqual(settings.get_dosbox_bin(), [expected])
+        settings.set_dosbox_cmd('~/bin/dosbox')
+        self.assertEqual(settings.get_dosbox_cmd(), [expected])
 
-    def test_dosbox_bin_command_1(self):
-        settings.set_dosbox_bin('snap run dosbox-x # hello')
-        self.assertEqual(settings.get_dosbox_bin(),
+    def test_dosbox_cmd_command_1(self):
+        settings.set_dosbox_cmd('snap run dosbox-x # hello')
+        self.assertEqual(settings.get_dosbox_cmd(),
                          ['snap', 'run', 'dosbox-x'])
 
-    def test_dosbox_bin_broken_command(self):
-        settings.set_dosbox_bin('~/bin/foo bar ~/opt/baz"')
-        self.assertEqual(settings.get_dosbox_bin(), [DEFAULT_DOSBOX_BINARY])
+    def test_dosbox_cmd_broken_command(self):
+        settings.set_dosbox_cmd('~/bin/foo bar ~/opt/baz"')
+        self.assertEqual(settings.get_dosbox_cmd(), [DEFAULT_DOSBOX_BINARY])
 
-    def test_dosbox_bin_command_2(self):
-        settings.set_dosbox_bin('~/bin/foo bar ~/opt/baz')
+    def test_dosbox_cmd_command_2(self):
+        settings.set_dosbox_cmd('~/bin/foo bar ~/opt/baz')
         bin_foo = os.path.expanduser('~/bin/foo')
         opt_baz = os.path.expanduser('~/opt/baz')
-        self.assertEqual(settings.get_dosbox_bin(),
+        self.assertEqual(settings.get_dosbox_cmd(),
                          [bin_foo, 'bar', opt_baz])
 
-    def test_dosbox_bin_command_whitespace(self):
-        settings.set_dosbox_bin('/bin/foo\\ foo bar "/opt/baz baz/baz"')
-        self.assertEqual(settings.get_dosbox_bin(),
+    def test_dosbox_cmd_command_whitespace(self):
+        settings.set_dosbox_cmd('/bin/foo\\ foo bar "/opt/baz baz/baz"')
+        self.assertEqual(settings.get_dosbox_cmd(),
                          ['/bin/foo foo', 'bar', '/opt/baz baz/baz'])
+
+    def test_dosbox_cmd_env_override(self):
+        os.environ['SDOS_DOSBOX_CMD'] = 'test'
+        self.assertEqual(settings.get_dosbox_cmd(), ['test'])
 
     def test_dosbox_setup(self):
         self.assertFalse(settings.finalized)
