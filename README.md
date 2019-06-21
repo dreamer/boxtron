@@ -73,11 +73,26 @@ working in the background.  You can turn this feature off by changing an option 
 settings file (`~/.config/steam-dos.conf`) or using `SDOS_NO_MIDI=1` environment variable.
 Soundfont `FluidR3_GM.sf2` is used by default - you can change it by editing settings file.
 
-NOTE: Sythesiser running does not automagically turn on MIDI music in your game,
+NOTE: Sythesiser running does not automagically turn on MIDI music in every game,
 you need to enable it manually (usually there's a file called `SETUP.EXE`,
 `IMUSE.EXE` or similar somewhere in the game directory). Use following settings:
 
 Music/device: **Roland MPU401/General MIDI**, Music Port: **330**
+
+### MIDI auto-setup
+
+steam-dos preconfigures selected titles to turn MIDI music on/off, depending on user
+preferences. Supported games are:
+
+* [STAR WARS™ - Dark Forces](https://store.steampowered.com/app/32400/)
+* [X-COM: UFO Defense](https://store.steampowered.com/app/7760/)
+* [X-COM: Terror From the Deep](https://store.steampowered.com/app/7650/)
+* [Jagged Alliance Gold](https://store.steampowered.com/app/283270/)
+* [Jagged Alliance Deadly Games](https://store.steampowered.com/app/283270/)
+
+Just click "Play" and enjoy glorious MIDI music, there's no need to hunt those
+pesky `SETSOUND.EXE` programs.
+
 
 ### Selecting different DOSBox builds
 
