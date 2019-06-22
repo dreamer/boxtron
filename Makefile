@@ -57,10 +57,11 @@ version.py:
 	@echo "# pylint: disable=missing-docstring" > $@
 	@echo "VERSION = '$(version)'" >> $@
 
-preconfig.tar: preconfig
-	@tar --format=v7 \
-	    --mode='a+rwX,o-w' --owner=0 --group=0 --mtime='@1560859200' \
-	    -cf $@ $(shell find $< -type f | sed 's/\ /\\\ /g' | sort)
+preconfig.tar: $(shell find preconfig -type f | sed 's/\ /\\ /g')
+	@tar \
+	    --format=v7 --mode='a+rwX,o-w' \
+	    --owner=0 --group=0 --mtime='@1560859200' \
+	    -cf $@ $(shell find preconfig -type f | sed 's/\ /\\ /g' | sort)
 
 $(tool_dir).zip: $(files)
 	mkdir -p $(tool_dir)
