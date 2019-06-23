@@ -63,7 +63,7 @@ def start_timidity(sfont):
     proc = subprocess.Popen(cmd, shell=False, stdout=subprocess.DEVNULL)
     print_err('steam-dos: Starting MIDI client (pid: {0})'.format(proc.pid))
     print_err('steam-dos: Using soundfont: {0}'.format(sfont))
-    time.sleep(0.5)  # TODO properly wait until sequencer is online
+    time.sleep(1.0)  # TODO properly wait until sequencer is online
     atexit.register(stop_software_midi_synth, proc.pid)
 
 
