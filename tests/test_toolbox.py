@@ -76,6 +76,22 @@ class TestEnabledInEnv(unittest.TestCase):
         self.assertFalse(toolbox.enabled_in_env('THIS_VAR_DOES_NOT_EXIST'))
 
 
+def get_lines(txt_file):
+    with open(txt_file) as tfile:
+        return tfile.readlines()
+
+
+class TestSed(unittest.TestCase):
+
+    def test_sed(self):
+        test_file = 'tests/files/resource/for_sed'
+        self.assertEqual(get_lines(test_file), ['foo\n', 'bar\n', 'baz\n'])
+        toolbox.sed(test_file, r'bar', r'BAR')
+        self.assertEqual(get_lines(test_file), ['foo\n', 'BAR\n', 'baz\n'])
+        toolbox.sed(test_file, r'BAR', r'bar')
+        self.assertEqual(get_lines(test_file), ['foo\n', 'bar\n', 'baz\n'])
+
+
 class TestPidfile(unittest.TestCase):
 
     def test_file_created(self):
