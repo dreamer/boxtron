@@ -92,6 +92,39 @@ class TestSed(unittest.TestCase):
         self.assertEqual(get_lines(test_file), ['foo\n', 'bar\n', 'baz\n'])
 
 
+class TestRpatch(unittest.TestCase):
+
+    def setUp(self):
+        self.test_file_1 = 'tests/files/resource/for_rpatch_1'
+        self.test_file_2 = 'tests/files/resource/subdir/for_rpatch_2'
+        with open(self.test_file_1, 'w') as txt:
+            txt.write('abc\ndef\nghi\n')
+        with open(self.test_file_2, 'w') as txt:
+            txt.write('123\ndef\n789\nabc\n')
+
+    def tearDown(self):
+        os.remove(self.test_file_1)
+        os.remove(self.test_file_2)
+
+    def test_rpatch(self):
+        rpatch = [
+            r'file:{}'.format(self.test_file_1),
+            r's:/def/DEF/',
+            r's:|gh|xy|',
+            r'file:{}'.format(self.test_file_2),
+            r's:/1/x/',
+            r's:/2/yy/',
+            r's:/9/zzz/',
+            r's:/(def)/\1\1/',
+            r's:/(a)(b)c/\g<2>0\g<1>0/',
+        ]
+        toolbox.apply_resource_patch(rpatch)
+        self.assertEqual(get_lines(self.test_file_1),
+                         ['abc\n', 'DEF\n', 'xyi\n'])
+        self.assertEqual(get_lines(self.test_file_2),
+                         ['xyy3\n', 'defdef\n', '78zzz\n', 'b0a0\n'])
+
+
 class TestPidfile(unittest.TestCase):
 
     def test_file_created(self):
