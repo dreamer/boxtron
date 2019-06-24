@@ -61,7 +61,8 @@ preconfig.tar: $(shell find preconfig -type f | sed 's/\ /\\ /g')
 	@tar \
 	    --format=v7 --mode='a+rwX,o-w' \
 	    --owner=0 --group=0 --mtime='@1560859200' \
-	    -cf $@ $(shell find preconfig -type f | sed 's/\ /\\ /g' | sort)
+	    -cf $@ $(shell find preconfig -type f | sed 's/\ /\\ /g' | sort) \
+	    --transform='s|DIR_UP|..|'
 
 $(tool_dir).zip: $(files)
 	mkdir -p $(tool_dir)

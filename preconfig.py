@@ -10,7 +10,7 @@ import sys
 import tarfile
 import hashlib
 
-CHECKSUM = '59e12ff2d356cdddc8a79cb7910066dd3fac6aaf2ce430af54009b50420022a0'
+CHECKSUM = '49163a1488e232e32d063ab9d696f05917041b23c85e0e9ce4f81ddc23cebb46'
 
 
 def find_resource_file(prog=sys.argv[0]):
