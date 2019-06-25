@@ -10,7 +10,9 @@ import sys
 import tarfile
 import hashlib
 
-CHECKSUM = '49163a1488e232e32d063ab9d696f05917041b23c85e0e9ce4f81ddc23cebb46'
+import toolbox
+
+CHECKSUM = 'd14ae123a6910982320f1d0ca1e72d0726900fe62993a7ad92fe33df31f3c44f'
 
 
 def find_resource_file(prog=sys.argv[0]):
@@ -76,3 +78,14 @@ class ResourceFile:
         for xfile in xlist:
             xfile.name = xfile.name.replace(pfx, '')
         self.tar.extractall(path='.', members=xlist, numeric_owner=True)
+
+    def apply_rpatch(self, app_id, resource):
+        """Apply resource patch if it exists."""
+        path = 'preconfig/{}/{}.rpatch'.format(app_id, resource)
+        files = list(self.filter_pfx(path))
+        if not files:
+            return
+        assert files[0].isfile()
+        rpatch = self.tar.extractfile(files[0])
+        lines = rpatch.read().decode('utf-8').split('\n')
+        toolbox.apply_resource_patch(lines)

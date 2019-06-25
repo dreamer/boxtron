@@ -15,11 +15,20 @@ from toolbox import print_err, enabled_in_env
 from winpathlib import to_posix_path
 
 TWEAKS_DB = {
-    # Ultimate Doom
+    # The Ultimate DOOM
     '2280': {
+        'midi': 'auto',
         'conf': {
             'render': {'aspect': 'true'},
         },
+    },
+    # Final DOOM
+    '2290': {
+        'midi': 'auto',
+    },
+    # DOOM II: Hell on Earth
+    '2300': {
+        'midi': 'auto',
     },
     # X-COM: Terror from the Deep
     '7650': {
@@ -27,6 +36,10 @@ TWEAKS_DB = {
     },
     # X-COM: UFO Defence / UFO: Enemy Unknown
     '7760': {
+        'midi': 'auto',
+    },
+    # Master Levels for DOOM II
+    '9160': {
         'midi': 'auto',
     },
     # King's Quest™ Collection

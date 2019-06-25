@@ -6,6 +6,7 @@ Useful functions and classes
 
 import os
 import pathlib
+import re
 import shlex
 import subprocess
 import sys
@@ -69,6 +70,39 @@ def read_trivial_batch(file):
             return first_line[1:]
     assert False, 'error processing .bat file'
     return []
+
+
+def sed(filename, regex_find, regex_replace):
+    """Edit file in place."""
+    with open(filename, 'r+') as txt:
+        data = txt.read()
+        txt.seek(0)
+        txt.write(re.sub(regex_find, regex_replace, data))
+        txt.truncate()
+
+
+def apply_resource_patch(lines):
+    """Edit files with instructions from resource patch file."""
+    file = None
+    for line in lines:
+        cmd = line.strip()
+        if not cmd:
+            continue
+        if cmd.startswith('file:'):
+            file = cmd[5:]
+            continue
+        if cmd.startswith('s:'):
+            assert file
+            separator = cmd[2]
+            regex_1_end = cmd.find(separator, 3)
+            regex_2_end = cmd.find(separator, regex_1_end + 1)
+            assert regex_1_end > 2
+            assert regex_2_end > regex_1_end
+            regex_1 = cmd[3:regex_1_end]
+            regex_2 = cmd[regex_1_end + 1:regex_2_end]
+            sed(file, regex_1, regex_2)
+            continue
+        raise ValueError('Unexpected instruction: {}'.format(cmd))
 
 
 class PidFile:

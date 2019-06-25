@@ -1,6 +1,11 @@
-Files in this directory are not copyrighted.
+This directory contains configuration files to automatically enable/disable
+MIDI support in various DOS games.
 
-These are configuration files, in various binary formats, for different games.
+Files with extension .rpatch define regular expressions (using Python syntax)
+for modification of textual configuration files, if possible.
+
+Directories midi_on/off contain configuration files in various binary formats,
+for different games.
 
 midi_off:
   Digital sound:
@@ -15,3 +20,5 @@ midi_on:
     Roland MPU401/General MIDI, port 330
 
 If the game supports other options - then all defaults are preserved.
+
+Files in this directory are NOT copyrighted.
