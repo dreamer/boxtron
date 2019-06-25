@@ -83,13 +83,20 @@ def get_lines(txt_file):
 
 class TestSed(unittest.TestCase):
 
+    def setUp(self):
+        self.test_file = 'tests/files/resource/for_sed'
+        with open(self.test_file, 'w') as txt:
+            txt.write('foo\nbar\n')
+
+    def tearDown(self):
+        os.remove(self.test_file)
+
     def test_sed(self):
-        test_file = 'tests/files/resource/for_sed'
-        self.assertEqual(get_lines(test_file), ['foo\n', 'bar\n', 'baz\n'])
-        toolbox.sed(test_file, r'bar', r'BAR')
-        self.assertEqual(get_lines(test_file), ['foo\n', 'BAR\n', 'baz\n'])
-        toolbox.sed(test_file, r'BAR', r'bar')
-        self.assertEqual(get_lines(test_file), ['foo\n', 'bar\n', 'baz\n'])
+        self.assertEqual(get_lines(self.test_file), ['foo\n', 'bar\n'])
+        toolbox.sed(self.test_file, r'bar', r'BAR')
+        self.assertEqual(get_lines(self.test_file), ['foo\n', 'BAR\n'])
+        toolbox.sed(self.test_file, r'BAR', r'bar')
+        self.assertEqual(get_lines(self.test_file), ['foo\n', 'bar\n'])
 
 
 class TestRpatch(unittest.TestCase):
