@@ -17,6 +17,7 @@ from winpathlib import to_posix_path
 TWEAKS_DB = {
     # Ultimate Doom
     '2280': {
+        'midi': 'auto',
         'conf': {
             'render': {'aspect': 'true'},
         },

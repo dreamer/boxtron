@@ -99,12 +99,10 @@ def setup_midi_game():
             print_err('steam-dos: error: resource file does not include',
                       'files for', STEAM_APP_ID)
             return
-        if settings.get_midi_on():
-            print_err('steam-dos: turning MIDI ON for', STEAM_APP_ID)
-            rfile.extract(STEAM_APP_ID, 'midi_on')
-        else:
-            print_err('steam-dos: turning MIDI OFF for', STEAM_APP_ID)
-            rfile.extract(STEAM_APP_ID, 'midi_off')
+        x = 'on' if settings.get_midi_on() else 'off'
+        print_err('steam-dos: turning MIDI {} for {}'.format(x, STEAM_APP_ID))
+        rfile.extract(STEAM_APP_ID, 'midi_' + x)
+        rfile.apply_rpatch(STEAM_APP_ID, 'midi_' + x)
 
 
 def run_dosbox(args):

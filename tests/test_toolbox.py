@@ -124,6 +124,7 @@ class TestRpatch(unittest.TestCase):
             r's:/9/zzz/',
             r's:/(def)/\1\1/',
             r's:/(a)(b)c/\g<2>0\g<1>0/',
+            ''
         ]
         toolbox.apply_resource_patch(rpatch)
         self.assertEqual(get_lines(self.test_file_1),

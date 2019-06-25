@@ -86,6 +86,8 @@ def apply_resource_patch(lines):
     file = None
     for line in lines:
         cmd = line.strip()
+        if not cmd:
+            continue
         if cmd.startswith('file:'):
             file = cmd[5:]
             continue
