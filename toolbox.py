@@ -86,13 +86,18 @@ def apply_resource_patch(lines):
     file = None
     for line in lines:
         cmd = line.strip()
-        if not cmd:
+        # skip over empty lines and comments
+        if not cmd or cmd.startswith('#'):
             continue
+        # assign a file, but only if it exists
         if cmd.startswith('file:'):
-            file = cmd[5:]
+            path = cmd[5:]
+            file = path if os.path.isfile(path) else None
             continue
+        # modify a file, if it exists
         if cmd.startswith('s:'):
-            assert file
+            if file is None:
+                continue
             separator = cmd[2]
             regex_1_end = cmd.find(separator, 3)
             regex_2_end = cmd.find(separator, regex_1_end + 1)

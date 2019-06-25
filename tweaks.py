@@ -59,6 +59,10 @@ TWEAKS_DB = {
     '354430': {
         'midi': 'auto',
     },
+    # System Shock: Classic
+    '410700': {
+        'midi': 'auto',
+    },
     # Tomb Raider I
     # As of 0.74-2, upstream DOSBox does not support GLide acceleration.
     # This tweak starts the game without hardware acceleration.

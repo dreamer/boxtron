@@ -1,0 +1,8 @@
+# normal launchers
+file:../SSHOCK/CYB.CFG
+s:/(midi_list\s+)(\d+)/\g<1>3/
+s:/(midi_card\s+)(\d+)/\g<1>3/
+# Daum launchers
+file:../../SSHOCK/CYB.CFG
+s:/(midi_list\s+)(\d+)/\g<1>3/
+s:/(midi_card\s+)(\d+)/\g<1>3/

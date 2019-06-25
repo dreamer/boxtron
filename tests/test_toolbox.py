@@ -113,7 +113,7 @@ class TestRpatch(unittest.TestCase):
         os.remove(self.test_file_1)
         os.remove(self.test_file_2)
 
-    def test_rpatch(self):
+    def test_rpatch_1(self):
         rpatch = [
             r'file:{}'.format(self.test_file_1),
             r's:/def/DEF/',
@@ -131,6 +131,22 @@ class TestRpatch(unittest.TestCase):
                          ['abc\n', 'DEF\n', 'xyi\n'])
         self.assertEqual(get_lines(self.test_file_2),
                          ['xyy3\n', 'defdef\n', '78zzz\n', 'b0a0\n'])
+
+    def test_rpatch_missing_file(self):
+        missing_file = 'tests/files/resource/missing_file'
+        self.assertFalse(os.path.isfile(missing_file))
+        rpatch = [
+            r'# existing file should be modified',
+            r'file:{}'.format(self.test_file_1),
+            r's:/def/DEF/',
+            r'# missing file is quietly ignored',
+            r'file:{}'.format(missing_file),
+            r's:/abc/ABC/',
+        ]
+        toolbox.apply_resource_patch(rpatch)
+        self.assertEqual(get_lines(self.test_file_1),
+                         ['abc\n', 'DEF\n', 'ghi\n'])
+        self.assertFalse(os.path.isfile(missing_file))
 
 
 class TestPidfile(unittest.TestCase):
