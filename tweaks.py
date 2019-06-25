@@ -15,12 +15,16 @@ from toolbox import print_err, enabled_in_env
 from winpathlib import to_posix_path
 
 TWEAKS_DB = {
-    # Ultimate Doom
+    # The Ultimate DOOM
     '2280': {
         'midi': 'auto',
         'conf': {
             'render': {'aspect': 'true'},
         },
+    },
+    # Final DOOM
+    '2290': {
+        'midi': 'auto',
     },
     # DOOM II: Hell on Earth
     '2300': {
