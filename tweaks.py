@@ -38,6 +38,10 @@ TWEAKS_DB = {
     '7760': {
         'midi': 'auto',
     },
+    # Master Levels for DOOM II
+    '9160': {
+        'midi': 'auto',
+    },
     # King's Quest™ Collection
     '10100': {
         'conf': {
