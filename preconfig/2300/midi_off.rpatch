@@ -1,0 +1,6 @@
+file:base/DEFAULT.CFG
+s:/(snd_musicdevice\s+)(\d+)/\g<1>3/
+s:/(snd_mport\s+)(\d+)/\g<1>816/
+file:base/MOUSE.CFG
+s:/(snd_musicdevice\s+)(\d+)/\g<1>3/
+s:/(snd_mport\s+)(\d+)/\g<1>816/

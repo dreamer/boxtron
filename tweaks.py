@@ -22,6 +22,10 @@ TWEAKS_DB = {
             'render': {'aspect': 'true'},
         },
     },
+    # DOOM II: Hell on Earth
+    '2300': {
+        'midi': 'auto',
+    },
     # X-COM: Terror from the Deep
     '7650': {
         'midi': 'auto',
