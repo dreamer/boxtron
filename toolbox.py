@@ -82,7 +82,7 @@ def sed(filename, regex_find, regex_replace):
 
 
 def apply_resource_patch(lines):
-    """TODO"""
+    """Edit files with instructions from resource patch file."""
     file = None
     for line in lines:
         cmd = line.strip()
@@ -100,7 +100,7 @@ def apply_resource_patch(lines):
             regex_2 = cmd[regex_1_end + 1:regex_2_end]
             sed(file, regex_1, regex_2)
             continue
-        assert False, 'FIXME:' + cmd
+        raise ValueError('Unexpected instruction: {}'.format(cmd))
 
 
 class PidFile:
