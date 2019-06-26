@@ -30,6 +30,10 @@ TWEAKS_DB = {
     '2300': {
         'midi': 'auto',
     },
+    # HeXen: Beyond Heretic
+    '2360': {
+        'midi': 'auto',
+    },
     # Heretic: Shadow of the Serpent Riders
     '2390': {
         'midi': 'auto',
