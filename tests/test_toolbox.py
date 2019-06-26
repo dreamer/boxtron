@@ -68,11 +68,19 @@ class TestBatchFileDetection(unittest.TestCase):
         os.chdir('tests/files/bat/stargunner')
         self.assertFalse(toolbox.is_trivial_batch('Stargunner.bat'))
 
-    def disabled_test_lsl7(self):
+    def test_larry7_1(self):
         os.chdir('tests/files/bat/larry7')
         self.assertTrue(toolbox.is_trivial_batch('run.bat'))
         path, args = toolbox.read_trivial_batch('run.bat')
         self.assertEqual(path, 'DOSBOX')
+        self.assertEqual(args, ['-conf', r'..\lsl7.conf',
+                                '-c', 'exit'])
+
+    def disabled_test_larry7_2(self):
+        os.chdir('tests/files/bat')
+        self.assertTrue(toolbox.is_trivial_batch('larry7/run.bat'))
+        path, args = toolbox.read_trivial_batch('larry7/run.bat')
+        self.assertEqual(path, 'larry7/DOSBOX')
         self.assertEqual(args, ['-conf', r'..\lsl7.conf',
                                 '-c', 'exit'])
 

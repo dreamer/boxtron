@@ -11,6 +11,8 @@ import shlex
 import subprocess
 import sys
 
+import winpathlib
+
 
 def print_err(*value, sep=' ', end='\n', flush=False):
     """Prints the values to stderr."""
@@ -67,15 +69,31 @@ def read_trivial_batch(file):
     If batch contains no relevant information, it's 'None'.  The second element
     is an argument list.
     """
+    line_num = 1
     with open(file, 'r') as bat_file:
         lines = bat_file.readlines(512)
-        first_line = argsplit_windows(lines[0])
-        assert first_line, 'error processing .bat file (not enough words)'
-        win_path = pathlib.PureWindowsPath(first_line[0])
-        cmd = win_path.parts[-1]
-        if cmd.lower() in ('dosbox', 'dosbox.exe'):
-            return None, first_line[1:]
-    assert False, 'error processing .bat file'
+        assert lines, 'error processing .bat file (not enough lines)'
+        new_path = None
+        for line in lines:
+            this_line = argsplit_windows(line)
+            if not this_line:
+                continue
+            first_word = this_line[0]
+            if first_word.lower() in ('echo', '@echo'):
+                continue
+            if first_word.lower() in ('cd', '@cd'):
+                # This works only for a single 'CD', but no game uses more than
+                # one (so far).  If we'll ever find one, then it's time to
+                # implement more serious batch interpreter instead.
+                new_path = winpathlib.to_posix_path(this_line[1])
+                assert new_path, 'error processing .bat ' + \
+                                 'file: no directory named ' + \
+                                 '{}'.format(this_line[1])
+            win_path = pathlib.PureWindowsPath(first_word)
+            exe = win_path.parts[-1]
+            if exe.lower() in ('dosbox', 'dosbox.exe'):
+                return new_path, this_line[1:]
+    assert False, 'error processing .bat file (line {})'.format(line_num)
     return None, []
 
 

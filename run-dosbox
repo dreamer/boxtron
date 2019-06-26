@@ -191,7 +191,9 @@ def run_file(path, exe, cmd_line):
 
     elif toolbox.is_trivial_batch(exe):
         # Publisher uploaded a .bat file to run dosbox
-        _, dosbox_args = toolbox.read_trivial_batch(exe)
+        new_path, dosbox_args = toolbox.read_trivial_batch(exe)
+        if new_path:
+            os.chdir(new_path)
         run_dosbox_with_conf(dosbox_args)
 
     elif os.path.isfile('dosbox.conf'):
