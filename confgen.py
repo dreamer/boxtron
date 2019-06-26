@@ -82,6 +82,14 @@ midiconfig={port}
 
 """.lstrip()
 
+DOS_SECTION = """
+[dos]
+xms={xms}
+ems={ems}
+umb={umb}
+
+""".lstrip()
+
 # Port 330 is hard-coded in DOSBox
 MIDI_INFO = """
         Music: General MIDI (MPU-401 compatible)
@@ -368,4 +376,13 @@ def create_auto_conf_file(conf):
             auto.write(MIDI_SECTION.format(port=mport.addr))
         else:
             print_err(MIDI_INFO_NA)
+
+        if conf and conf.has_section('dos'):
+            dos_xms = conf['dos'].get('xms', 'true')
+            dos_ems = conf['dos'].get('ems', 'true')
+            dos_umb = conf['dos'].get('umb', 'true')
+            auto.write(DOS_SECTION.format(xms=dos_xms,
+                                          ems=dos_ems,
+                                          umb=dos_umb))  # yapf: disable
+
     return name
