@@ -30,6 +30,10 @@ TWEAKS_DB = {
     '2300': {
         'midi': 'auto',
     },
+    # Heretic: Shadow of the Serpent Riders
+    '2390': {
+        'midi': 'auto',
+    },
     # X-COM: Terror from the Deep
     '7650': {
         'midi': 'auto',

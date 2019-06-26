@@ -1,0 +1,3 @@
+file:base/HERETIC.CFG
+s:/(snd_musicdevice\s+)(\d+)/\g<1>8/
+s:/(snd_mport\s+)(-?\d+)/\g<1>330/
