@@ -66,6 +66,14 @@ class TestBatchFileDetection(unittest.TestCase):
         os.chdir('tests/files/bat/stargunner')
         self.assertFalse(toolbox.is_trivial_batch('Stargunner.bat'))
 
+    def disabled_test_lsl7(self):
+        os.chdir('tests/files/bat/larry7')
+        self.assertTrue(toolbox.is_trivial_batch('run.bat'))
+        args = toolbox.read_trivial_batch('run.bat')
+        # TODO also, check CWD implied by the batch file
+        self.assertEqual(args, ['-conf', r'..\lsl7.conf',
+                                '-c', 'exit'])
+
 
 class TestEnabledInEnv(unittest.TestCase):
 
