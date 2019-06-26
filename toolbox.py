@@ -59,7 +59,14 @@ def argsplit_windows(line):
 
 
 def read_trivial_batch(file):
-    """Find DOSBox command in batch file and return its argument list."""
+    """Find DOSBox command in batch file and return its argument list.
+
+    Returns a tuple:
+
+    The first element is a directory used by batch file to invoke DOSBox.
+    If batch contains no relevant information, it's 'None'.  The second element
+    is an argument list.
+    """
     with open(file, 'r') as bat_file:
         lines = bat_file.readlines(512)
         first_line = argsplit_windows(lines[0])
@@ -67,9 +74,9 @@ def read_trivial_batch(file):
         win_path = pathlib.PureWindowsPath(first_line[0])
         cmd = win_path.parts[-1]
         if cmd.lower() in ('dosbox', 'dosbox.exe'):
-            return first_line[1:]
+            return None, first_line[1:]
     assert False, 'error processing .bat file'
-    return []
+    return None, []
 
 
 def sed(filename, regex_find, regex_replace):

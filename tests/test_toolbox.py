@@ -45,7 +45,8 @@ class TestBatchFileDetection(unittest.TestCase):
     def test_worms(self):
         os.chdir('tests/files/bat/worms')
         self.assertTrue(toolbox.is_trivial_batch('runworms.bat'))
-        args = toolbox.read_trivial_batch('runworms.bat')
+        path, args = toolbox.read_trivial_batch('runworms.bat')
+        self.assertIsNone(path)
         self.assertEqual(args, [r'.\drivec\goworms.bat',
                                 '-conf', r'.\worms.conf',
                                 '-fullscreen',
@@ -54,7 +55,8 @@ class TestBatchFileDetection(unittest.TestCase):
     def test_jagged_alliance(self):
         os.chdir('tests/files/bat/jagged-alliance')
         self.assertTrue(toolbox.is_trivial_batch('run.bat'))
-        args = toolbox.read_trivial_batch('run.bat')
+        path, args = toolbox.read_trivial_batch('run.bat')
+        self.assertIsNone(path)
         self.assertEqual(args, ['-c', 'MOUNT c Installed',
                                 '-c', 'IMGMOUNT d cd.iso -t cdrom',
                                 '-c', 'c:',
@@ -69,8 +71,8 @@ class TestBatchFileDetection(unittest.TestCase):
     def disabled_test_lsl7(self):
         os.chdir('tests/files/bat/larry7')
         self.assertTrue(toolbox.is_trivial_batch('run.bat'))
-        args = toolbox.read_trivial_batch('run.bat')
-        # TODO also, check CWD implied by the batch file
+        path, args = toolbox.read_trivial_batch('run.bat')
+        self.assertEqual(path, 'DOSBOX')
         self.assertEqual(args, ['-conf', r'..\lsl7.conf',
                                 '-c', 'exit'])
 
