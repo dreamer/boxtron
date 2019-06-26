@@ -182,6 +182,14 @@ TWEAKS_DB = {
     '283270': {
         'midi': 'auto',
     },
+    # MegaRace
+    '730580': {
+        'commands': {
+            r'.*':  {
+                'args': ['-conf', 'dosboxmegarace.conf'],
+            },
+        },
+    },
     # MegaRace 2
     '733760': {
         'midi': 'disable',
