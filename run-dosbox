@@ -77,12 +77,17 @@ def setup_midi_synth():
         return
 
     sfont = settings.get_midi_soundfont()
-    if toolbox.which('timidity'):
-        midi.start_timidity(sfont)
-    elif toolbox.which('fluidsynth'):
-        midi.start_fluidsynth(sfont)
-    else:
-        print_err('steam-dos: warn: no software MIDI synthesiser available')
+    preference_list = ('timidity', 'fluidsynth')
+    for tool in preference_list:
+        if not toolbox.which(tool):
+            continue
+        if tool == 'timidity':
+            midi.start_timidity(sfont)
+            return
+        if tool == 'fluidsynth':
+            midi.start_fluidsynth(sfont)
+            return
+    print_err('steam-dos: warn: no software MIDI synthesiser available')
 
 
 def setup_midi_game():
