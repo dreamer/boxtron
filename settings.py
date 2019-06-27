@@ -28,6 +28,8 @@ DEFAULT_CONFGEN_FORCE = False
 
 DEFAULT_MIDI_ENABLE = True
 
+DEFAULT_MIDI_TOOL = 'timidity'
+
 DEFAULT_MIDI_SOUNDFONT = 'FluidR3_GM.sf2'
 
 DEFAULT_DOSBOX_BINARY = 'dosbox'
@@ -45,6 +47,10 @@ force = {confgen_force}
 [midi]
 # You can disable MIDI support here.
 enable = {midi_enable}
+
+# Select preferred software synthesiser here.
+# Can be either 'timidity' or 'fluidsynth'
+synthesiser = {midi_tool}
 
 # steam-dos will look for a soundfont in following directories:
 # /usr/share/soundfonts/
@@ -78,6 +84,7 @@ scaler = {scaler}
 # cmd = ~/projects/dosbox/src/dosbox
 """.format(confgen_force=str(DEFAULT_CONFGEN_FORCE).lower(),
            midi_enable=str(DEFAULT_MIDI_ENABLE).lower(),
+           midi_tool=DEFAULT_MIDI_TOOL,
            midi_soundfont=DEFAULT_MIDI_SOUNDFONT,
            fullscreen_mode=DEFAULT_FULLSCREEN_MODE,
            scaler=DEFAULT_SCALER).lstrip()
@@ -164,6 +171,9 @@ class Settings():
         if enabled_in_env('SDOS_NO_MIDI'):
             return False
         return self.__get_bool__('midi', 'enable', DEFAULT_MIDI_ENABLE)
+
+    def get_midi_tool(self):
+        return self.__get_str__('midi', 'synthesiser', DEFAULT_MIDI_TOOL)
 
     def set_midi_on(self, value):
         self.store.set('midi', 'enable', str(value))

@@ -76,8 +76,15 @@ def setup_midi_synth():
         # There's no reason to start our own.
         return
 
+    tool = settings.get_midi_tool()
     sfont = settings.get_midi_soundfont()
-    preference_list = ('timidity', 'fluidsynth')
+
+    preference_list = []
+    if tool == 'timidity':
+        preference_list = ['timidity', 'fluidsynth']
+    elif tool == 'fluidsynth':
+        preference_list = ['fluidsynth', 'timidity']
+
     for tool in preference_list:
         if not toolbox.which(tool):
             continue
