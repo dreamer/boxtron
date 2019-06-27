@@ -67,6 +67,15 @@ TWEAKS_DB = {
     '354430': {
         'midi': 'auto',
     },
+    # Super 3D Noah's Ark
+    '371180': {
+        'midi': 'disable',
+        'commands': {
+            r'.*':  {
+                'args': ['noah3dos.exe', '-exit'],
+            },
+        },
+    },
     # System Shock: Classic
     '410700': {
         'midi': 'auto',
