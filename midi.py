@@ -26,23 +26,27 @@ MidiPort = collections.namedtuple('MidiPort', 'addr name desc space flags')
 #
 def list_alsa_sequencer_ports(alsa_seq_clients=ALSA_SEQ_CLIENTS):
     """List all sequencer ports visible through ALSA procfs."""
-    with open(alsa_seq_clients) as clients:
-        client_pattern = re.compile(r'^Client +(\d+) : "(.*)" \[(.*)\]')
-        port_pattern = re.compile(r'^  Port +(\d+) : "(.*)" \((.{4})\)')
-        client, name, space, port, desc, flags = '', '', '', '', '', ''
-        for line in clients.readlines():
-            match = client_pattern.match(line)
-            if match:
-                client = match.group(1)
-                name = match.group(2)
-                space = match.group(3)
-                continue
-            match = port_pattern.match(line)
-            if match:
-                port = match.group(1)
-                desc = match.group(2)
-                flags = match.group(3)
-                yield MidiPort(client + ':' + port, name, desc, space, flags)
+    try:
+        with open(alsa_seq_clients) as clients:
+            client_pattern = re.compile(r'^Client +(\d+) : "(.*)" \[(.*)\]')
+            port_pattern = re.compile(r'^  Port +(\d+) : "(.*)" \((.{4})\)')
+            client, name, space, port, desc, flags = '', '', '', '', '', ''
+            for line in clients.readlines():
+                match = client_pattern.match(line)
+                if match:
+                    client = match.group(1)
+                    name = match.group(2)
+                    space = match.group(3)
+                    continue
+                match = port_pattern.match(line)
+                if match:
+                    port = match.group(1)
+                    desc = match.group(2)
+                    flags = match.group(3)
+                    yield MidiPort('{}:{}'.format(client, port), name, desc,
+                                   space, flags)
+    except FileNotFoundError:
+        pass  # we want simply empty generator
 
 
 def detect_software_synthesiser(name_expr, alsa_seq_clients=ALSA_SEQ_CLIENTS):

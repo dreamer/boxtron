@@ -29,6 +29,11 @@ class TestAlsaMidiClients(unittest.TestCase):
         self.assertEqual(port.space, 'User')
         self.assertEqual(port.flags, '-We-')
 
+    def test_missing_sequencer_file(self):
+        fake_seq_list = 'tests/files/alsa/missing_file'
+        found_ports = list(midi.list_alsa_sequencer_ports(fake_seq_list))
+        self.assertEqual(found_ports, [])
+
 
 if __name__ == '__main__':  # pragma: no cover
     unittest.main()
