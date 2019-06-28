@@ -16,6 +16,20 @@ Game compatibility reports:
 [Steam](https://github.com/dreamer/steam-dos/wiki/Compatibility-reports-(Steam)),
 [GOG](https://github.com/dreamer/steam-dos/wiki/Compatibility-reports-(GOG)).
 
+
+## Features
+
+* Lower input lag (compared to DOSBox inside Proton)
+* Steam features working as expected (e.g. Steam Cloud, Controller settings or recording of time played)
+* Better fullscreen support, especially on multi-monitor setups\*
+* Steam Overlay working out of the box\*
+* More [configuration options](wiki/Configuration) and better defaults\*
+* Auto-start of software MIDI synthesiser
+* Auto-setup of MIDI for supported titles (click Play and enjoy pre-configured MIDI music)
+
+<sub>\* - compared to vanilla DOSBox</sub>
+
+
 ## Prerequisites
 
 You will need Python (>= 3.5), DOSBox (>= 0.74) and inotify-tools.
@@ -49,19 +63,6 @@ Optionally for MIDI support: TiMidity++ or FluidSynth and a soundfont.
 3. Start Steam.
 4. In game properties window select "Force the use of a specific Steam Play
    compatibility tool" and select "DOSBox (native)".
-
-
-## Features
-
-* Lower input lag (compared to DOSBox inside Proton)
-* Steam features working as expected (e.g. Steam Cloud, Controller settings or recording of time played)
-* Better fullscreen support, especially on multi-monitor setups\*
-* Steam Overlay working out of the box\*
-* More [configuration options](wiki/Configuration) and better defaults\*
-* Auto-start of software MIDI synthesiser
-* Auto-setup of MIDI for supported titles (click Play and enjoy pre-configured MIDI music)
-
-<sub>\* - compared to vanilla DOSBox</sub>
 
 
 ## GOG Games
