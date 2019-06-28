@@ -53,35 +53,15 @@ Optionally for MIDI support: TiMidity++ or FluidSynth and a soundfont.
 
 ## Features
 
-Settings for steam-dos can be found in `~/.config/steam-dos.conf` (or wherever
-`XDG_CONFIG_HOME` points to).  New versions of steam-dos add new documentation
-and options to that file - remove it to force steam-dos to create a fresh one
-(including documentation for all new options).
+* Lower input lag (compared to DOSBox inside Proton)
+* Steam features working as expected (e.g. Steam Cloud, Controller settings or recording of time played)
+* Better fullscreen support, especially on multi-monitor setups\*
+* Steam Overlay working out of the box\*
+* More [configuration options](wiki/Configuration) and better defaults\*
+* Auto-start of software MIDI synthesiser
+* Auto-setup of MIDI for supported titles (click Play and enjoy pre-configured MIDI music)
 
-If you want to modify DOSBox settings for a specific game, edit
-`steam_dos_<appid>_<id>.conf` file in game's installation dir. Remove it to
-force steam-dos to create a new one.
-
-### Proper fullscreen support
-
-steam-dos will start DOSBox in fullscreen on your primary display, without changing
-resolution of your screens - just as any modern game does by default.
-
-You can pick different screen by changing option `dosbox.fullscreenmode` in settings
-file or using `SDOS_SCREEN=<num>` environment variable.
-
-### MIDI support
-
-TiMidity++ (or FluidSynth) are started and closed automatically, unless they are already
-working in the background.  You can turn this feature off by changing an option in
-settings file (`~/.config/steam-dos.conf`) or using `SDOS_NO_MIDI=1` environment variable.
-Soundfont `FluidR3_GM.sf2` is used by default - you can change it by editing settings file.
-
-NOTE: Sythesiser running does not automagically turn on MIDI music in every game,
-you need to enable it manually (usually there's a file called `SETUP.EXE`,
-`IMUSE.EXE` or similar somewhere in the game directory). Use following settings:
-
-Music/device: **Roland MPU401/General MIDI**, Music Port: **330**
+<sub>\* - compared to vanilla DOSBox</sub>
 
 ### MIDI auto-setup
 
@@ -97,13 +77,17 @@ preferences. Supported games are:
 Just click "Play" and enjoy glorious MIDI music, there's no need to hunt those
 pesky `SETSOUND.EXE` programs.
 
+#### Other games
 
-### Selecting different DOSBox builds
+Sythesiser running does not automagically turn on MIDI music in every game,
+sometimes you need to enable it manually (usually there's a file called `SETUP.EXE`,
+`IMUSE.EXE` or similar somewhere in the game directory). Use following settings:
 
-In `~/.config/steam-dos.conf`:
+Music/device: **Roland MPU401/General MIDI**, Music Port: **330**
 
-    [dosbox]
-    cmd = ~/path_to_dosbox/src/dosbox
+If you'll find a game, that supports MIDI and you need to enable it manually,
+create a bug report, please!
+
 
 ### GOG Games
 
@@ -133,15 +117,10 @@ For example, to start King's Quest 6 from
 Check `SierraLauncher.ini` file in game's installation dir to learn which number
 corresponds to which game.
 
-## Caution!
-
-* There's no official Steam Cloud support, but it seems to be working - use at your
-  own risk. You can disable this feature for now by unselecting:
- *Properties → Updates → Enable Steam Cloud Synchronization…*
-
-* Do not select "DOSBox (native)" as default compatibility tool in Steam Play
-  settings - it might prevent games from being installed.
-
 ## Development
 
 Read all about it in the [contributing guide](https://github.com/dreamer/steam-dos/blob/master/CONTRIBUTING.md) :)
+
+## Known issues
+
+As of June/July 2019 you are likely to encounter one of these bugs:
