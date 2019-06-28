@@ -63,7 +63,22 @@ Optionally for MIDI support: TiMidity++ or FluidSynth and a soundfont.
 
 <sub>\* - compared to vanilla DOSBox</sub>
 
-### MIDI auto-setup
+
+## GOG Games
+
+To easily install a DOS game from GOG to your Steam library, use included script:
+
+    $ ./install-gog-game ~/Downloads/setup_warcraft_orcs__humans_1.2_\(28330\).exe
+
+It will unpack the game to `~/.local/share/games`, prepare a setup that works around all
+known Steam bugs and generate `.desktop` file to be added to your Steam library. After
+that you can play the game using steam-dos or Proton.
+
+Installation script depends only on Python standard library, you can put it in your
+PATH or wherever you like.
+
+
+## MIDI auto-setup
 
 steam-dos preconfigures selected titles to turn MIDI music on/off, depending on user
 preferences. Supported games are:
@@ -89,20 +104,7 @@ If you'll find a game, that supports MIDI and you need to enable it manually,
 create a bug report, please!
 
 
-### GOG Games
-
-To easily install a DOS game from GOG to your Steam library, use included script:
-
-    $ ./install-gog-game ~/Downloads/setup_warcraft_orcs__humans_1.2_\(28330\).exe
-
-It will unpack the game to `~/.local/share/games`, prepare a setup that works around all
-known Steam bugs and generate `.desktop` file to be added to your Steam library. After
-that you can play the game using steam-dos or Proton.
-
-Installation script depends only on Python standard library, you can put it in your
-PATH or wherever you like.
-
-### Sierra Launcher
+## Sierra Launcher
 
 Some game collections on Steam use "Sierra Classics Launcher" graphical frontend.
 There's no support for graphical version of this launcher - the first game in a collection
@@ -124,3 +126,8 @@ Read all about it in the [contributing guide](https://github.com/dreamer/steam-d
 ## Known issues
 
 As of June/July 2019 you are likely to encounter one of these bugs:
+
+* Steam Overlay causes [visual glitch](https://github.com/dreamer/steam-dos/issues/8). DOSBox issue, fixed in 0.74-3.
+* Mouse [cursor issues](https://github.com/dreamer/steam-dos/issues/7) in Gnome 3.30. Gnome issue, fixed in 3.32.
+* Some games experience random KeyUp events. [DOSBox issue](https://www.vogons.org/viewtopic.php?f=31&t=66491).
+* Alt+Tab does not work in fullscreen. DOSBox does not support borderless window mode (yet) - use **Alt+Enter** to leave fullscreen and interact with your desktop.
