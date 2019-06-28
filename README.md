@@ -25,6 +25,10 @@ Optionally for MIDI support: TiMidity++ or FluidSynth and a soundfont.
 
     $ sudo dnf install dosbox inotify-tools timidity++ fluid-soundfont-gm
 
+#### OpenSUSE
+
+    $ sudo zypper install dosbox inotify-tools timidity fluid-soundfont
+
 #### Debian, Ubuntu et consortes
 
     $ sudo apt install dosbox inotify-tools timidity fluid-soundfont-gm
