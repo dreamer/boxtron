@@ -89,10 +89,20 @@ steam-dos preconfigures selected titles to turn MIDI music on/off, depending on 
 preferences. Supported games are:
 
 * [STAR WARS™ - Dark Forces](https://store.steampowered.com/app/32400/)
+* [STAR WARS™ - X-Wing: Classic Edition](https://store.steampowered.com/app/354430/)
+* [STAR WARS™ - X-Wing: Collector's CD-ROM Edition](https://store.steampowered.com/app/354430/)
 * [X-COM: UFO Defense](https://store.steampowered.com/app/7760/)
 * [X-COM: Terror From the Deep](https://store.steampowered.com/app/7650/)
 * [Jagged Alliance Gold](https://store.steampowered.com/app/283270/)
 * [Jagged Alliance Deadly Games](https://store.steampowered.com/app/283270/)
+* [System Shock: Classic](https://steamdb.info/app/410700/)
+* [The Ultimate DOOM](https://store.steampowered.com/app/2280/Ultimate_Doom/)
+* [Final DOOM](https://store.steampowered.com/app/2290/Final_DOOM/)
+* [DOOM II](https://store.steampowered.com/app/2300/DOOM_II/)
+* [Master Levels for DOOM II](https://store.steampowered.com/app/9160/Master_Levels_for_Doom_II/)
+* [Heretic: Shadow of the Serpent Riders](https://store.steampowered.com/app/2390/Heretic_Shadow_of_the_Serpent_Riders/)
+* [Hexen: Beyond Heretic](https://store.steampowered.com/app/2360/HeXen_Beyond_Heretic/)
+
 
 Just click "Play" and enjoy glorious MIDI music, there's no need to hunt those
 pesky `SETSOUND.EXE` programs.
