@@ -23,7 +23,7 @@ Game compatibility reports:
 * Steam features working as expected (e.g. Steam Cloud, Controller settings or recording of time played)
 * Better fullscreen support, especially on multi-monitor setups\*
 * Steam Overlay working out of the box\*
-* More [configuration options](wiki/Configuration) and better defaults\*
+* More [configuration options](https://github.com/dreamer/steam-dos/wiki/Configuration) and better defaults\*
 * Auto-start of software MIDI synthesiser
 * Auto-setup of MIDI for supported titles (click Play and enjoy pre-configured MIDI music)
 
@@ -63,6 +63,10 @@ Optionally for MIDI support: TiMidity++ or FluidSynth and a soundfont.
 3. Start Steam.
 4. In game properties window select "Force the use of a specific Steam Play
    compatibility tool" and select "DOSBox (native)".
+
+## Configuration
+
+Read [Configuration](https://github.com/dreamer/steam-dos/wiki/Configuration) article on project Wiki.
 
 
 ## GOG Games
