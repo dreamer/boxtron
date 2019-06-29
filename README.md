@@ -51,7 +51,6 @@ Optionally for MIDI support: TiMidity++ or FluidSynth and a soundfont.
 
     $ sudo pacman -S dosbox inotify-tools timidity++ soundfont-fluid
 
-
 ## Installation (using tarball)
 
 1. Close Steam.
@@ -59,6 +58,25 @@ Optionally for MIDI support: TiMidity++ or FluidSynth and a soundfont.
 
        $ cd ~/.local/share/Steam/compatibilitytools.d/ || cd ~/.steam/root/compatibilitytools.d/
        $ curl -L https://github.com/dreamer/steam-dos/releases/download/v0.4.0/steam-dos.tar.xz | tar xJf -
+
+3. Start Steam.
+4. In game properties window select "Force the use of a specific Steam Play
+   compatibility tool" and select "DOSBox (native)".
+
+## Installation (from source)
+
+0. Install extra prerequisites.
+
+#### Arch, Manjaro
+
+    $ sudo pacman -S git shellcheck python-pylint python-pyenchant hunspell-en_GB
+
+1. Close Steam.
+2. Clone the repository and install the script to user directory:
+
+       $ git clone https://github.com/dreamer/steam-dos.git
+       $ cd steam-dos
+       $ make user-install
 
 3. Start Steam.
 4. In game properties window select "Force the use of a specific Steam Play
