@@ -101,6 +101,45 @@ MIDI_INFO_NA = """
 """ [1:]
 
 
+class DosboxConfigParser(configparser.ConfigParser):
+    """Specialization of ConfigParser for DOSBox format."""
+
+    # pylint: disable=too-many-ancestors
+
+    def __init__(self):
+        super().__init__(allow_no_value=True, delimiters='=', strict=False)
+        self.optionxform = str
+        self.autoexec_lines = []
+
+    def read(self, filenames, encoding=None):
+        """Read and parse a filename or an iterable of filenames.
+
+        Read ConfigParser.read documentation for details.
+        """
+        if filenames.__class__ is list:
+            raise NotImplementedError
+
+        assert filenames.__class__ is str
+
+        # first pass to read everything except autoexec section
+        super().read(filenames, encoding)
+
+        # second pass to simply read lines in autoexec without standing on
+        # our heads and modifying ConfigParser internals:
+        with open(filenames, 'r', encoding=encoding) as txt:
+            in_section = False
+            for line in txt:
+                if in_section:
+                    self.autoexec_lines.append(line.rstrip())
+                    continue
+                if line.strip().startswith('[autoexec]'):
+                    in_section = True
+
+    def get_autoexec(self):
+        """Return list of lines in autoexec section."""
+        return self.autoexec_lines
+
+
 class DosboxConfiguration(dict):
     """Class representing DOSBox configuration.
 
@@ -134,7 +173,7 @@ class DosboxConfiguration(dict):
             if enc != 'utf-8':
                 self.encoding = enc
             if not noautoexec and conf.has_section('autoexec'):
-                self.raw_autoexec.extend(line for line in conf['autoexec'])
+                self.raw_autoexec.extend(conf.get_autoexec())
 
         self.raw_autoexec.extend(cmd for cmd in commands)
 
@@ -217,10 +256,7 @@ def uniq_conf_name_salted(app_id, args, salt):
 def parse_dosbox_config(conf_file):
     """Parse DOSBox configuration file."""
     assert conf_file
-    config = configparser.ConfigParser(allow_no_value=True,
-                                       delimiters='=',
-                                       strict=False)
-    config.optionxform = str
+    config = DosboxConfigParser()
     encoding = 'utf-8'
     try:
         # Try simply reading a .conf file, assuming it's utf-8 encoded,

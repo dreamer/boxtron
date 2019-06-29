@@ -35,11 +35,12 @@ class TestDosboxArgParser(unittest.TestCase):
 
 def raw_autoexec_section(path):
     out = False
-    for line in open(path, 'r'):
-        if out:
-            yield line
-        if line.startswith('[autoexec]'):
-            out = True
+    with open(path, 'r') as txt:
+        for line in txt:
+            if out:
+                yield line.rstrip()
+            if line.startswith('[autoexec]'):
+                out = True
 
 
 class TestDosboxConfiguration(unittest.TestCase):
@@ -249,7 +250,7 @@ class TestDosboxConfiguration(unittest.TestCase):
     # so we can test if re-interpreted autoexec section is exactly the
     # same.
     #
-    def disabled_test_arctic_adventure(self):
+    def test_arctic_adventure(self):
         os.chdir('tests/files/steam/arctic_adventure/Dosbox')
         cmd_line = ['-conf', r'..\Artic.conf', '-noconsole', '-c']
         args = confgen.parse_dosbox_arguments(cmd_line)
@@ -259,14 +260,14 @@ class TestDosboxConfiguration(unittest.TestCase):
                                            noautoexec=args.noautoexec,
                                            exit_after_exe=args.exit)
         confgen.create_user_conf_file(self.tmp_user_file, conf, cmd_line)
-        raw_autoexec = raw_autoexec_section('../ARTIC.conf')
+        raw_autoexec = list(raw_autoexec_section('../ARTIC.conf'))
         old, old_enc = confgen.parse_dosbox_config('../ARTIC.conf')
         new, new_enc = confgen.parse_dosbox_config(self.tmp_user_file)
-        old_autoexec = old['autoexec']
-        new_autoexec = new['autoexec']
+        old_autoexec = old.get_autoexec()
+        new_autoexec = new.get_autoexec()
         self.assertEqual(old_enc, new_enc)
-        self.assertEqual(list(raw_autoexec), list(old_autoexec))
-        self.assertEqual(list(old_autoexec), list(new_autoexec))
+        self.assertEqual(raw_autoexec, old_autoexec)
+        self.assertEqual(old_autoexec, new_autoexec)
 
 
 if __name__ == '__main__':  # pragma: no cover
