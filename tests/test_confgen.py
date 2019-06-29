@@ -33,14 +33,26 @@ class TestDosboxArgParser(unittest.TestCase):
         self.assertEqual(dargs.conf, ['dosbox.conf'])
 
 
+def raw_autoexec_section(path):
+    out = False
+    for line in open(path, 'r'):
+        if out:
+            yield line
+        if line.startswith('[autoexec]'):
+            out = True
+
+
 class TestDosboxConfiguration(unittest.TestCase):
 
     # pylint: disable=too-many-public-methods
 
     def setUp(self):
+        self.tmp_user_file = 'user_file_test.conf'
         self.original_dir = os.getcwd()
 
     def tearDown(self):
+        if os.path.isfile(self.tmp_user_file):
+            os.remove(self.tmp_user_file)
         os.chdir(self.original_dir)
 
     # $ dosbox -c 'foo' -c 'bar'
@@ -228,6 +240,33 @@ class TestDosboxConfiguration(unittest.TestCase):
                                            exit_after_exe=args.exit)
         # at the very least, autoexec should be filled
         self.assertEqual(conf.encoding, 'cp1250')
+
+    # Arctic Adventure 1, 2, 3, 4
+    #
+    # Autoexec section implements simple game selector.
+    #
+    # Original file uses the same convention for mount command as we do,
+    # so we can test if re-interpreted autoexec section is exactly the
+    # same.
+    #
+    def disabled_test_arctic_adventure(self):
+        os.chdir('tests/files/steam/arctic_adventure/Dosbox')
+        cmd_line = ['-conf', r'..\Artic.conf', '-noconsole', '-c']
+        args = confgen.parse_dosbox_arguments(cmd_line)
+        conf = confgen.DosboxConfiguration(conf_files=(args.conf or []),
+                                           commands=args.c,
+                                           exe=args.file,
+                                           noautoexec=args.noautoexec,
+                                           exit_after_exe=args.exit)
+        confgen.create_user_conf_file(self.tmp_user_file, conf, cmd_line)
+        raw_autoexec = raw_autoexec_section('../ARTIC.conf')
+        old, old_enc = confgen.parse_dosbox_config('../ARTIC.conf')
+        new, new_enc = confgen.parse_dosbox_config(self.tmp_user_file)
+        old_autoexec = old['autoexec']
+        new_autoexec = new['autoexec']
+        self.assertEqual(old_enc, new_enc)
+        self.assertEqual(list(raw_autoexec), list(old_autoexec))
+        self.assertEqual(list(old_autoexec), list(new_autoexec))
 
 
 if __name__ == '__main__':  # pragma: no cover
