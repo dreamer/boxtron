@@ -51,6 +51,7 @@ Optionally for MIDI support: TiMidity++ or FluidSynth and a soundfont.
 
     $ sudo pacman -S dosbox inotify-tools timidity++ soundfont-fluid
 
+
 ## Installation (using tarball)
 
 1. Close Steam.
@@ -62,6 +63,7 @@ Optionally for MIDI support: TiMidity++ or FluidSynth and a soundfont.
 3. Start Steam.
 4. In game properties window select "Force the use of a specific Steam Play
    compatibility tool" and select "DOSBox (native)".
+
 
 ## Installation (from source)
 
@@ -81,6 +83,7 @@ Optionally for MIDI support: TiMidity++ or FluidSynth and a soundfont.
 3. Start Steam.
 4. In game properties window select "Force the use of a specific Steam Play
    compatibility tool" and select "DOSBox (native)".
+
 
 ## Configuration
 
@@ -152,9 +155,11 @@ For example, to start King's Quest 6 from
 Check `SierraLauncher.ini` file in game's installation dir to learn which number
 corresponds to which game.
 
+
 ## Development
 
 Read all about it in the [contributing guide](https://github.com/dreamer/steam-dos/blob/master/CONTRIBUTING.md) :)
+
 
 ## Known issues
 
