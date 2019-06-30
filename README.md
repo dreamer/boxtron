@@ -67,12 +67,6 @@ Optionally for MIDI support: TiMidity++ or FluidSynth and a soundfont.
 
 ## Installation (from source)
 
-0. Install extra prerequisites.
-
-#### Arch, Manjaro
-
-    $ sudo pacman -S git shellcheck python-pylint python-pyenchant hunspell-en_GB
-
 1. Close Steam.
 2. Clone the repository and install the script to user directory:
 
