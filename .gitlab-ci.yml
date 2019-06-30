@@ -5,7 +5,7 @@ variables:
 
 before_script:
   - apt-get update -qq
-  - apt-get install -y -qq myspell-en-gb enchant shellcheck python3-pip
+  - apt-get install -y -qq myspell-en-gb enchant shellcheck python3-pip zip
   - pip3 -q install -r requirements.txt
   - python --version
   - python3 --version
@@ -35,7 +35,7 @@ Check Formatting:
   stage: format
   script: make check-formatting
 
-Create Package:
+Create Packages:
   stage: package
   script:
   - make steam-dos.tar.xz
