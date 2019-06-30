@@ -119,14 +119,19 @@ def setup_midi_game():
 
 def run_dosbox(args):
     cmd = settings.get_dosbox_cmd()
-    print_err('run_dosbox: working dir: "{}"'.format(os.getcwd()))
-    print_err('run_dosbox:', cmd + args)
+    print_err('steam-dos: working dir: "{}"'.format(os.getcwd()))
+    install_dir = toolbox.guess_game_install_dir()
+    if install_dir:
+        cmd = [x.replace('%install_dir%', install_dir) for x in cmd]
+    else:
+        print_err('steam-dos: warning: unrecognized installation directory')
+    print_err('steam-dos:', cmd + args)
     sys.stderr.flush()
     with toolbox.PidFile(PID_FILE):
         try:
             subprocess.call(cmd + args)
         except FileNotFoundError as err:
-            print_err('run_dosbox: error:', err)
+            print_err('steam-dos: error:', err)
 
 
 def run_dosbox_with_conf(args):
