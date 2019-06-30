@@ -107,7 +107,10 @@ class DosboxConfigParser(configparser.ConfigParser):
     # pylint: disable=too-many-ancestors
 
     def __init__(self):
-        super().__init__(allow_no_value=True, delimiters='=', strict=False)
+        super().__init__(allow_no_value=True,
+                         delimiters='=',
+                         strict=False,
+                         interpolation=None)
         self.optionxform = str
         self.autoexec_lines = []
 
