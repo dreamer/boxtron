@@ -182,8 +182,7 @@ def run_file(path, exe, cmd_line):
         exe = RUN_EXE
         setup_midi()
         if os.path.isfile(exe):
-            run_dosbox(['-conf', confgen.create_auto_conf_file({}),
-                        exe, '-exit'])  # yapf: disable
+            run_dosbox_with_conf([exe, '-exit'])
         else:
             exe_path = os.path.join(os.getcwd(), exe)
             msg = 'File not found: ' + exe_path
