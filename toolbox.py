@@ -149,17 +149,19 @@ def guess_game_install_dir(directory=None):
     assert posix_path.is_absolute()
     posix_parts = posix_path.parts
     steam_lib_pattern = ('steamapps'.casefold(), 'common'.casefold())
-    steam_lib_pattern_found, pos = False, -1
+    share_games_pattern = ('share', 'games')
+    lib_pattern_found, pos = False, -1
     prev_part_2, prev_part_1, this_part = '', '', ''
     for i, part in enumerate(posix_parts):
         prev_part_2 = prev_part_1
         prev_part_1 = this_part
         this_part = part.casefold()
-        if steam_lib_pattern == (prev_part_2, prev_part_1):
-            steam_lib_pattern_found = True
+        if steam_lib_pattern == (prev_part_2, prev_part_1) or \
+           share_games_pattern == (prev_part_2, prev_part_1):
+            lib_pattern_found = True
             pos = i
             break
-    if not steam_lib_pattern_found:
+    if not lib_pattern_found:
         return None
     found_path = os.path.join(*posix_parts[:pos + 1])
     return found_path.replace(' ', r'\ ').replace('&', r'\&')
