@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 
 """
 Module providing conversion between DOS/Windows and Posix paths.
