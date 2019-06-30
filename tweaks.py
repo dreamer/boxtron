@@ -8,6 +8,7 @@ Game-specific tweaks and workarounds
 import os
 import pathlib
 import re
+import zipfile
 
 import confgen
 
@@ -61,6 +62,15 @@ TWEAKS_DB = {
         'midi': 'auto',
         'conf': {
             'render': {'aspect': 'true'},
+        },
+    },
+    # Retro City Rampage™ DX
+    '204630': {
+        'install': 'install_retro_city_rampage',
+        'commands': {
+            r'.*':  {
+                'args': ['RCR486/RCR.EXE', '-exit'],
+            },
         },
     },
     # STAR WARS™ - X-Wing Special Edition
@@ -123,6 +133,11 @@ def command_tweak_needed(app_id):
     return app_id in TWEAKS_DB and 'commands' in TWEAKS_DB[app_id]
 
 
+def install_tweak_needed(app_id):
+    """Return true if game needs to be installed before start."""
+    return app_id in TWEAKS_DB and 'install' in TWEAKS_DB[app_id]
+
+
 def tweak_command(app_id, cmd_line):
     """Convert command line based on TWEAKS_DB."""
     assert len(cmd_line) >= 1
@@ -136,6 +151,13 @@ def tweak_command(app_id, cmd_line):
             raise KeyError
     print_err('steam-dos: error: no suitable tweak found for:', cmd_line)
     return cmd_line[1:]
+
+
+def install(app_id):
+    """Call specific install function."""
+    function_name = TWEAKS_DB[app_id]['install']
+    installf = globals()[function_name]
+    installf()
 
 
 def get_conf_tweak(app_id):
@@ -217,3 +239,18 @@ def check_cwd(command_line):
 
     os.chdir(orig_cwd)
     return False, None  # TODO show nice error to the user
+
+
+def install_retro_city_rampage():
+    """Install Retro City Rampage™ DX DOS version.
+
+    It is bundled with the Steam version, just needs to be unpacked.
+    """
+    if not os.path.isfile('other/RCR486_MS-DOS.zip'):
+        archive = zipfile.ZipFile('RetroCityRampage486_MS-DOS_v1.0.zip', 'r')
+        archive.extractall('other')
+        archive.close()
+    if not os.path.isfile('RCR486/RCR.EXE'):
+        archive = zipfile.ZipFile('other/RCR486_MS-DOS.zip', 'r')
+        archive.extractall('RCR486')
+        archive.close()

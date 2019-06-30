@@ -171,6 +171,9 @@ def run(cmd_line, wait=False):
                       "this command:")
             sys.exit(2)
 
+    if tweaks.install_tweak_needed(STEAM_APP_ID):
+        tweaks.install(STEAM_APP_ID)
+
     run_file(exe_path, exe, cmd_line)
 
 
