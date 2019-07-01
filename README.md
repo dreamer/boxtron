@@ -64,6 +64,21 @@ Optionally for MIDI support: TiMidity++ or FluidSynth and a soundfont.
 4. In game properties window select "Force the use of a specific Steam Play
    compatibility tool" and select "DOSBox (native)".
 
+
+## Installation (from source)
+
+1. Close Steam.
+2. Clone the repository and install the script to user directory:
+
+       $ git clone https://github.com/dreamer/steam-dos.git
+       $ cd steam-dos
+       $ make user-install
+
+3. Start Steam.
+4. In game properties window select "Force the use of a specific Steam Play
+   compatibility tool" and select "steam-dos (git)".
+
+
 ## Configuration
 
 Read [Configuration](https://github.com/dreamer/steam-dos/wiki/Configuration) article on project Wiki.
@@ -134,9 +149,11 @@ For example, to start King's Quest 6 from
 Check `SierraLauncher.ini` file in game's installation dir to learn which number
 corresponds to which game.
 
+
 ## Development
 
 Read all about it in the [contributing guide](https://github.com/dreamer/steam-dos/blob/master/CONTRIBUTING.md) :)
+
 
 ## Known issues
 
