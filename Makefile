@@ -2,9 +2,20 @@
 	check-formatting pretty-code \
 	install uninstall \
 	user-install user-uninstall \
-	clean version.py shortlog
+	clean shortlog \
+	compatibilitytool.vdf version.py
 
-tool_dir = steam-dos
+# These variables are used to generate compatibilitytool.vdf:
+#
+tool_name             = steam_dos
+tool_name_dev         = steam_dos_dev
+tool_name_display     = DOSBox (native)
+tool_name_display_dev = steam-dos (git)
+
+# Default names for installation directories:
+#
+tool_dir              = steam-dos
+tool_dir_dev          = steam-dos-dev
 
 files = run-dosbox \
 	install-gog-game \
@@ -39,8 +50,7 @@ prefix = /usr/local
 version = $(shell git describe --tags --dirty)
 
 install_dir = $(DESTDIR)$(prefix)/share/steam/compatibilitytools.d/$(tool_dir)
-devel_install_dir = $(data_home)/Steam/compatibilitytools.d/$(tool_dir)-dev
-
+devel_install_dir = $(data_home)/Steam/compatibilitytools.d/$(tool_dir_dev)
 
 lint: version.py
 	shellcheck codestyle.sh tests/coverage-report.sh
@@ -52,6 +62,9 @@ test: preconfig.tar
 
 coverage: preconfig.tar
 	bash tests/coverage-report.sh 2> /dev/null
+
+compatibilitytool.vdf: compatibilitytool.template
+	sed 's/%name%/$(tool_name)/; s/%display_name%/$(tool_name_display)/' $< > $@
 
 version.py:
 	@echo "# pylint: disable=missing-docstring" > $@
@@ -84,6 +97,8 @@ install: $(files)
 uninstall:
 	rm -rf $(install_dir)
 
+user-install: tool_name = $(tool_name_dev)
+user-install: tool_name_display = $(tool_name_display_dev)
 user-install: $(files)
 	mkdir -p $(devel_install_dir)
 	cp --reflink=auto -t $(devel_install_dir) $^
@@ -92,6 +107,7 @@ user-uninstall:
 	rm -rf $(devel_install_dir)
 
 clean:
+	rm -f compatibilitytool.vdf
 	rm -f version.py
 	rm -f preconfig.tar
 	rm -f $(tool_dir).tar.xz
