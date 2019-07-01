@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 
 # pylint: disable=missing-docstring
 # pylint: disable=wrong-spelling-in-comment
@@ -165,6 +165,31 @@ class TestRpatch(unittest.TestCase):
         self.assertEqual(get_lines(self.test_file_1),
                          ['abc\n', 'DEF\n', 'ghi\n'])
         self.assertFalse(os.path.isfile(missing_file))
+
+
+class TestGuessInstallDir(unittest.TestCase):
+
+    def test_guess_1(self):
+        pfx = '/home/dreamer_/.local/share/'
+        cwd = pfx + 'Steam/steamapps/common/Ultimate Doom'
+        exp = pfx + r'Steam/steamapps/common/Ultimate\ Doom'
+        self.assertEqual(toolbox.guess_game_install_dir(cwd), exp)
+
+    def test_guess_2(self):
+        pfx = '/home/dreamer_/.local/share/'
+        cwd = pfx + 'Steam/SteamApps/common/Ultimate Doom/base'
+        exp = pfx + r'Steam/SteamApps/common/Ultimate\ Doom'
+        self.assertEqual(toolbox.guess_game_install_dir(cwd), exp)
+
+    def test_guess_3(self):
+        pfx = '/mnt/steam-lib/steamapps/common/'
+        cwd = pfx + 'Heroes of Might & Magic III - HD Edition/data'
+        exp = pfx + r'Heroes\ of\ Might\ \&\ Magic\ III\ -\ HD\ Edition'
+        self.assertEqual(toolbox.guess_game_install_dir(cwd), exp)
+
+    def test_guess_4(self):
+        cwd = '/mnt/steam-lib/steamapps/common/'
+        self.assertEqual(toolbox.guess_game_install_dir(cwd), None)
 
 
 class TestPidfile(unittest.TestCase):

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 
 # pylint: disable=missing-docstring
 
@@ -92,7 +92,7 @@ scaler = {scaler}
 
 class Settings():
     def __init__(self):
-        self.store = configparser.ConfigParser()
+        self.store = configparser.ConfigParser(interpolation=None)
         self.store.add_section('confgen')
         self.store.add_section('midi')
         self.store.add_section('dosbox')

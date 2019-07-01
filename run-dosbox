@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 
 # pylint: disable=invalid-name
 # pylint: disable=missing-docstring
@@ -119,14 +119,19 @@ def setup_midi_game():
 
 def run_dosbox(args):
     cmd = settings.get_dosbox_cmd()
-    print_err('run_dosbox: working dir: "{}"'.format(os.getcwd()))
-    print_err('run_dosbox:', cmd + args)
+    print_err('steam-dos: working dir: "{}"'.format(os.getcwd()))
+    install_dir = toolbox.guess_game_install_dir()
+    if install_dir:
+        cmd = [x.replace('%install_dir%', install_dir) for x in cmd]
+    else:
+        print_err('steam-dos: warning: unrecognized installation directory')
+    print_err('steam-dos:', cmd + args)
     sys.stderr.flush()
     with toolbox.PidFile(PID_FILE):
         try:
             subprocess.call(cmd + args)
         except FileNotFoundError as err:
-            print_err('run_dosbox: error:', err)
+            print_err('steam-dos: error:', err)
 
 
 def run_dosbox_with_conf(args):
@@ -166,6 +171,9 @@ def run(cmd_line, wait=False):
                       "this command:")
             sys.exit(2)
 
+    if tweaks.install_tweak_needed(STEAM_APP_ID):
+        tweaks.install(STEAM_APP_ID)
+
     run_file(exe_path, exe, cmd_line)
 
 
@@ -177,8 +185,7 @@ def run_file(path, exe, cmd_line):
         exe = RUN_EXE
         setup_midi()
         if os.path.isfile(exe):
-            run_dosbox(['-conf', confgen.create_auto_conf_file({}),
-                        exe, '-exit'])  # yapf: disable
+            run_dosbox_with_conf([exe, '-exit'])
         else:
             exe_path = os.path.join(os.getcwd(), exe)
             msg = 'File not found: ' + exe_path

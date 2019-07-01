@@ -5,7 +5,7 @@ variables:
 
 before_script:
   - apt-get update -qq
-  - apt-get install -y -qq myspell-en-gb enchant shellcheck python3-pip
+  - apt-get install -y -qq myspell-en-gb enchant shellcheck python3-pip zip
   - pip3 -q install -r requirements.txt
   - python --version
   - python3 --version
@@ -17,6 +17,7 @@ stages:
   - analyse
   - test
   - format
+  - package
 
 Run Linters:
   stage: analyse
@@ -25,10 +26,6 @@ Run Linters:
 Unit Tests:
   stage: test
   script: make test
-  artifacts:
-    paths:
-    - preconfig.tar
-    expire_in: 1 day
 
 Unit Tests Coverage:
   stage: test
@@ -37,3 +34,14 @@ Unit Tests Coverage:
 Check Formatting:
   stage: format
   script: make check-formatting
+
+Create Packages:
+  stage: package
+  script:
+  - make steam-dos.tar.xz
+  - make steam-dos.zip
+  artifacts:
+    paths:
+    - steam-dos.tar.xz
+    - steam-dos.zip
+    expire_in: 1 week
