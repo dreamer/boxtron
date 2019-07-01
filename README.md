@@ -58,7 +58,7 @@ Optionally for MIDI support: TiMidity++ or FluidSynth and a soundfont.
 2. Download and unpack tarball:
 
        $ cd ~/.local/share/Steam/compatibilitytools.d/ || cd ~/.steam/root/compatibilitytools.d/
-       $ curl -L https://github.com/dreamer/steam-dos/releases/download/v0.4.0/steam-dos.tar.xz | tar xJf -
+       $ curl -L https://github.com/dreamer/steam-dos/releases/download/v0.4.1/steam-dos.tar.xz | tar xJf -
 
 3. Start Steam.
 4. In game properties window select "Force the use of a specific Steam Play
