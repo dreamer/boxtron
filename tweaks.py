@@ -31,6 +31,17 @@ TWEAKS_DB = {
     '2300': {
         'midi': 'auto',
     },
+    # Quake
+    '2310': {
+        'commands': {
+            r'.*':  {
+                'args': ['-c', 'mount C .',
+                         '-c', 'C:',
+                         '-c', 'quake.exe -nocdaudio',
+                         '-c', 'exit'],
+            },
+        },
+    },
     # HeXen: Beyond Heretic
     '2360': {
         'midi': 'auto',
