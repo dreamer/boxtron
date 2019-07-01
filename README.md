@@ -117,6 +117,7 @@ preferences. Supported games are:
 * [Master Levels for DOOM II](https://store.steampowered.com/app/9160/Master_Levels_for_Doom_II/)
 * [Heretic: Shadow of the Serpent Riders](https://store.steampowered.com/app/2390/Heretic_Shadow_of_the_Serpent_Riders/)
 * [Hexen: Beyond Heretic](https://store.steampowered.com/app/2360/HeXen_Beyond_Heretic/)
+* [Duke Nukem 3D (Classic)](https://steamdb.info/app/225140/info/)
 
 
 Just click "Play" and enjoy glorious MIDI music, there's no need to hunt those
