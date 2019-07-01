@@ -117,6 +117,19 @@ TWEAKS_DB = {
             },
         },
     },
+    # Duke Nukem 3D (Classic)
+    '225140': {
+        'midi': 'auto',
+        'commands': {
+            r'.*bin/dosbox/dosbox\.exe':  {
+                'args': ['-conf', 'dosbox.conf', '-noautoexec',
+                         '-c', 'mount C .',
+                         '-c', 'C:',
+                         '-c', 'DUKE3D.EXE',
+                         '-c', 'exit'],
+            },
+        },
+    },
     # Jagged Alliance Gold
     # Jagged Alliance Deadly Games
     '283270': {

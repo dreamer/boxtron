@@ -1,0 +1,6 @@
+file:DUKE3D.CFG
+s:/(MusicDevice\s+=\s+)(\d+)/\g<1>4/
+s:/(MidiPort\s+=\s+)(0x\d+)/\g<1>0x330/
+s:/(BlasterType\s+=\s+)(\d+)/\g<1>6/
+s:/(BlasterAddress\s+=\s+)(0x\d+)/\g<1>0x220/
+s:/(BlasterInterrupt\s+=\s+)(\d+)/\g<1>7/
