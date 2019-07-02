@@ -53,7 +53,7 @@ install_dir = $(DESTDIR)$(prefix)/share/steam/compatibilitytools.d/$(tool_dir)
 devel_install_dir = $(data_home)/Steam/compatibilitytools.d/$(tool_dir_dev)
 
 lint: version.py
-	shellcheck codestyle.sh tests/coverage-report.sh
+	shellcheck scripts/codestyle.sh tests/coverage-report.sh
 	pylint --rcfile=.pylint run-dosbox install-gog-game *.py tests/*.py
 
 test: preconfig.tar
@@ -118,7 +118,7 @@ shortlog:
 	git shortlog $(shell git describe --tags --abbrev=0)..HEAD
 
 check-formatting:
-	bash codestyle.sh run-dosbox install-gog-game *.py tests/*.py
+	bash scripts/codestyle.sh run-dosbox install-gog-game *.py tests/*.py
 	yapf -d -vv run-dosbox install-gog-game *.py
 
 pretty-code:
