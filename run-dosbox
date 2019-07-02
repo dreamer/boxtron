@@ -25,6 +25,7 @@ import subprocess
 import sys
 
 import confgen
+import fakescripteval
 import midi
 import preconfig
 import tweaks
@@ -37,22 +38,7 @@ from fakesierralauncher import SierraLauncherConfig
 
 STEAM_APP_ID = os.environ.get('SteamAppId', '0')
 
-PID_FILE = '/tmp/steam_dos_{0}'.format(STEAM_APP_ID)
-
 RUN_EXE = os.environ.get('SDOS_RUN_EXE')
-
-
-def wait_for_previous_process():
-    pid = 0
-    try:
-        with open(PID_FILE, 'r') as pid_file:
-            pid = int(pid_file.read())
-    except FileNotFoundError:
-        pass
-    if pid and os.path.isfile('/proc/{0}/cmdline'.format(pid)):
-        print_err('run_dosbox: waiting for process', pid, 'to stop',
-                  'and delete file', PID_FILE)
-        subprocess.call(['inotifywait', '-e', 'delete', PID_FILE])
 
 
 def setup_midi():
@@ -127,7 +113,7 @@ def run_dosbox(args):
         print_err('steam-dos: warning: unrecognized installation directory')
     print_err('steam-dos:', cmd + args)
     sys.stderr.flush()
-    with toolbox.PidFile(PID_FILE):
+    with toolbox.PidFile(fakescripteval.PID_FILE):
         try:
             subprocess.call(cmd + args)
         except FileNotFoundError as err:
@@ -152,13 +138,17 @@ def run(cmd_line, wait=False):
     print_err('steam-dos: original command:', cmd_line)
 
     if wait:
-        wait_for_previous_process()
+        fakescripteval.wait_for_previous_process()
 
     exe_path, exe = os.path.split(cmd_line[0]) if cmd_line else (None, '')
 
     if exe == 'iscriptevaluator.exe':
-        print_err('run_dosbox: skipping Steam script:', cmd_line)
-        return
+        status = fakescripteval.iscriptevaluator(cmd_line)
+        sys.exit(status)
+
+    # we don't want to detect hardware until we're sure we are starting
+    # the actual game:
+    settings.setup()
 
     chdir_tweak_needed, path = tweaks.check_cwd(cmd_line)
     if chdir_tweak_needed:
@@ -244,7 +234,6 @@ def main():
     group.add_argument('--get-compat-path', action='store_true')
     group.add_argument('--wait-before-run', action='store_true')
     group.add_argument('--version', action='store_true')
-    group.add_argument('--get-current-step')
     args, run_cmd_line = parser.parse_known_args()
 
     if args.version:
@@ -256,12 +245,7 @@ def main():
     elif args.get_compat_path:
         # TODO convert single path: Linux -> Windows
         sys.exit(1)
-    elif args.get_current_step:
-        # Steam sometimes invokes this even when it's not defined in
-        # toolmanifest…
-        sys.exit(1)
     else:
-        settings.setup()
         run(run_cmd_line, wait=args.wait_before_run)
 
 
