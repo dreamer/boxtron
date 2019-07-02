@@ -82,12 +82,14 @@ $(tool_dir).zip: $(files)
 	cp --reflink=auto -t $(tool_dir) $^
 	zip $@ $(tool_dir)/*
 	rm -rf $(tool_dir)
+	./run-dosbox --version
 
 $(tool_dir).tar.xz: $(files)
 	mkdir -p $(tool_dir)
 	cp --reflink=auto -t $(tool_dir) $^
 	tar -cJf $@ $(tool_dir)
 	rm -rf $(tool_dir)
+	./run-dosbox --version
 
 # TODO install-gog-game should actually go into a bindir
 install: $(files)
