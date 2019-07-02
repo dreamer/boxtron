@@ -88,6 +88,21 @@ TWEAKS_DB = {
     '354430': {
         'midi': 'auto',
     },
+    # Shadow Warrior (Classic)
+    '358400': {
+        'install': 'install_shadow_warrior',
+        'midi': 'disable',
+        'commands': {
+            r'.*Shadow Warrior - Dos.bat':  {
+                'args': ['-conf', 'Shadow Warrior\\SW.conf', '-noautoexec',
+                         '-c', 'mount C "Shadow Warrior"',
+                         '-c', 'imgmount D "Shadow Warrior\\shadow.cue" -t iso',
+                         '-c', 'C:',
+                         '-c', 'SwDOS.exe',
+                         '-c', 'exit'],
+            },
+        },
+    },
     # Super 3D Noah's Ark
     '371180': {
         'midi': 'disable',
@@ -278,3 +293,12 @@ def install_retro_city_rampage():
         archive = zipfile.ZipFile('other/RCR486_MS-DOS.zip', 'r')
         archive.extractall('RCR486')
         archive.close()
+
+
+def install_shadow_warrior():
+    """Rename broken file causing crash for Shadow Warrior Classic (358400).
+    """
+    path = 'Shadow Warrior/SWP.cfg'
+    if os.path.isfile(path):
+        os.rename(path, path + '.bak')
+
