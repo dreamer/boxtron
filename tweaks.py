@@ -75,6 +75,11 @@ TWEAKS_DB = {
             'render': {'aspect': 'true'},
         },
     },
+    # Fallout: A Post Nuclear Role Playing Game
+    '38400': {
+        'download': [],
+        'install': 'install_fallout',
+    },
     # Retro City Rampage™ DX
     '204630': {
         'install': 'install_retro_city_rampage',
@@ -170,6 +175,11 @@ TWEAKS_DB = {
 def command_tweak_needed(app_id):
     """Return true if game's command line needs to be changed."""
     return app_id in TWEAKS_DB and 'commands' in TWEAKS_DB[app_id]
+
+
+def download_tweak_needed(app_id):
+    """Return true if game needs to be download something for installation."""
+    return app_id in TWEAKS_DB and 'download' in TWEAKS_DB[app_id]
 
 
 def install_tweak_needed(app_id):
@@ -301,3 +311,11 @@ def install_shadow_warrior():
     path = 'Shadow Warrior/SWP.cfg'
     if os.path.isfile(path):
         os.rename(path, path + '.bak')
+
+
+def install_fallout():
+    """Unpack patch file to get Fallout DOS binary.
+
+    Assumes, that patch was already downloaded and placed in the cache.
+    """
+    # http://www.nma-fallout.com/resources/fallout-official-v1-1-patch-dos.49/download?version=50

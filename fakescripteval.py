@@ -4,8 +4,11 @@
 Fake iscriptevaluator.exe
 """
 import os
+import re
 import subprocess
+import time
 
+import tweaks
 from toolbox import print_err
 
 STEAM_APP_ID = os.environ.get('SteamAppId', '0')
@@ -29,15 +32,25 @@ def wait_for_previous_process():
 
 def iscriptevaluator(args):
     """Pretend to be iscriptevaluator.exe program."""
-    # if '--get-current-step' in cmd_line:
-    #       steam expects a line on unbuffered (?) stdout in specific format:
-    #       "1/3: Component X"
-    #       Will be shown in Steam user interface as:
-    #       "(2/3) Installing Component X…"
-    #       Just return after writing to stdout
-    #       Proton uses: sys.stdout.buffer.write
+    assert args
+    last_arg = args[-1]
 
-    assert args is not None
+    if '--get-current-step' in args:
+        steam_app_id = last_arg
+        print('1/2:', steam_app_id, end='')
+        return 0
+
+    steam_app_id = 0
+    script_name_pattern = re.compile(r'.*script_(\d+)\.vdf')
+    match = script_name_pattern.match(last_arg)
+    if match:
+        steam_app_id = match.group(1)
+
+    if not tweaks.download_tweak_needed(steam_app_id):
+        return 0
+
     # run the post-installation process here, protect it with a PidFile
+    print_err('steam-dos: downloading files for:', steam_app_id)
+    time.sleep(4)
     status = 0
     return status
