@@ -33,7 +33,7 @@ import toolbox
 
 from toolbox import print_err
 from settings import SETTINGS as settings
-from fsl import SierraLauncherConfig
+from fakesierralauncher import SierraLauncherConfig
 
 STEAM_APP_ID = os.environ.get('SteamAppId', '0')
 

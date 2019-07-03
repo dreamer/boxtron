@@ -301,4 +301,3 @@ def install_shadow_warrior():
     path = 'Shadow Warrior/SWP.cfg'
     if os.path.isfile(path):
         os.rename(path, path + '.bak')
-

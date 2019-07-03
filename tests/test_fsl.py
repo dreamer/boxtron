@@ -5,7 +5,7 @@
 
 import unittest
 
-import fsl
+import fakesierralauncher as fsl
 
 
 class TestLauncherParser(unittest.TestCase):
