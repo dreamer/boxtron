@@ -84,8 +84,16 @@ TWEAKS_DB = {
             'SETUP40.ZIP': {
                 'url': 'http://www.r-t-c-m.com/knowledge-base/downloads-rtcm/tekwar-tools/SETUP40.ZIP',
             },
+            'dos32a-912.zip': {
+                'url': 'http://download.narechk.net/dos32a-912-bin.zip',
+            }
         },
         'install': 'install_fallout',
+        'commands': {
+            r'.*':  {
+                'args': ['FALLOUT.EXE', '-exit'],
+            },
+        },
     },
     # Retro City Rampage™ DX
     '204630': {
@@ -325,4 +333,44 @@ def install_fallout():
 
     Assumes, that patch was already downloaded and placed in the cache.
     """
-    # http://www.nma-fallout.com/resources/fallout-official-v1-1-patch-dos.49/download?version=50
+    # download_links = TWEAKS_DB['38400']['download']
+    # for name in download_links:
+    #     cache_file = os.path.expanduser('~/.cache/' + name)
+    #     archive = zipfile.ZipFile(cache_file)
+    #     archive.extractall('.')
+    #     archive.close()
+
+    cache_file = os.path.expanduser('~/.cache/dos32a-912.zip')
+    archive = zipfile.ZipFile(cache_file)
+    archive.extractall('dos32a')
+    archive.close()
+
+    cache_file = os.path.expanduser('~/.cache/SETUP40.ZIP')
+    archive = zipfile.ZipFile(cache_file)
+    archive.extractall('hmi_files')
+    archive.close()
+
+    cache_file = os.path.expanduser('~/.cache/fallout_patch_1_1_dos.zip')
+    archive = zipfile.ZipFile(cache_file)
+    archive.extractall('patch_1_1_dos')
+    archive.close()
+
+    archive = zipfile.ZipFile('patch_1_1_dos/FALL11.ZIP')
+    archive.extractall('.')
+    archive.close()
+
+    dos32a_path = 'dos32a/binw/dos32a.exe'
+    if os.path.isfile(dos32a_path):
+        os.rename(dos32a_path, 'DOS4GW.EXE')
+
+    dos32a_path = 'dos32a/binw/dos32a.exe'
+    if os.path.isfile(dos32a_path):
+        os.rename(dos32a_path, 'DOS4GW.EXE')
+
+    path = 'hmi_files/HMIDRV.386'
+    if os.path.isfile(path):
+        os.rename(path, 'HMIDRV.386')
+
+    path = 'hmi_files/HMIDET.386'
+    if os.path.isfile(path):
+        os.rename(path, 'HMIDET.386')
