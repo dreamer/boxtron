@@ -50,7 +50,15 @@ def iscriptevaluator(args):
         return 0
 
     # run the post-installation process here, protect it with a PidFile
-    print_err('steam-dos: downloading files for:', steam_app_id)
-    time.sleep(4)
+    # time.sleep(4)
+
+    download_links = tweaks.TWEAKS_DB[steam_app_id]['download']
+    n = len(download_links)
+    i = 0
+    for name, desc in download_links.items():
+        print_err(f'steam-dos: downloading {i}/{n}: {url} -> {name}')
+        url = desc['url']
+        i += 1
+
     status = 0
     return status

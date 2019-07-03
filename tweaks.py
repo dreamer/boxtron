@@ -77,7 +77,14 @@ TWEAKS_DB = {
     },
     # Fallout: A Post Nuclear Role Playing Game
     '38400': {
-        'download': [],
+        'download': {
+            'fallout_patch_1_1_dos.zip': {
+                'url': 'http://www.nma-fallout.com/resources/fallout-official-v1-1-patch-dos.49/download?version=50',
+            },
+            'SETUP40.ZIP': {
+                'url': 'http://www.r-t-c-m.com/knowledge-base/downloads-rtcm/tekwar-tools/SETUP40.ZIP',
+            },
+        },
         'install': 'install_fallout',
     },
     # Retro City Rampage™ DX
