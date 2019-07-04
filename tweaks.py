@@ -16,6 +16,14 @@ import xdg
 
 from winpathlib import to_posix_path
 
+# There are several tweaks, that can be specified in TWEAKS_DB:
+#
+# download - describe files to download on the first start
+# install  - name the function in tweaks module to finalize game installation
+# midi     - see documentation for get_midi_preset
+# conf     - dictionary of values to inject to DOSBox configuration
+# commands - replace command line parameters used by specific game
+
 TWEAKS_DB = {
     # The Ultimate DOOM
     '2280': {
