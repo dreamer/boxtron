@@ -40,8 +40,14 @@ def iscriptevaluator(args):
 
     if '--get-current-step' in args:
         steam_app_id = last_arg
-        # print('1/2:', steam_app_id, end='')
-        print('1/3: Hello, Faalagorn', end='')
+        # leaving message in a file is not the most sophisticated solution
+        # works for now; maybe replace with FIFO later, if needed
+        msg_path = xdg.cached_file('desc.txt')
+        if not os.path.isfile(msg_path):
+            return 0
+        with open(msg_path, 'r') as msg_file:
+            msg = msg_file.read().strip()
+            print(msg, end='')
         return 0
 
     steam_app_id = 0
@@ -54,17 +60,20 @@ def iscriptevaluator(args):
         return 0
 
     # run the post-installation process here, protect it with a PidFile
-    # time.sleep(4)
 
     download_links = tweaks.TWEAKS_DB[steam_app_id]['download']
     num = len(download_links)
     i = 0
     for name, desc in download_links.items():
+        txt = desc['txt']
         url = desc['url']
         cache_file = xdg.cached_file(name)
         if os.path.isfile(cache_file):
             continue
-        print_err(f'steam-dos: downloading {i}/{num}: {url} -> {cache_file}')
+        print_err('steam-dos: downloading', url, 'to', cache_file)
+        msg = '{}/{}: {}'.format(i, num, txt)
+        with open(xdg.cached_file('desc.txt'), 'w') as msg_file:
+            msg_file.write(msg)
         with urllib.request.urlopen(url) as resp, \
                 open(cache_file, 'wb') as out:
             shutil.copyfileobj(resp, out)

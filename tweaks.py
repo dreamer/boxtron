@@ -79,15 +79,18 @@ TWEAKS_DB = {
     # Fallout: A Post Nuclear Role Playing Game
     '38400': {
         'download': {
-            'fallout_patch_1_1_dos.zip': {
-                'url': 'http://www.nma-fallout.com/resources/fallout-official-v1-1-patch-dos.49/download?version=50',  # noqa pylint: disable=line-too-long
+            'dos32a-912.zip': {
+                'txt': 'DOS/32 Advanced DOS Extender',
+                'url': 'http://download.narechk.net/dos32a-912-bin.zip',
             },
             'SETUP40.ZIP': {
+                'txt': 'HMI Sound Setup',
                 'url': 'http://www.r-t-c-m.com/knowledge-base/downloads-rtcm/tekwar-tools/SETUP40.ZIP',  # noqa pylint: disable=line-too-long
             },
-            'dos32a-912.zip': {
-                'url': 'http://download.narechk.net/dos32a-912-bin.zip',
-            }
+            'fallout_patch_1_1_dos.zip': {
+                'txt': 'Fallout patch 1.1 for DOS',
+                'url': 'http://www.nma-fallout.com/resources/fallout-official-v1-1-patch-dos.49/download?version=50',  # noqa pylint: disable=line-too-long
+            },
         },
         'install': 'install_fallout',
         'commands': {
