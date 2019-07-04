@@ -6,11 +6,12 @@ Fake iscriptevaluator.exe
 import os
 import re
 import subprocess
-# import time
 import urllib.request
 import shutil
 
 import tweaks
+import xdg
+
 from toolbox import print_err
 
 STEAM_APP_ID = os.environ.get('SteamAppId', '0')
@@ -60,7 +61,7 @@ def iscriptevaluator(args):
     i = 0
     for name, desc in download_links.items():
         url = desc['url']
-        cache_file = os.path.expanduser('~/.cache/' + name)
+        cache_file = xdg.cached_file(name)
         if os.path.isfile(cache_file):
             continue
         print_err(f'steam-dos: downloading {i}/{num}: {url} -> {cache_file}')

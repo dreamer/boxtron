@@ -11,6 +11,7 @@ import re
 import zipfile
 
 import confgen
+import xdg
 
 from toolbox import print_err, enabled_in_env
 from winpathlib import to_posix_path
@@ -333,17 +334,17 @@ def install_fallout():
 
     Assumes, that patch was already downloaded and placed in the cache.
     """
-    cache_file = os.path.expanduser('~/.cache/dos32a-912.zip')
+    cache_file = xdg.cached_file('dos32a-912.zip')
     archive = zipfile.ZipFile(cache_file)
     archive.extractall('dos32a')
     archive.close()
 
-    cache_file = os.path.expanduser('~/.cache/SETUP40.ZIP')
+    cache_file = xdg.cached_file('SETUP40.ZIP')
     archive = zipfile.ZipFile(cache_file)
     archive.extractall('hmi_files')
     archive.close()
 
-    cache_file = os.path.expanduser('~/.cache/fallout_patch_1_1_dos.zip')
+    cache_file = xdg.cached_file('fallout_patch_1_1_dos.zip')
     archive = zipfile.ZipFile(cache_file)
     archive.extractall('patch_1_1_dos')
     archive.close()
