@@ -12,6 +12,7 @@ import shutil
 import tweaks
 import xdg
 
+import toolbox
 from toolbox import print_err
 
 STEAM_APP_ID = os.environ.get('SteamAppId', '0')
@@ -71,6 +72,7 @@ def iscriptevaluator(args):
         print_current_step()
         return 0
 
+    # STEAM_APP_ID is 0 during installation
     steam_app_id = 0
     script_name_pattern = re.compile(r'.*script_(\d+)\.vdf')
     match = script_name_pattern.match(last_arg)
@@ -80,13 +82,13 @@ def iscriptevaluator(args):
     if not tweaks.download_tweak_needed(steam_app_id):
         return 0
 
-    # run the post-installation process here, protect it with a PidFile
-
     download_links = tweaks.TWEAKS_DB[steam_app_id]['download']
     num = len(download_links)
+    pid_file = '/tmp/steam_dos_{0}'.format(steam_app_id)
     i = 0
-    for name, desc in download_links.items():
-        download_item(i, num, name, desc)
-        i += 1
+    with toolbox.PidFile(pid_file):
+        for name, desc in download_links.items():
+            download_item(i, num, name, desc)
+            i += 1
     status = 0
     return status
