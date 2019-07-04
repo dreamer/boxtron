@@ -394,7 +394,7 @@ spelling-ignore-words=activision, alsa, autoexec,
                       regex,
                       sdl, setup, stderr, stdout, struct, sublicense, sys,
                       toolmanifest, tuple,
-                      xclosedisplay, xfree, xinerama, xineramaqueryscreens, xopendisplay,
+                      xclosedisplay, xdg, xfree, xinerama, xineramaqueryscreens, xopendisplay,
                       yapf,
 
 # A path to a file that contains private dictionary; one word per line.

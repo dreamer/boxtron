@@ -10,19 +10,14 @@ import configparser
 import os
 import shlex
 
+import xdg
 import xlib
 
 from toolbox import print_err
 from toolbox import enabled_in_env
 
 
-CONF_HOME = os.environ.get('XDG_CONFIG_HOME') or \
-            os.path.expanduser('~/.config')
-
-DATA_HOME = os.environ.get('XDG_DATA_HOME') or \
-            os.path.expanduser('~/.local/share')
-
-SETTINGS_FILE = os.path.join(CONF_HOME, 'steam-dos.conf')
+SETTINGS_FILE = os.path.join(xdg.CONF_HOME, 'steam-dos.conf')
 
 DEFAULT_CONFGEN_FORCE = False
 
@@ -217,8 +212,8 @@ class Settings():
             ['/usr/share/soundfonts'],
             ['/usr/local/share/sounds/sf2'],
             ['/usr/local/share/soundfonts'],
-            [DATA_HOME, 'sounds/sf2'],
-            [DATA_HOME, 'soundfonts'],
+            [xdg.DATA_HOME, 'sounds/sf2'],
+            [xdg.DATA_HOME, 'soundfonts'],
         ]
         selected = ''
         default = ''
@@ -246,7 +241,7 @@ class Settings():
         self.store.set('midi', 'soundfont', use_sf2)
 
 
-os.makedirs(CONF_HOME, exist_ok=True)
+os.makedirs(xdg.CONF_HOME, exist_ok=True)
 if not os.path.isfile(SETTINGS_FILE):
     with open(SETTINGS_FILE, 'w') as file:
         file.write(DEFAULT_SETTINGS)
