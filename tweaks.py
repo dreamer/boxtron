@@ -8,6 +8,7 @@ Game-specific tweaks and workarounds
 import os
 import pathlib
 import re
+import zipfile
 
 import confgen
 import toolbox
@@ -330,29 +331,27 @@ def install_fallout():
 
     Assumes, that patch was already downloaded and placed in the cache.
     """
-    cache_file = xdg.cached_file('dos32a-912.zip')
-    toolbox.unzip(cache_file, 'dos32a')
 
-    cache_file = xdg.cached_file('SETUP40.ZIP')
-    toolbox.unzip(cache_file, 'hmi_files')
+    if not os.path.isfile('DOS4GW.EXE_'):
+        archive = zipfile.ZipFile(xdg.cached_file('dos32a-912.zip'), 'r')
+        archive.extract('binw/dos32a.exe')
+        archive.close()
+        os.rename('binw/dos32a.exe', 'DOS4GW.EXE')
+        os.rmdir('binw')
 
-    cache_file = xdg.cached_file('fallout_patch_1_1_dos.zip')
-    toolbox.unzip(cache_file, 'patch_1_1_dos')
+    if not os.path.isfile('HMIDET.386') or not os.path.isfile('HMIDRV.386'):
+        archive = zipfile.ZipFile(xdg.cached_file('SETUP40.ZIP'), 'r')
+        archive.extract('HMIDET.386')
+        archive.extract('HMIDRV.386')
+        archive.close()
 
-    toolbox.unzip('patch_1_1_dos/FALL11.ZIP', '.')
+    if not os.path.isfile('FALLOUT.EXE'):
+        cache_file = xdg.cached_file('fallout_patch_1_1_dos.zip')
+        toolbox.unzip(cache_file, 'patch_1_1_dos')
+        toolbox.unzip('patch_1_1_dos/FALL11.ZIP', '.')
 
-    dos32a_path = 'dos32a/binw/dos32a.exe'
-    if os.path.isfile(dos32a_path):
-        os.rename(dos32a_path, 'DOS4GW.EXE')
-
-    dos32a_path = 'dos32a/binw/dos32a.exe'
-    if os.path.isfile(dos32a_path):
-        os.rename(dos32a_path, 'DOS4GW.EXE')
-
-    path = 'hmi_files/HMIDRV.386'
-    if os.path.isfile(path):
-        os.rename(path, 'HMIDRV.386')
-
-    path = 'hmi_files/HMIDET.386'
-    if os.path.isfile(path):
-        os.rename(path, 'HMIDET.386')
+    rpatch = [
+        'file:fallout.cfg',
+        r's:/(art_cache_size=)(\d+)/\g<1>5/',
+    ]
+    toolbox.apply_resource_patch(rpatch)
