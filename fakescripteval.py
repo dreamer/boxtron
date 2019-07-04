@@ -33,21 +33,42 @@ def wait_for_previous_process():
         subprocess.call(['inotifywait', '-e', 'delete', PID_FILE])
 
 
+def download_item(i, num, name, desc):
+    """Download a file to cache."""
+    txt = desc['txt']
+    url = desc['url']
+    cache_file = xdg.cached_file(name)
+    if os.path.isfile(cache_file):
+        return
+    print_err('steam-dos: downloading', url, 'to', cache_file)
+    msg = '{}/{}: {}'.format(i, num, txt)
+    # TODO use runtime dir instead of cache here
+    with open(xdg.cached_file('desc.txt'), 'w') as msg_file:
+        msg_file.write(msg)
+    with urllib.request.urlopen(url) as resp, open(cache_file, 'wb') as out:
+        shutil.copyfileobj(resp, out)
+
+
+def print_current_step():
+    """Print description of current 'installation' step."""
+    # leaving message in a file is not the most sophisticated solution
+    # works for now; maybe replace with FIFO later, if needed
+    msg_path = xdg.cached_file('desc.txt')
+    if not os.path.isfile(msg_path):
+        return
+    with open(msg_path, 'r') as msg_file:
+        msg = msg_file.read().strip()
+        print(msg, end='')
+
+
 def iscriptevaluator(args):
     """Pretend to be iscriptevaluator.exe program."""
     assert args
     last_arg = args[-1]
 
     if '--get-current-step' in args:
-        steam_app_id = last_arg
-        # leaving message in a file is not the most sophisticated solution
-        # works for now; maybe replace with FIFO later, if needed
-        msg_path = xdg.cached_file('desc.txt')
-        if not os.path.isfile(msg_path):
-            return 0
-        with open(msg_path, 'r') as msg_file:
-            msg = msg_file.read().strip()
-            print(msg, end='')
+        # steam_app_id = last_arg
+        print_current_step()
         return 0
 
     steam_app_id = 0
@@ -65,19 +86,7 @@ def iscriptevaluator(args):
     num = len(download_links)
     i = 0
     for name, desc in download_links.items():
-        txt = desc['txt']
-        url = desc['url']
-        cache_file = xdg.cached_file(name)
-        if os.path.isfile(cache_file):
-            continue
-        print_err('steam-dos: downloading', url, 'to', cache_file)
-        msg = '{}/{}: {}'.format(i, num, txt)
-        with open(xdg.cached_file('desc.txt'), 'w') as msg_file:
-            msg_file.write(msg)
-        with urllib.request.urlopen(url) as resp, \
-                open(cache_file, 'wb') as out:
-            shutil.copyfileobj(resp, out)
+        download_item(i, num, name, desc)
         i += 1
-
     status = 0
     return status
