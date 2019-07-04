@@ -10,6 +10,7 @@ import re
 import shlex
 import subprocess
 import sys
+import zipfile
 
 import winpathlib
 
@@ -183,3 +184,10 @@ class PidFile:
             os.remove(self.file_name)
         except FileNotFoundError:
             pass
+
+
+def unzip(src_file, dst_dir):
+    """Simply unzip a file."""
+    archive = zipfile.ZipFile(src_file, 'r')
+    archive.extractall(dst_dir)
+    archive.close()

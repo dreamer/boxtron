@@ -8,12 +8,11 @@ Game-specific tweaks and workarounds
 import os
 import pathlib
 import re
-import zipfile
 
 import confgen
+import toolbox
 import xdg
 
-from toolbox import print_err, enabled_in_env
 from winpathlib import to_posix_path
 
 TWEAKS_DB = {
@@ -214,7 +213,8 @@ def tweak_command(app_id, cmd_line):
             if 'args' in replacement:
                 return replacement['args']
             raise KeyError
-    print_err('steam-dos: error: no suitable tweak found for:', cmd_line)
+    toolbox.print_err('steam-dos: error: no suitable tweak found for:',
+                      cmd_line)
     return cmd_line[1:]
 
 
@@ -247,7 +247,7 @@ def get_midi_preset(app_id):
     auto    - pre-configure game to automatically turn midi on/off depending
               on user preference
     """
-    if enabled_in_env('SDOS_NO_MIDI_PRESET'):
+    if toolbox.enabled_in_env('SDOS_NO_MIDI_PRESET'):
         return 'enable'
     if app_id not in TWEAKS_DB:
         return 'enable'
@@ -312,13 +312,9 @@ def install_retro_city_rampage():
     It is bundled with the Steam version, just needs to be unpacked.
     """
     if not os.path.isfile('other/RCR486_MS-DOS.zip'):
-        archive = zipfile.ZipFile('RetroCityRampage486_MS-DOS_v1.0.zip', 'r')
-        archive.extractall('other')
-        archive.close()
+        toolbox.unzip('RetroCityRampage486_MS-DOS_v1.0.zip', 'other')
     if not os.path.isfile('RCR486/RCR.EXE'):
-        archive = zipfile.ZipFile('other/RCR486_MS-DOS.zip', 'r')
-        archive.extractall('RCR486')
-        archive.close()
+        toolbox.unzip('other/RCR486_MS-DOS.zip', 'RCR486')
 
 
 def install_shadow_warrior():
@@ -335,23 +331,15 @@ def install_fallout():
     Assumes, that patch was already downloaded and placed in the cache.
     """
     cache_file = xdg.cached_file('dos32a-912.zip')
-    archive = zipfile.ZipFile(cache_file)
-    archive.extractall('dos32a')
-    archive.close()
+    toolbox.unzip(cache_file, 'dos32a')
 
     cache_file = xdg.cached_file('SETUP40.ZIP')
-    archive = zipfile.ZipFile(cache_file)
-    archive.extractall('hmi_files')
-    archive.close()
+    toolbox.unzip(cache_file, 'hmi_files')
 
     cache_file = xdg.cached_file('fallout_patch_1_1_dos.zip')
-    archive = zipfile.ZipFile(cache_file)
-    archive.extractall('patch_1_1_dos')
-    archive.close()
+    toolbox.unzip(cache_file, 'patch_1_1_dos')
 
-    archive = zipfile.ZipFile('patch_1_1_dos/FALL11.ZIP')
-    archive.extractall('.')
-    archive.close()
+    toolbox.unzip('patch_1_1_dos/FALL11.ZIP', '.')
 
     dos32a_path = 'dos32a/binw/dos32a.exe'
     if os.path.isfile(dos32a_path):
