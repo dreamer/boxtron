@@ -16,7 +16,6 @@ import xlib
 from toolbox import print_err
 from toolbox import enabled_in_env
 
-
 SETTINGS_FILE = os.path.join(xdg.CONF_HOME, 'steam-dos.conf')
 
 DEFAULT_CONFGEN_FORCE = False

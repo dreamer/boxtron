@@ -39,7 +39,7 @@ def iscriptevaluator(args):
 
     if '--get-current-step' in args:
         steam_app_id = last_arg
-        #print('1/2:', steam_app_id, end='')
+        # print('1/2:', steam_app_id, end='')
         print('1/3: Hello, Faalagorn', end='')
         return 0
 
@@ -56,15 +56,16 @@ def iscriptevaluator(args):
     # time.sleep(4)
 
     download_links = tweaks.TWEAKS_DB[steam_app_id]['download']
-    n = len(download_links)
+    num = len(download_links)
     i = 0
     for name, desc in download_links.items():
         url = desc['url']
         cache_file = os.path.expanduser('~/.cache/' + name)
         if os.path.isfile(cache_file):
             continue
-        print_err(f'steam-dos: downloading {i}/{n}: {url} -> {cache_file}')
-        with urllib.request.urlopen(url) as resp, open(cache_file, 'wb') as out:
+        print_err(f'steam-dos: downloading {i}/{num}: {url} -> {cache_file}')
+        with urllib.request.urlopen(url) as resp, \
+                open(cache_file, 'wb') as out:
             shutil.copyfileobj(resp, out)
         i += 1
 
