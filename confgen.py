@@ -57,6 +57,23 @@ RENDER_SECTION_2 = """
 #         Read more: https://www.dosbox.com/wiki/Dosbox.conf#scaler
 """.lstrip()
 
+# The default DOSBox configuration sets `cycles=auto` which means:
+#
+# - real-mode games will run at 3000 cycles
+# - protected mode games run with cycles=max
+#
+# This makes many (most?) real-mode games unplayable due to very low
+# performance.  Using `max 95%` seems to help with this issue in all
+# tested games so far without negatively affecting protected mode games.
+#
+CPU_SECTION = """
+[cpu]
+core=auto
+cputype=auto
+cycles=max 95%
+
+""".lstrip()
+
 SBLASTER_SECTION = """
 [sblaster]
 sbtype=sb16
@@ -394,9 +411,11 @@ def create_auto_conf_file(conf):
         auto.write('# This file is re-created on every run\n')
         auto.write('\n')
 
+        # SDL section
         sdl_fullresolution = settings.get_dosbox_fullresolution()
         auto.write(SDL_SECTION_1.format(resolution=sdl_fullresolution))
 
+        # render section
         render_scaler = settings.get_dosbox_scaler()
         render_aspect = 'false'
         if conf and conf.has_section('render'):
@@ -405,17 +424,24 @@ def create_auto_conf_file(conf):
             RENDER_SECTION_1.format(scaler=render_scaler,
                                     aspect=render_aspect))
 
+        # CPU section
+        auto.write(CPU_SECTION)
+
+        # sound blaster section
         base, irq, dma, hdma = 220, 7, 1, 5  # DOSBox defaults
         print_err('steam-dos: Setting up DOSBox audio:')
         print_err(SBLASTER_INFO.format(base=base, irq=irq, dma=dma))
         auto.write(SBLASTER_SECTION.format(base=base, irq=irq, dma=dma,
                                            hdma=hdma))  # yapf: disable
+
+        # midi section
         if mport:
             print_err(MIDI_INFO)
             auto.write(MIDI_SECTION.format(port=mport.addr))
         else:
             print_err(MIDI_INFO_NA)
 
+        # dos section
         if conf and conf.has_section('dos'):
             dos_xms = conf['dos'].get('xms', 'true')
             dos_ems = conf['dos'].get('ems', 'true')
