@@ -55,7 +55,7 @@ Optionally for MIDI support: TiMidity++ or FluidSynth and a soundfont.
 ## Installation (using tarball)
 
 1. Close Steam.
-2. Download and unpack tarball:
+2. Download and unpack tarball to `compatibilitytools.d` directory (create one if it does not exist):
 
        $ cd ~/.local/share/Steam/compatibilitytools.d/ || cd ~/.steam/root/compatibilitytools.d/
        $ curl -L https://github.com/dreamer/steam-dos/releases/download/v0.4.1/steam-dos.tar.xz | tar xJf -
