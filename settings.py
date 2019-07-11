@@ -218,9 +218,10 @@ class Settings():
         default = ''
         os_default = ''
         for path in sf2_search:
-            selected_path = os.path.join(*path, sf2)
-            default1_path = os.path.join(*path, DEFAULT_MIDI_SOUNDFONT)
-            default2_path = os.path.join(*path, 'default.sf2')
+            # TODO avoid unnecessary list append after Python 3.5 is dropped
+            selected_path = os.path.join(*(path + [sf2]))
+            default1_path = os.path.join(*(path + [DEFAULT_MIDI_SOUNDFONT]))
+            default2_path = os.path.join(*(path + ['default.sf2']))
             if os.path.isfile(selected_path):
                 selected = selected_path
             if os.path.isfile(default1_path):
