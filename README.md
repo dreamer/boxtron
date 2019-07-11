@@ -62,7 +62,7 @@ Optionally for MIDI support: TiMidity++ or FluidSynth and a soundfont.
 
 3. Start Steam.
 4. In game properties window select "Force the use of a specific Steam Play
-   compatibility tool" and select "DOSBox (native)".
+   compatibility tool" and select "DOSBox&nbsp;(native)".
 
 
 ## Installation (from source)
@@ -76,7 +76,7 @@ Optionally for MIDI support: TiMidity++ or FluidSynth and a soundfont.
 
 3. Start Steam.
 4. In game properties window select "Force the use of a specific Steam Play
-   compatibility tool" and select "steam-dos (git)".
+   compatibility tool" and select "steam-dos&nbsp;(dev)".
 
 
 ## Configuration

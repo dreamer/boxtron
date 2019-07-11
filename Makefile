@@ -10,7 +10,7 @@
 tool_name             = steam_dos
 tool_name_dev         = steam_dos_dev
 tool_name_display     = DOSBox (native)
-tool_name_display_dev = steam-dos (git)
+tool_name_display_dev = steam-dos (dev)
 
 # Default names for installation directories:
 #
