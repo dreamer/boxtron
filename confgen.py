@@ -429,6 +429,8 @@ def create_auto_conf_file(conf):
 
         # sound blaster section
         base, irq, dma, hdma = 220, 7, 1, 5  # DOSBox defaults
+        if conf and conf.has_section('sblaster'):
+            irq = conf['sblaster'].get('force_irq', str(irq))
         print_err('steam-dos: Setting up DOSBox audio:')
         print_err(SBLASTER_INFO.format(base=base, irq=irq, dma=dma))
         auto.write(SBLASTER_SECTION.format(base=base, irq=irq, dma=dma,

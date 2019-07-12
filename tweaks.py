@@ -183,10 +183,19 @@ TWEAKS_DB = {
         'midi': 'auto',
     },
     # MegaRace
+    #
+    # This game uses different .conf files depending on game language.
+    # TODO provide fallback mechanism for missing .conf files or glob support
+    #
     '730580': {
+        'midi': 'disable',
+        'conf': {
+            'sblaster': {'force_irq': '5'},
+            'render': {'aspect': 'true'},
+        },
         'commands': {
             r'.*':  {
-                'args': ['-conf', 'dosboxmegarace.conf'],
+                'args': ['Megarace.bat'],
             },
         },
     },
