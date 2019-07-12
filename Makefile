@@ -122,6 +122,7 @@ shortlog:
 	git shortlog $(shell git describe --tags --abbrev=0)..HEAD
 
 check-formatting:
+	yapf --version
 	bash scripts/codestyle.sh --max-line-length=80 \
 		run-dosbox install-gog-game *.py tests/*.py
 	yapf -d -vv run-dosbox install-gog-game *.py
