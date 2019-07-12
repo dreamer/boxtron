@@ -85,6 +85,7 @@ scaler = {scaler}
 
 
 class Settings():
+
     def __init__(self):
         self.store = configparser.ConfigParser(interpolation=None)
         self.store.add_section('confgen')

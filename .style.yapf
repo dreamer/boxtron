@@ -57,7 +57,7 @@ blank_line_before_module_docstring=True
 #                      # <------ this blank line
 #     def method():
 #       ...
-blank_line_before_nested_class_or_def=False
+blank_line_before_nested_class_or_def=True
 
 # Do not split consecutive brackets. Only relevant when
 # dedent_closing_brackets is set. For example:
