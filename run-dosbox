@@ -57,7 +57,7 @@ def setup_midi_synth():
     if not settings.get_midi_on():
         return
 
-    if midi.detect_software_synthesiser(r'timidity|fluid'):
+    if midi.detect_software_synthesiser(r'timidity|fluid|um-one'):
         # Synthesiser is already running (maybe as a service).
         # There's no reason to start our own.
         return
