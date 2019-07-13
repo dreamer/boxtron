@@ -29,6 +29,12 @@ class TestAlsaMidiClients(unittest.TestCase):
         self.assertEqual(port.space, 'User')
         self.assertEqual(port.flags, '-We-')
 
+    def test_find_hw_client(self):
+        fake_seq_list = 'tests/files/alsa/um-one'
+        port = midi.detect_software_synthesiser(r'um-one',
+                                                alsa_seq_clients=fake_seq_list)
+        self.assertEqual(port.addr, '24:0')
+
     def test_missing_sequencer_file(self):
         fake_seq_list = 'tests/files/alsa/missing_file'
         found_ports = list(midi.list_alsa_sequencer_ports(fake_seq_list))
