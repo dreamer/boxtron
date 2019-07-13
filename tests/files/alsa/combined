@@ -1,0 +1,19 @@
+Client info
+  cur  clients : 5
+  peak clients : 5
+  max  clients : 192
+
+Client   0 : "System" [Kernel]
+  Port   0 : "Timer" (Rwe-)
+  Port   1 : "Announce" (R-e-)
+Client  14 : "Midi Through" [Kernel]
+  Port   0 : "Midi Through Port-0" (RWe-)
+Client  16 : "CASIO USB-MIDI" [Kernel]
+  Port   0 : "CASIO USB-MIDI MIDI 1" (RWeX)
+Client  24 : "UM-ONE" [Kernel]
+  Port   0 : "UM-ONE MIDI 1" (RWeX)
+Client 128 : "TiMidity" [User]
+  Port   0 : "TiMidity port 0" (-We-)
+  Port   1 : "TiMidity port 1" (-We-)
+  Port   2 : "TiMidity port 2" (-We-)
+  Port   3 : "TiMidity port 3" (-We-)

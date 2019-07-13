@@ -3,12 +3,19 @@
 # pylint: disable=missing-docstring
 # pylint: disable=wrong-spelling-in-comment
 
+import os
 import unittest
 
 import midi
 
 
 class TestAlsaMidiClients(unittest.TestCase):
+
+    def setUp(self):
+        os.environ.pop('SDOS_USE_MIDI_SEQ', None)
+
+    def tearDown(self):
+        os.environ.pop('SDOS_USE_MIDI_SEQ', None)
 
     def test_list_default(self):
         fake_seq_list = 'tests/files/alsa/default'
@@ -36,6 +43,15 @@ class TestAlsaMidiClients(unittest.TestCase):
         fake_seq_list = 'tests/files/alsa/casio'
         port = midi.detect_midi_synthesiser(seq_clients=fake_seq_list)
         self.assertEqual(port.addr, '16:0')
+
+    def test_user_selection(self):
+        fake_seq_list = 'tests/files/alsa/combined'
+        port = midi.detect_midi_synthesiser(seq_clients=fake_seq_list)
+        self.assertEqual(port.addr, '16:0')
+        os.environ['SDOS_USE_MIDI_SEQ'] = '.*one'
+        port = midi.detect_midi_synthesiser(seq_clients=fake_seq_list)
+        self.assertEqual(port.addr, '24:0')
+        self.assertEqual(port.name, 'UM-ONE')
 
     def test_missing_sequencer_file(self):
         fake_seq_list = 'tests/files/alsa/missing_file'

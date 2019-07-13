@@ -54,13 +54,17 @@ def list_alsa_sequencer_ports(alsa_seq_clients=ALSA_SEQ_CLIENTS):
 
 def detect_midi_synthesiser(seq_clients=ALSA_SEQ_CLIENTS):
     """Detect MIDI synthesiser according to user preferences."""
-    # First pass: according to user preference:
-    # Second pass: look for known hardware:
-    # Third pass: look for software synthesiser:
-    port = match_port_by_name(r'XXXXTODOXXXX', seq_clients) or \
-           match_port_by_name(KNOWN_HARDWARE, seq_clients) or \
+    user_pref = settings.get_midi_sequencer()
+
+    # First pass: according to user preference
+    port = match_port_by_name(user_pref, seq_clients) if user_pref else None
+    if port:
+        return port
+
+    # Second pass: look for known hardware
+    # Third pass: look for software synthesiser
+    return match_port_by_name(KNOWN_HARDWARE, seq_clients) or \
            match_port_by_name(r'timidity|fluid', seq_clients)
-    return port
 
 
 def match_port_by_name(name_expr=None, seq_clients=ALSA_SEQ_CLIENTS):

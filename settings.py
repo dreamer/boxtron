@@ -24,6 +24,8 @@ DEFAULT_MIDI_ENABLE = True
 
 DEFAULT_MIDI_TOOL = 'timidity'
 
+DEFAULT_MIDI_SEQ_REGEX = r''
+
 DEFAULT_MIDI_SOUNDFONT = 'FluidR3_GM.sf2'
 
 DEFAULT_DOSBOX_BINARY = 'dosbox'
@@ -45,6 +47,21 @@ enable = {midi_enable}
 # Select preferred software synthesiser here.
 # Can be either 'timidity' or 'fluidsynth'
 synthesiser = {midi_tool}
+
+# You can name your preferred MIDI synthesiser here to override the one
+# picked by default. If not found then software synthesiser will be
+# started as a fallback.
+#
+# Value is treated as a regular expression using Python syntax, matched
+# against the name of a MIDI client (case-insensitive); to list MIDI clients
+# connected, use: $ aconnect -l
+#
+# For example, to match client named 'CASIO USB-MIDI', you can use
+# value 'casio'.
+#
+# You can override this per-game with SDOS_USE_MIDI_SEQ environment variable.
+#
+# use_sequencer =
 
 # steam-dos will look for a soundfont in following directories:
 # /usr/share/soundfonts/
@@ -177,6 +194,10 @@ class Settings():
     def get_midi_soundfont(self):
         assert self.finalized
         return self.__get_str__('midi', 'soundfont', DEFAULT_MIDI_SOUNDFONT)
+
+    def get_midi_sequencer(self):
+        seq = self.__get_str__('midi', 'use_sequencer', DEFAULT_MIDI_SEQ_REGEX)
+        return os.environ.get('SDOS_USE_MIDI_SEQ', seq).strip()
 
     def get_dosbox_cmd(self):
         # dosbox.cmd is new name for dosbox.bin
