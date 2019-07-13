@@ -12,7 +12,8 @@ import signal
 import subprocess
 import time
 
-from toolbox import print_err
+from settings import SETTINGS as settings
+from toolbox import print_err, which
 
 ALSA_SEQ_CLIENTS = '/proc/asound/seq/clients'
 
@@ -85,3 +86,34 @@ def stop_software_midi_synth(pid):
     """Stop software synthesiser process."""
     print_err('steam-dos: Stopping MIDI client {0}'.format(pid))
     os.kill(pid, signal.SIGTERM)  # TODO ProcessLookupError:
+
+
+def setup_midi_soft_synth():
+    """Detect or run and configure software MIDI synthesiser."""
+    if not settings.get_midi_on():
+        return
+
+    if detect_software_synthesiser(r'timidity|fluid|um-one'):
+        # Synthesiser is already running (maybe as a service).
+        # There's no reason to start our own.
+        return
+
+    tool = settings.get_midi_tool()
+    sfont = settings.get_midi_soundfont()
+
+    preference_list = []
+    if tool == 'timidity':
+        preference_list = ['timidity', 'fluidsynth']
+    elif tool == 'fluidsynth':
+        preference_list = ['fluidsynth', 'timidity']
+
+    for tool in preference_list:
+        if not which(tool):
+            continue
+        if tool == 'timidity':
+            start_timidity(sfont)
+            return
+        if tool == 'fluidsynth':
+            start_fluidsynth(sfont)
+            return
+    print_err('steam-dos: warn: no software MIDI synthesiser available')

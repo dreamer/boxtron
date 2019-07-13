@@ -49,38 +49,7 @@ def setup_midi():
     if midi_preset == 'disable':
         print_err('steam-dos: info: this game does not support MIDI music')
         settings.set_midi_on(False)
-    setup_midi_synth()
-
-
-def setup_midi_synth():
-    """Detect or run and configure software MIDI synthesiser."""
-    if not settings.get_midi_on():
-        return
-
-    if midi.detect_software_synthesiser(r'timidity|fluid|um-one'):
-        # Synthesiser is already running (maybe as a service).
-        # There's no reason to start our own.
-        return
-
-    tool = settings.get_midi_tool()
-    sfont = settings.get_midi_soundfont()
-
-    preference_list = []
-    if tool == 'timidity':
-        preference_list = ['timidity', 'fluidsynth']
-    elif tool == 'fluidsynth':
-        preference_list = ['fluidsynth', 'timidity']
-
-    for tool in preference_list:
-        if not toolbox.which(tool):
-            continue
-        if tool == 'timidity':
-            midi.start_timidity(sfont)
-            return
-        if tool == 'fluidsynth':
-            midi.start_fluidsynth(sfont)
-            return
-    print_err('steam-dos: warn: no software MIDI synthesiser available')
+    midi.setup_midi_soft_synth()
 
 
 def setup_midi_game():
