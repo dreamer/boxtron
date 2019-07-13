@@ -208,6 +208,8 @@ class Settings():
     def __assure_sf2_exists__(self):
         sf2 = self.__get_str__('midi', 'soundfont', DEFAULT_MIDI_SOUNDFONT)
         data_dirs = os.getenv('XDG_DATA_DIRS', '/usr/share').split(os.pathsep)
+        if xdg.DATA_HOME not in data_dirs:
+            data_dirs.insert(0, xdg.DATA_HOME)
         selected = ''
         default = ''
         os_default = ''
