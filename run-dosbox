@@ -112,7 +112,7 @@ def setup_bundle(distdir):
         if os.path.isdir(path):
             sys_path_str = os.getenv(env_var, None)
             sys_path = sys_path_str.split(os.pathsep) if sys_path_str else []
-            if dir not in sys_path:
+            if path not in sys_path:
                 print_err('steam-dos: adding {} to {}'.format(path, env_var))
                 sys_path.append(path)
                 os.environ[env_var] = os.pathsep.join(sys_path)
