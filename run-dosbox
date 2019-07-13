@@ -119,7 +119,6 @@ def setup_bundle(distdir):
 
 
 def run_dosbox(args):
-    setup_bundle(distdir=os.path.dirname(os.path.abspath(__file__)))
     cmd = settings.get_dosbox_cmd()
     print_err('steam-dos: working dir: "{}"'.format(os.getcwd()))
     install_dir = toolbox.guess_game_install_dir()
@@ -251,6 +250,8 @@ def main():
     group.add_argument('--wait-before-run', action='store_true')
     group.add_argument('--version', action='store_true')
     args, run_cmd_line = parser.parse_known_args()
+
+    setup_bundle(distdir=settings.distdir)
 
     if args.version:
         print('steam-dos version {0}'.format(version.VERSION[1:]))
