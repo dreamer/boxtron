@@ -207,28 +207,22 @@ class Settings():
 
     def __assure_sf2_exists__(self):
         sf2 = self.__get_str__('midi', 'soundfont', DEFAULT_MIDI_SOUNDFONT)
-        sf2_search = [
-            ['/usr/share/sounds/sf2'],
-            ['/usr/share/soundfonts'],
-            ['/usr/local/share/sounds/sf2'],
-            ['/usr/local/share/soundfonts'],
-            [xdg.DATA_HOME, 'sounds/sf2'],
-            [xdg.DATA_HOME, 'soundfonts'],
-        ]
+        data_dirs = os.getenv('XDG_DATA_DIRS', '/usr/share').split(os.pathsep)
         selected = ''
         default = ''
         os_default = ''
-        for path in sf2_search:
-            # TODO avoid unnecessary list append after Python 3.5 is dropped
-            selected_path = os.path.join(*(path + [sf2]))
-            default1_path = os.path.join(*(path + [DEFAULT_MIDI_SOUNDFONT]))
-            default2_path = os.path.join(*(path + ['default.sf2']))
-            if os.path.isfile(selected_path):
-                selected = selected_path
-            if os.path.isfile(default1_path):
-                default = default1_path
-            if os.path.isfile(default2_path):
-                os_default = default2_path
+        for data_dir in data_dirs:
+            for sf2_subdir in ['sounds/sf2', 'soundfonts']:
+                sf2_dir = os.path.join(data_dir, sf2_subdir)
+                selected_path = os.path.join(sf2_dir, sf2)
+                default1_path = os.path.join(sf2_dir, DEFAULT_MIDI_SOUNDFONT)
+                default2_path = os.path.join(sf2_dir, 'default.sf2')
+                if os.path.isfile(selected_path):
+                    selected = selected_path
+                if os.path.isfile(default1_path):
+                    default = default1_path
+                if os.path.isfile(default2_path):
+                    os_default = default2_path
         use_sf2 = selected or default or os_default
         if not use_sf2:
             print_err('steam-dos: warning: No suitable soundfont found.',
