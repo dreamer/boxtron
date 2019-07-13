@@ -15,6 +15,8 @@ import time
 from settings import SETTINGS as settings
 from toolbox import print_err, which
 
+KNOWN_HARDWARE = r'casio|um-one'
+
 ALSA_SEQ_CLIENTS = '/proc/asound/seq/clients'
 
 MidiPort = collections.namedtuple('MidiPort', 'addr name desc space flags')
@@ -50,13 +52,21 @@ def list_alsa_sequencer_ports(alsa_seq_clients=ALSA_SEQ_CLIENTS):
         pass  # we want simply empty generator
 
 
-def detect_software_synthesiser(name_expr=None,
-                                alsa_seq_clients=ALSA_SEQ_CLIENTS):
+def detect_midi_synthesiser(seq_clients=ALSA_SEQ_CLIENTS):
+    """Detect MIDI synthesiser according to user preferences."""
+    # First pass: according to user preference:
+    # Second pass: look for known hardware:
+    # Third pass: look for software synthesiser:
+    port = match_port_by_name(r'XXXXTODOXXXX', seq_clients) or \
+           match_port_by_name(KNOWN_HARDWARE, seq_clients) or \
+           match_port_by_name(r'timidity|fluid', seq_clients)
+    return port
+
+
+def match_port_by_name(name_expr=None, seq_clients=ALSA_SEQ_CLIENTS):
     """Return an input port, where client name matches expression."""
-    if name_expr is None:
-        name_expr = r'timidity|fluid|um-one'
     client_name_pattern = re.compile(name_expr, re.IGNORECASE)
-    for port in list_alsa_sequencer_ports(alsa_seq_clients):
+    for port in list_alsa_sequencer_ports(seq_clients):
         if port.flags[1] != 'W':
             continue
         match = client_name_pattern.match(port.name)
@@ -96,7 +106,7 @@ def setup_midi_soft_synth():
     if not settings.get_midi_on():
         return
 
-    if detect_software_synthesiser():
+    if detect_midi_synthesiser():
         # Synthesiser is already running (maybe as a service).
         # There's no reason to start our own.
         return
