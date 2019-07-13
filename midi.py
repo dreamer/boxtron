@@ -61,10 +61,15 @@ def detect_midi_synthesiser(seq_clients=ALSA_SEQ_CLIENTS):
     if port:
         return port
 
+    if user_pref:
+        print_err("steam-dos: I can't find sequencer name matching", user_pref)
+        print_err('steam-dos: looking for known hardware or software',
+                  'synthesisers instead')
+
     # Second pass: look for known hardware
     # Third pass: look for software synthesiser
-    return match_port_by_name(KNOWN_HARDWARE, seq_clients) or \
-           match_port_by_name(r'timidity|fluid', seq_clients)
+    return match_port_by_name(KNOWN_HARDWARE, seq_clients) \
+        or match_port_by_name(r'timidity|fluid', seq_clients)
 
 
 def match_port_by_name(name_expr=None, seq_clients=ALSA_SEQ_CLIENTS):
