@@ -50,13 +50,16 @@ def list_alsa_sequencer_ports(alsa_seq_clients=ALSA_SEQ_CLIENTS):
         pass  # we want simply empty generator
 
 
-def detect_software_synthesiser(name_expr, alsa_seq_clients=ALSA_SEQ_CLIENTS):
+def detect_software_synthesiser(name_expr=None,
+                                alsa_seq_clients=ALSA_SEQ_CLIENTS):
     """Return an input port, where client name matches expression."""
-    client_name_pattern = re.compile(name_expr)
+    if name_expr is None:
+        name_expr = r'timidity|fluid|um-one'
+    client_name_pattern = re.compile(name_expr, re.IGNORECASE)
     for port in list_alsa_sequencer_ports(alsa_seq_clients):
         if port.flags[1] != 'W':
             continue
-        match = client_name_pattern.match(port.name.lower())
+        match = client_name_pattern.match(port.name)
         if match:
             return port
     return None
@@ -93,7 +96,7 @@ def setup_midi_soft_synth():
     if not settings.get_midi_on():
         return
 
-    if detect_software_synthesiser(r'timidity|fluid|um-one'):
+    if detect_software_synthesiser():
         # Synthesiser is already running (maybe as a service).
         # There's no reason to start our own.
         return

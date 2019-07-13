@@ -402,7 +402,7 @@ def create_auto_conf_file(conf):
 
     name = 'steam_dos_auto.conf'
 
-    mport = midi.detect_software_synthesiser(r'timidity|fluid|um-one')
+    mport = midi.detect_software_synthesiser()
     if mport:
         print_err('steam-dos: Detected', mport.name, 'on', mport.addr)
 
