@@ -212,22 +212,14 @@ class Settings():
         if xdg.DATA_HOME not in data_dirs:
             data_dirs.insert(0, xdg.DATA_HOME)
         data_dirs.insert(0, os.path.join(self.distdir, 'share'))
-        selected = ''
-        default = ''
-        os_default = ''
+        use_sf2 = ''
         for data_dir in data_dirs:
             for sf2_subdir in ['sounds/sf2', 'soundfonts']:
-                sf2_dir = os.path.join(data_dir, sf2_subdir)
-                selected_path = os.path.join(sf2_dir, sf2)
-                default1_path = os.path.join(sf2_dir, DEFAULT_MIDI_SOUNDFONT)
-                default2_path = os.path.join(sf2_dir, 'default.sf2')
-                if os.path.isfile(selected_path):
-                    selected = selected_path
-                if os.path.isfile(default1_path):
-                    default = default1_path
-                if os.path.isfile(default2_path):
-                    os_default = default2_path
-        use_sf2 = selected or default or os_default
+                for selection in [sf2, DEFAULT_MIDI_SOUNDFONT, 'default.sf2']:
+                    sf2_path = os.path.join(data_dir, sf2_subdir, selection)
+                    if os.path.isfile(sf2_path):
+                        use_sf2 = sf2_path
+                        break
         if not use_sf2:
             print_err('steam-dos: warning: No suitable soundfont found.',
                       'Disabling MIDI support.')
