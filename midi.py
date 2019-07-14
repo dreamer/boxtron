@@ -18,7 +18,7 @@ from toolbox import print_err, which
 # casio:  tested with Casio CTK-4200
 # um-one: tested with Roland's UM-ONE USB MIDI interface
 #
-KNOWN_HARDWARE = r'casio|um-one'
+KNOWN_HARDWARE = r'casio|um-one|mpu-401 uart'
 
 ALSA_SEQ_CLIENTS = '/proc/asound/seq/clients'
 
