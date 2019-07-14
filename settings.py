@@ -94,6 +94,7 @@ class Settings():
         self.store.read(SETTINGS_FILE)
         self.fullresolution = 'desktop'
         self.finalized = False
+        self.distdir = os.path.dirname(os.path.abspath(__file__))
 
     def setup(self):
         """Finalize settings initialization on request.

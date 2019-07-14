@@ -103,6 +103,21 @@ def setup_midi_game():
         rfile.apply_rpatch(STEAM_APP_ID, 'midi_' + x)
 
 
+def setup_bundle(distdir):
+    extend_env = (
+        ('PATH', os.path.join(distdir, 'bin')),
+        ('LD_LIBRARY_PATH', os.path.join(distdir, 'lib')),
+    )
+    for env_var, path in extend_env:
+        if os.path.isdir(path):
+            sys_path_str = os.getenv(env_var, None)
+            sys_path = sys_path_str.split(os.pathsep) if sys_path_str else []
+            if path not in sys_path:
+                print_err('steam-dos: adding {} to {}'.format(path, env_var))
+                sys_path.append(path)
+                os.environ[env_var] = os.pathsep.join(sys_path)
+
+
 def run_dosbox(args):
     cmd = settings.get_dosbox_cmd()
     print_err('steam-dos: working dir: "{}"'.format(os.getcwd()))
@@ -235,6 +250,8 @@ def main():
     group.add_argument('--wait-before-run', action='store_true')
     group.add_argument('--version', action='store_true')
     args, run_cmd_line = parser.parse_known_args()
+
+    setup_bundle(distdir=settings.distdir)
 
     if args.version:
         print('steam-dos version {0}'.format(version.VERSION[1:]))
