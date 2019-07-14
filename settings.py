@@ -94,6 +94,7 @@ class Settings():
         self.store.read(SETTINGS_FILE)
         self.fullresolution = 'desktop'
         self.finalized = False
+        self.distdir = os.path.dirname(os.path.abspath(__file__))
 
     def setup(self):
         """Finalize settings initialization on request.
@@ -214,6 +215,8 @@ class Settings():
             ['/usr/local/share/soundfonts'],
             [xdg.DATA_HOME, 'sounds/sf2'],
             [xdg.DATA_HOME, 'soundfonts'],
+            [self.distdir, 'share/sounds/sf2'],
+            [self.distdir, 'share/soundfonts'],
         ]
         selected = ''
         default = ''
