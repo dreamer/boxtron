@@ -49,11 +49,14 @@ class TestDosboxConfiguration(unittest.TestCase):
 
     def setUp(self):
         self.tmp_user_file = 'user_file_test.conf'
+        self.clean_after_test = ''
         self.original_dir = os.getcwd()
 
     def tearDown(self):
         if os.path.isfile(self.tmp_user_file):
             os.remove(self.tmp_user_file)
+        if os.path.isfile(self.clean_after_test):
+            os.remove(self.clean_after_test)
         os.chdir(self.original_dir)
 
     # $ dosbox -c 'foo' -c 'bar'
@@ -268,6 +271,16 @@ class TestDosboxConfiguration(unittest.TestCase):
         self.assertEqual(old_enc, new_enc)
         self.assertEqual(raw_autoexec, old_autoexec)
         self.assertEqual(old_autoexec, new_autoexec)
+
+    # Simplest test, just to make sure the file is being created.
+    #
+    def test_dummy_auto_config(self):
+        os.chdir('tests/files/confs')
+        cmd_line = ['-conf', 'empty_autoexec.conf']
+        conf = confgen.create_dosbox_configuration(cmd_line, tweak_conf={})
+        auto_conf = confgen.create_auto_conf_file(conf)
+        self.clean_after_test = auto_conf
+        self.assertTrue(os.path.isfile(auto_conf))
 
 
 if __name__ == '__main__':  # pragma: no cover

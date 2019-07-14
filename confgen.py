@@ -412,8 +412,9 @@ def create_auto_conf_file(conf):
         auto.write('\n')
 
         # SDL section
-        sdl_fullresolution = settings.get_dosbox_fullresolution()
-        auto.write(SDL_SECTION_1.format(resolution=sdl_fullresolution))
+        if settings.finalized:
+            sdl_fullresolution = settings.get_dosbox_fullresolution()
+            auto.write(SDL_SECTION_1.format(resolution=sdl_fullresolution))
 
         # render section
         render_scaler = settings.get_dosbox_scaler()
