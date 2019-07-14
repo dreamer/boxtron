@@ -136,6 +136,10 @@ TWEAKS_DB = {
             },
         },
     },
+    # Slipstream 5000
+    '306350': {
+        'midi': 'auto',
+    },
     # STAR WARS™ - X-Wing Special Edition
     '354430': {
         'midi': 'auto',

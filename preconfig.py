@@ -11,8 +11,7 @@ import tarfile
 
 import toolbox
 
-CHECKSUM = '027e59b9332427d019f6b68cfb2ecfd5dc259332a1e8c91df38427793f9f77ac'
-
+CHECKSUM = '46a7678a2c28f65f5d212ec347a6e3f44aed3dbf2c96b6c9a1bf4c4ea5a94bba'
 
 def find_resource_file(prog=sys.argv[0]):
     """Return path to bundled resource file."""

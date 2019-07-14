@@ -1,0 +1,7 @@
+file:CONFIG.INI
+s:/(SoundCard=)(.*)/\g<1>0xe015/
+s:/(SoundPort=)(.*)/\g<1>0x220/
+s:/(SoundIRQ=)(.*)/\g<1>7/
+s:/(SoundDMA=)(.*)/\g<1>1/
+s:/(MusicCard=)(.*)/\g<1>0xa002/
+s:/(MusicPort=)(.*)/\g<1>0x388/
