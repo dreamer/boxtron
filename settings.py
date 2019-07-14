@@ -9,6 +9,7 @@ Settings file creation and handling.
 import configparser
 import os
 import shlex
+import itertools
 
 import xdg
 import xlib
@@ -229,31 +230,17 @@ class Settings():
 
     def __assure_sf2_exists__(self):
         sf2 = self.__get_str__('midi', 'soundfont', DEFAULT_MIDI_SOUNDFONT)
-        sf2_search = [
-            ['/usr/share/sounds/sf2'],
-            ['/usr/share/soundfonts'],
-            ['/usr/local/share/sounds/sf2'],
-            ['/usr/local/share/soundfonts'],
-            [xdg.DATA_HOME, 'sounds/sf2'],
-            [xdg.DATA_HOME, 'soundfonts'],
-            [self.distdir, 'share/sounds/sf2'],
-            [self.distdir, 'share/soundfonts'],
-        ]
-        selected = ''
-        default = ''
-        os_default = ''
-        for path in sf2_search:
-            # TODO avoid unnecessary list append after Python 3.5 is dropped
-            selected_path = os.path.join(*(path + [sf2]))
-            default1_path = os.path.join(*(path + [DEFAULT_MIDI_SOUNDFONT]))
-            default2_path = os.path.join(*(path + ['default.sf2']))
-            if os.path.isfile(selected_path):
-                selected = selected_path
-            if os.path.isfile(default1_path):
-                default = default1_path
-            if os.path.isfile(default2_path):
-                os_default = default2_path
-        use_sf2 = selected or default or os_default
+        data_dirs = [os.path.join(self.distdir, 'share')] + xdg.get_data_dirs()
+        use_sf2 = ''
+        sf2_paths = (os.path.join(d, s, n) for n, d, s in itertools.product(
+            [sf2, DEFAULT_MIDI_SOUNDFONT, 'default.sf2'],
+            data_dirs,
+            ['sounds/sf2', 'soundfonts'],
+        ))
+        for sf2_path in sf2_paths:
+            if os.path.isfile(sf2_path):
+                use_sf2 = sf2_path
+                break
         if not use_sf2:
             print_err('steam-dos: warning: No suitable soundfont found.',
                       'Disabling MIDI support.')
