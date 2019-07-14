@@ -251,7 +251,7 @@ def install(app_id):
     """Call specific install function."""
     function_name = TWEAKS_DB[app_id]['install']
     installf = globals()[function_name]
-    installf()
+    return installf()
 
 
 def get_conf_tweak(app_id):
@@ -333,6 +333,11 @@ def check_cwd(command_line):
 
     os.chdir(orig_cwd)
     return False, None  # TODO show nice error to the user
+
+
+def install_test_42():
+    """Dummy install function for testing purposes."""
+    return 42
 
 
 def install_retro_city_rampage():
