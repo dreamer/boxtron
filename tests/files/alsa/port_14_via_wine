@@ -1,0 +1,21 @@
+Client info
+  cur  clients : 3
+  peak clients : 5
+  max  clients : 192
+
+Client   0 : "System" [Kernel]
+  Port   0 : "Timer" (Rwe-)
+  Port   1 : "Announce" (R-e-)
+Client  14 : "Midi Through" [Kernel]
+  Port   0 : "Midi Through Port-0" (RWe-)
+    Connecting To: 129:1
+Client 129 : "WINE midi driver" [User]
+  Port   0 : "WINE ALSA Output" (r-e-)
+  Port   1 : "WINE ALSA Input" (-we-)
+    Connected From: 14:0
+  Input pool :
+    Pool size          : 200
+    Cells in use       : 0
+    Peak cells in use  : 3
+    Alloc success      : 24
+    Alloc failures     : 0

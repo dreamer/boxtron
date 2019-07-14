@@ -15,6 +15,9 @@ import time
 from settings import SETTINGS as settings
 from toolbox import print_err, which
 
+# casio:  tested with Casio CTK-4200
+# um-one: tested with Roland's UM-ONE USB MIDI interface
+#
 KNOWN_HARDWARE = r'casio|um-one'
 
 ALSA_SEQ_CLIENTS = '/proc/asound/seq/clients'
@@ -52,24 +55,36 @@ def list_alsa_sequencer_ports(alsa_seq_clients=ALSA_SEQ_CLIENTS):
         pass  # we want simply empty generator
 
 
-def detect_midi_synthesiser(seq_clients=ALSA_SEQ_CLIENTS):
-    """Detect MIDI synthesiser according to user preferences."""
+def active_midi_through(alsa_seq_clients=ALSA_SEQ_CLIENTS):
+    """Return 'Midi Through' port (14:0) if it's connected to something.
+
+    If this port is connected to anything, whatever the purpose is, the user
+    decided to pass through MIDI signal to some device - hardware or software.
+
+    One possible use-case is to pass MIDI signal to software synthesiser
+    running under Wine, e.g. Roland Sound Canvas VA.
+    """
+    try:
+        with open(alsa_seq_clients) as clients:
+            connected_from_pattern = re.compile(r'^\s*Connected From:\s+14:0')
+            for line in clients.readlines():
+                match = connected_from_pattern.match(line)
+                if match:
+                    port = MidiPort('14:0', 'Midi Through',
+                                    'Midi Through Port-0', 'Kernel', '?W??')
+                    return port
+    except FileNotFoundError:
+        pass
+    return None
+
+
+def find_midi_port(seq_clients=ALSA_SEQ_CLIENTS):
+    """Find open MIDI port to connect to."""
     user_pref = settings.get_midi_sequencer()
-
-    # First pass: according to user preference
-    port = match_port_by_name(user_pref, seq_clients) if user_pref else None
-    if port:
-        return port
-
-    if user_pref:
-        print_err("steam-dos: I can't find sequencer name matching", user_pref)
-        print_err('steam-dos: looking for known hardware or software',
-                  'synthesisers instead')
-
-    # Second pass: look for known hardware
-    # Third pass: look for software synthesiser
-    return match_port_by_name(KNOWN_HARDWARE, seq_clients) \
-        or match_port_by_name(r'timidity|fluid', seq_clients)
+    return match_port_by_name(user_pref, seq_clients) if user_pref else None \
+        or match_port_by_name(KNOWN_HARDWARE, seq_clients) \
+        or match_port_by_name(r'timidity|fluid', seq_clients) \
+        or active_midi_through(seq_clients)
 
 
 def match_port_by_name(name_expr=None, seq_clients=ALSA_SEQ_CLIENTS):
@@ -115,10 +130,22 @@ def setup_midi_soft_synth():
     if not settings.get_midi_on():
         return
 
-    if detect_midi_synthesiser():
-        # Synthesiser is already running (maybe as a service).
-        # There's no reason to start our own.
-        return
+    user_pref = settings.get_midi_sequencer()
+    if user_pref:
+        if match_port_by_name(user_pref):
+            # We found user's preferred port; just use it.
+            return
+        print_err('steam-dos: Synthesiser matching', user_pref, 'not found')
+    else:
+        if find_midi_port():
+            # Synthesiser is already running (maybe as a service).
+            # There's no reason to start our own.
+            return
+        print_err('steam-dos: No synthesiser running in the background')
+
+    # either user had preference but the preferred port was not found
+    # or user had no preference and there was no appropriate port to use
+    # so simply start one of software synthesisers as a fallback:
 
     tool = settings.get_midi_tool()
     sfont = settings.get_midi_soundfont()
@@ -128,6 +155,8 @@ def setup_midi_soft_synth():
         preference_list = ['timidity', 'fluidsynth']
     elif tool == 'fluidsynth':
         preference_list = ['fluidsynth', 'timidity']
+
+    print_err('steam-dos: Trying to start {} or {}'.format(*preference_list))
 
     for tool in preference_list:
         if not which(tool):

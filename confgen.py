@@ -402,7 +402,7 @@ def create_auto_conf_file(conf):
 
     name = 'steam_dos_auto.conf'
 
-    mport = midi.detect_midi_synthesiser()
+    mport = midi.find_midi_port()
     if mport:
         print_err('steam-dos: Detected', mport.name, 'on', mport.addr)
 

@@ -381,7 +381,7 @@ spelling-dict=en_GB
 # List of comma separated words that should not be checked.
 spelling-ignore-words=activision, alsa, autoexec,
                       bool,
-                      chdir, cmd, com, conf, ctypes,
+                      casio, chdir, cmd, com, conf, ctypes,
                       dict, dir, dosbox, dx,
                       etc, exe,
 		      fallback, filename, filenames,
@@ -394,6 +394,8 @@ spelling-ignore-words=activision, alsa, autoexec,
                       regex,
                       sdl, setup, stderr, stdout, struct, sublicense, sys,
                       toolmanifest, tuple,
+		      usb,
+		      VA,
                       xclosedisplay, xdg, xfree, xinerama, xineramaqueryscreens, xopendisplay,
                       yapf,
 
