@@ -214,13 +214,11 @@ class Settings():
             data_dirs.insert(0, xdg.DATA_HOME)
         data_dirs.insert(0, os.path.join(self.distdir, 'share'))
         use_sf2 = ''
-        sf2_paths = (
-            os.path.join(*i) for i in itertools.product(
-                data_dirs,
-                ['sounds/sf2', 'soundfonts'],
-                [sf2, DEFAULT_MIDI_SOUNDFONT, 'default.sf2'],
-            )
-        )
+        sf2_paths = (os.path.join(d, s, n) for n, d, s in itertools.product(
+            [sf2, DEFAULT_MIDI_SOUNDFONT, 'default.sf2'],
+            data_dirs,
+            ['sounds/sf2', 'soundfonts'],
+        ))
         for sf2_path in sf2_paths:
             if os.path.isfile(sf2_path):
                 use_sf2 = sf2_path
