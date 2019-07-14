@@ -108,11 +108,11 @@ class TestDosboxConfiguration(unittest.TestCase):
         self.assertEqual(tweaks.get_midi_preset('9'), 'enable')
 
     def test_download_tweak_needed(self):
-        tweaks.TWEAKS_DB['11'] = { 'download': {} }
+        tweaks.TWEAKS_DB['11'] = {'download': {}}
         self.assertTrue(tweaks.download_tweak_needed('11'))
 
     def test_install_tweak_needed(self):
-        tweaks.TWEAKS_DB['12'] = { 'install': 'install_test_42' }
+        tweaks.TWEAKS_DB['12'] = {'install': 'install_test_42'}
         self.assertTrue(tweaks.install_tweak_needed('12'))
         self.assertEqual(tweaks.install('12'), 42)
 
