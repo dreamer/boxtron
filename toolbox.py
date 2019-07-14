@@ -61,6 +61,17 @@ def argsplit_windows(line):
     return [unquote(x) for x in shlex.split(line, posix=False)]
 
 
+def expand_batch_variables(line):
+    """Expand variables with modifier.
+
+    Full support for all variables is not planned; check Microsoft
+    documentation for full list ("Variable with modifier"):
+
+    https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-xp/bb490909(v=technet.10)
+    """
+    return line.replace('%~dp0', './')
+
+
 def read_trivial_batch(file):
     """Find DOSBox command in batch file and return its argument list.
 
@@ -76,7 +87,7 @@ def read_trivial_batch(file):
         assert lines, 'error processing .bat file (not enough lines)'
         new_path = None
         for line in lines:
-            this_line = argsplit_windows(line)
+            this_line = argsplit_windows(expand_batch_variables(line))
             if not this_line:
                 continue
             first_word = this_line[0]
