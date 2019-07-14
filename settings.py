@@ -9,6 +9,7 @@ Settings file creation and handling.
 import configparser
 import os
 import shlex
+import itertools
 
 import xdg
 import xlib
@@ -213,13 +214,17 @@ class Settings():
             data_dirs.insert(0, xdg.DATA_HOME)
         data_dirs.insert(0, os.path.join(self.distdir, 'share'))
         use_sf2 = ''
-        for data_dir in data_dirs:
-            for sf2_subdir in ['sounds/sf2', 'soundfonts']:
-                for selection in [sf2, DEFAULT_MIDI_SOUNDFONT, 'default.sf2']:
-                    sf2_path = os.path.join(data_dir, sf2_subdir, selection)
-                    if os.path.isfile(sf2_path):
-                        use_sf2 = sf2_path
-                        break
+        sf2_paths = (
+            os.path.join(*i) for i in itertools.product(
+                data_dirs,
+                ['sounds/sf2', 'soundfonts'],
+                [sf2, DEFAULT_MIDI_SOUNDFONT, 'default.sf2'],
+            )
+        )
+        for sf2_path in sf2_paths:
+            if os.path.isfile(sf2_path):
+                use_sf2 = sf2_path
+                break
         if not use_sf2:
             print_err('steam-dos: warning: No suitable soundfont found.',
                       'Disabling MIDI support.')
