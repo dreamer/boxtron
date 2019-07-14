@@ -211,6 +211,7 @@ class Settings():
         data_dirs = os.getenv('XDG_DATA_DIRS', '/usr/share').split(os.pathsep)
         if xdg.DATA_HOME not in data_dirs:
             data_dirs.insert(0, xdg.DATA_HOME)
+        data_dirs.insert(0, os.path.join(self.distdir, 'share'))
         selected = ''
         default = ''
         os_default = ''
