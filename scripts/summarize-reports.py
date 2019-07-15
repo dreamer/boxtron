@@ -49,7 +49,8 @@ def main():
     num_solid_platinum = 0
     num_silver_or_worse = 0
     for app_id, ratings in all_games.items():
-        print(f'{app_id}\t{ellipsis(names[app_id], 30):30} {ratings}')
+        print('{}\t{:30} {}'.format(app_id, ellipsis(names[app_id], 30),
+                                    ratings))
         if all(map(lambda x: x == 'platinum', ratings)):
             num_solid_platinum += 1
         if 'silver' in ratings or \
@@ -58,10 +59,10 @@ def main():
             num_silver_or_worse += 1
 
     print()
-    print(f'All games: {num_total}')
-    print(f'Platinum:  {num_solid_platinum}')
-    print(f'Gold:      {num_total - num_solid_platinum - num_silver_or_worse}')
-    print(f'<= Silver: {num_silver_or_worse}')
+    print('All games: ', num_total)
+    print('Platinum:  ', num_solid_platinum)
+    print('Gold:      ', num_total - num_solid_platinum - num_silver_or_worse)
+    print('<= Silver: ', num_silver_or_worse)
 
 
 if __name__ == "__main__":
