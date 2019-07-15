@@ -56,7 +56,7 @@ devel_install_dir = $(data_home)/Steam/compatibilitytools.d/$(tool_dir_dev)
 
 lint: version.py
 	shellcheck scripts/codestyle.sh tests/coverage-report.sh
-	pylint --rcfile=.pylint run-dosbox install-gog-game *.py tests/*.py
+	pylint --rcfile=.pylint run-dosbox install-gog-game *.py tests/*.py scripts/*.py
 
 test: preconfig.tar
 	XDG_CONFIG_HOME=$(shell pwd)/tests/files/xdg_config_home \
@@ -124,8 +124,8 @@ shortlog:
 check-formatting:
 	yapf --version
 	bash scripts/codestyle.sh --max-line-length=80 \
-		run-dosbox install-gog-game *.py tests/*.py
-	yapf -d -vv run-dosbox install-gog-game *.py
+		run-dosbox install-gog-game *.py tests/*.py scripts/*.py
+	yapf -d -vv run-dosbox install-gog-game *.py scripts/*.py
 
 pretty-code:
 	yapf -i -vv run-dosbox install-gog-game *.py
