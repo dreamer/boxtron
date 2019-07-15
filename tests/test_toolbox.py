@@ -202,5 +202,35 @@ class TestPidfile(unittest.TestCase):
         self.assertFalse(os.path.isfile(pidf_path))
 
 
+class TestBatchVariables(unittest.TestCase):
+
+    def test_guess_relative_path_1(self):
+        dp0 = toolbox.relative_path_to('/home/user', '/home/user/file')
+        self.assertEqual(dp0, './')
+
+    def test_guess_relative_path_2(self):
+        dp0 = toolbox.relative_path_to('/home/user', '/home/user/dir/file')
+        self.assertEqual(dp0, './dir/')
+
+    def test_guess_relative_path_3(self):
+        dp0 = toolbox.relative_path_to('/home/user', '/home/user/dir/file')
+        self.assertEqual(dp0, './dir/')
+
+    def test_guess_relative_path_4(self):
+        dp0 = toolbox.relative_path_to('/home/user/dir_a',
+                                       '/home/user/dir_b/file')
+        self.assertEqual(dp0, './../dir_b/')
+
+    def test_guess_relative_path_5(self):
+        dp0 = toolbox.relative_path_to('/home/user/dir_a/foo',
+                                       '/home/user/dir_b/file')
+        self.assertEqual(dp0, './../../dir_b/')
+
+    def test_guess_relative_path_6(self):
+        dp0 = toolbox.relative_path_to('/home/user/foo',
+                                       '/home/user/bar/file')
+        self.assertEqual(dp0, './../bar/')
+
+
 if __name__ == '__main__':  # pragma: no cover
     unittest.main()

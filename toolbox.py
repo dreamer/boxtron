@@ -61,7 +61,20 @@ def argsplit_windows(line):
     return [unquote(x) for x in shlex.split(line, posix=False)]
 
 
-def expand_batch_variables(line):
+def relative_path_to(pwd, file_path):
+    """Return relative path to a file."""
+    abs_path = os.path.abspath(file_path)
+    common_prefix = os.path.commonpath([abs_path, pwd])
+    relative_suffix = abs_path[len(common_prefix) + 1:]
+    relative_suffix_pwd = pwd[len(common_prefix) + 1:]
+    relative_suffix_pwd_dirs = relative_suffix_pwd.split(os.path.sep)
+    dirs_up = ['../' for _ in filter(lambda x: x, relative_suffix_pwd_dirs)]
+    relative_up = ''.join(dirs_up)
+    dot_path = './{}{}'.format(relative_up, os.path.dirname(relative_suffix))
+    return dot_path if dot_path.endswith('/') else dot_path + '/'
+
+
+def expand_batch_variables(file_path, line):
     """Expand variables with modifier.
 
     Full support for all variables is not planned; check Microsoft
@@ -69,7 +82,11 @@ def expand_batch_variables(line):
 
     https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-xp/bb490909(v=technet.10)
     """
-    return line.replace('%~dp0', './')
+    # %~dp0 -> expands to drive letter followed by path to the batch file
+    #          (sans file name); I don't support conversion with driver letter
+    #          so will convert it to relative path for now:
+    dp0_path = relative_path_to(os.getcwd(), file_path)
+    return line.replace('%~dp0', dp0_path.replace('/', '\\'))
 
 
 def read_trivial_batch(file):
@@ -87,7 +104,8 @@ def read_trivial_batch(file):
         assert lines, 'error processing .bat file (not enough lines)'
         new_path = None
         for line in lines:
-            this_line = argsplit_windows(expand_batch_variables(line))
+            expanded_line = expand_batch_variables(file, line)
+            this_line = argsplit_windows(expanded_line)
             if not this_line:
                 continue
             first_word = this_line[0]
