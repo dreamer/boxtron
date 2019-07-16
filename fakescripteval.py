@@ -90,5 +90,10 @@ def iscriptevaluator(args):
         for name, desc in download_links.items():
             download_item(i, num, name, desc)
             i += 1
+    try:
+        os.remove(xdg.cached_file('desc.txt'))
+    except FileNotFoundError:
+        pass
+
     status = 0
     return status
