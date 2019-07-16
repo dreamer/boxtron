@@ -361,12 +361,6 @@ def create_user_conf_file(name, conf, dosbox_args):
     with open(name, 'w', encoding=conf.encoding) as conf_file:
         conf_file.write(COMMENT_SECTION.format(dosbox_args))
         conf_file.write(SDL_SECTION_2)
-        if conf.has_section('mixer'):
-            conf_file.write('[mixer]\n')
-            for key, val in conf['mixer'].items():
-                conf_file.write('{0}={1}\n'.format(key, val))
-            conf_file.write('\n')
-
         if conf.has_section('render'):
             conf_file.write(RENDER_SECTION_2)
             for key, val in conf['render'].items():
@@ -427,6 +421,13 @@ def create_auto_conf_file(conf):
 
         # CPU section
         auto.write(CPU_SECTION)
+
+        # mixer section
+        if conf.has_section('mixer'):
+            auto.write('[mixer]\n')
+            for key, val in conf['mixer'].items():
+                auto.write('{0}={1}\n'.format(key, val))
+            auto.write('\n')
 
         # sound blaster section
         base, irq, dma, hdma = 220, 7, 1, 5  # DOSBox defaults
