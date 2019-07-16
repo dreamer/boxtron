@@ -15,10 +15,11 @@ import time
 from settings import SETTINGS as settings
 from toolbox import print_err, which
 
-# casio:  tested with Casio CTK-4200
-# um-one: tested with Roland's UM-ONE USB MIDI interface
+# casio:   tested with Casio CTK-4200
+# um-one:  tested with Roland's UM-ONE USB MIDI interface
+# ensoniq: tested with Ensoniq AudioPCI
 #
-KNOWN_HARDWARE = r'casio|um-one|mpu-401 uart'
+KNOWN_HARDWARE = r'casio|um-one|ensoniq|mpu-401 uart'
 
 ALSA_SEQ_CLIENTS = '/proc/asound/seq/clients'
 
