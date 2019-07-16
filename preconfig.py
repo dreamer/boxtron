@@ -8,7 +8,6 @@ Handle unpacking files for game pre-configuration.
 import os
 import sys
 import tarfile
-import hashlib
 
 import toolbox
 
@@ -28,18 +27,14 @@ def find_resource_file(prog=sys.argv[0]):
 
 
 def __checksum__():
-    rfile = find_resource_file()
-    assert rfile
-    sha1sum = hashlib.sha256()
-    with open(find_resource_file(), 'rb') as tar:
-        block = tar.read()
-        sha1sum.update(block)
-    return sha1sum.hexdigest()
+    return toolbox.sha256sum(find_resource_file())
 
 
 def verify():
     """Basic verification if file originates from release."""
-    return __checksum__() == CHECKSUM
+    rfile = find_resource_file()
+    assert rfile
+    return toolbox.sha256sum(rfile) == CHECKSUM
 
 
 def open_resource(file_name):

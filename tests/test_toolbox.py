@@ -232,5 +232,13 @@ class TestBatchVariables(unittest.TestCase):
         self.assertEqual(dp0, './../bar/')
 
 
+class TestHashing(unittest.TestCase):
+
+    def test_sha256sum(self):
+        val = toolbox.sha256sum('tests/files/default/dosbox.conf')
+        exp = '9e6d9ab036ba68257a6d70f11265cdb304b9c1054363c0537755a957c8d57c32'
+        self.assertEqual(val, exp)
+
+
 if __name__ == '__main__':  # pragma: no cover
     unittest.main()

@@ -4,6 +4,7 @@
 Useful functions and classes
 """
 
+import hashlib
 import os
 import pathlib
 import re
@@ -220,3 +221,12 @@ def unzip(src_file, dst_dir):
     archive = zipfile.ZipFile(src_file, 'r')
     archive.extractall(dst_dir)
     archive.close()
+
+
+def sha256sum(path):
+    """Simply compute sha256sum of a file."""
+    algo = hashlib.sha256()
+    with open(path, 'rb') as file:
+        block = file.read()
+        algo.update(block)
+    return algo.hexdigest()
