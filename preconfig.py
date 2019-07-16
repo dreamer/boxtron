@@ -12,7 +12,7 @@ import hashlib
 
 import toolbox
 
-CHECKSUM = '5fa572b3a67f04f3494f40166270197935f5324a981afa2344478825a8a5429c'
+CHECKSUM = '027e59b9332427d019f6b68cfb2ecfd5dc259332a1e8c91df38427793f9f77ac'
 
 
 def find_resource_file(prog=sys.argv[0]):

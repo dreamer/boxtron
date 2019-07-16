@@ -55,6 +55,26 @@ TWEAKS_DB = {
     '2360': {
         'midi': 'auto',
     },
+    # HeXen: Deathkings of the Dark Citadel
+    '2370': {
+        'midi': 'auto',
+        'download': {
+            'dkpatch.zip': {
+                'txt': 'Original Patch 1.1',
+                'url': 'http://www.gamers.org/pub/games/idgames/idstuff/hexen/dkpatch.zip',  # noqa pylint: disable=line-too-long
+            },
+        },
+        'install': 'install_hexen_dk',
+        'commands': {
+            r'.*':  {
+                'args': ['-c', 'mount C "base"',
+                         '-c', 'C:',
+                         '-c', 'PATCH.EXE',
+                         '-c', 'HEXENDK.EXE',
+                         '-c', 'exit'],
+            },
+        },
+    },
     # Heretic: Shadow of the Serpent Riders
     '2390': {
         'midi': 'auto',
@@ -388,3 +408,8 @@ def install_fallout():
         r's:/(art_cache_size=)(\d+)/\g<1>5/',
     ]
     toolbox.apply_resource_patch(rpatch)
+
+
+def install_hexen_dk():
+    """Fix music in HeXen: Deathkings of the Dark Citadel"""
+    toolbox.unzip(xdg.cached_file('dkpatch.zip'), 'base')
