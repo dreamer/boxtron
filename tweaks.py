@@ -412,4 +412,6 @@ def install_fallout():
 
 def install_hexen_dk():
     """Fix music in HeXen: Deathkings of the Dark Citadel"""
-    toolbox.unzip(xdg.cached_file('dkpatch.zip'), 'base')
+    digest = 'ea5e34c9f7eb677c593f125a0c45db2aaf2d98b8f6e9d50bd683a655aeec531f'
+    if toolbox.sha256sum('base/HEXDD.WAD') != digest:
+        toolbox.unzip(xdg.cached_file('dkpatch.zip'), 'base')
