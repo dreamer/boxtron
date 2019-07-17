@@ -127,6 +127,14 @@ TWEAKS_DB = {
             },
         },
     },
+    # Leisure Suit Larry in the Land of the Lounge Lizards
+    '763970': {
+        'commands': {
+            r'.*':  {
+                'args': ['SCIDHUV.EXE', '-exit'],
+            },
+        },
+    },
     # Retro City Rampage™ DX
     '204630': {
         'install': 'install_retro_city_rampage',
