@@ -24,8 +24,8 @@ Game compatibility reports:
 * Better fullscreen support, especially on multi-monitor setups\*
 * Steam Overlay working out of the box\*
 * More [configuration options](https://github.com/dreamer/steam-dos/wiki/Configuration) and better defaults\*
-* Auto-start of software MIDI synthesiser
-* Auto-setup of MIDI for supported titles (click Play and enjoy pre-configured MIDI music)
+* Automatic detection of MIDI hardware, with software synthesiser used as fallback
+* Automatic MIDI setup for supported titles (click Play and enjoy pre-configured MIDI music)
 
 <sub>\* - compared to vanilla DOSBox</sub>
 
