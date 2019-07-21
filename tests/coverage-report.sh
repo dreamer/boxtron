@@ -13,4 +13,4 @@ coverage_py () {
 cd "$(git rev-parse --show-toplevel)" || exit
 coverage_py erase
 XDG_CONFIG_HOME="$test_config" coverage_py run -m unittest discover -v -s tests
-coverage_py report --fail-under=85 "$@"
+SDOS_QUIET=1 coverage_py report --fail-under=85 "$@"

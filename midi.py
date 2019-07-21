@@ -12,8 +12,10 @@ import signal
 import subprocess
 import time
 
+import toolbox
+
+from log import log, log_warn
 from settings import SETTINGS as settings
-from toolbox import print_err, which
 
 # casio:   tested with Casio CTK-4200
 # um-one:  tested with Roland's UM-ONE USB MIDI interface
@@ -104,8 +106,8 @@ def start_timidity(sfont):
     """Start TiMidity++ process."""
     cmd = ['timidity', '-iA', '-x', 'soundfont {0}'.format(sfont)]
     proc = subprocess.Popen(cmd, shell=False, stdout=subprocess.DEVNULL)
-    print_err('steam-dos: Starting MIDI client (pid: {0})'.format(proc.pid))
-    print_err('steam-dos: Using soundfont: {0}'.format(sfont))
+    log('Starting MIDI client (pid: {0})'.format(proc.pid))
+    log('Using soundfont: {0}'.format(sfont))
     time.sleep(1.0)  # TODO properly wait until sequencer is online
     atexit.register(stop_software_midi_synth, proc.pid)
 
@@ -114,15 +116,15 @@ def start_fluidsynth(sfont):
     """Start FluidSynth process."""
     cmd = ['fluidsynth', '-a', 'pulseaudio', sfont]
     proc = subprocess.Popen(cmd, shell=False, stdout=subprocess.DEVNULL)
-    print_err('steam-dos: Starting MIDI client (pid: {0})'.format(proc.pid))
-    print_err('steam-dos: Using soundfont: {}'.format(sfont))
+    log('Starting MIDI client (pid: {0})'.format(proc.pid))
+    log('Using soundfont: {}'.format(sfont))
     time.sleep(1.0)  # TODO properly wait until sequencer is online
     atexit.register(stop_software_midi_synth, proc.pid)
 
 
 def stop_software_midi_synth(pid):
     """Stop software synthesiser process."""
-    print_err('steam-dos: Stopping MIDI client {0}'.format(pid))
+    log('Stopping MIDI client {0}'.format(pid))
     os.kill(pid, signal.SIGTERM)  # TODO ProcessLookupError:
 
 
@@ -136,13 +138,13 @@ def setup_midi_soft_synth():
         if match_port_by_name(user_pref):
             # We found user's preferred port; just use it.
             return
-        print_err('steam-dos: Synthesiser matching', user_pref, 'not found')
+        log('Synthesiser matching', user_pref, 'not found')
     else:
         if find_midi_port():
             # Synthesiser is already running (maybe as a service).
             # There's no reason to start our own.
             return
-        print_err('steam-dos: No synthesiser running in the background')
+        log('No synthesiser running in the background')
 
     # either user had preference but the preferred port was not found
     # or user had no preference and there was no appropriate port to use
@@ -157,10 +159,10 @@ def setup_midi_soft_synth():
     elif tool == 'fluidsynth':
         preference_list = ['fluidsynth', 'timidity']
 
-    print_err('steam-dos: Trying to start {} or {}'.format(*preference_list))
+    log('Trying to start {} or {}'.format(*preference_list))
 
     for tool in preference_list:
-        if not which(tool):
+        if not toolbox.which(tool):
             continue
         if tool == 'timidity':
             start_timidity(sfont)
@@ -168,4 +170,4 @@ def setup_midi_soft_synth():
         if tool == 'fluidsynth':
             start_fluidsynth(sfont)
             return
-    print_err('steam-dos: warn: no software MIDI synthesiser available')
+    log_warn('no software MIDI synthesiser available')

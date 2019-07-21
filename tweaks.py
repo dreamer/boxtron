@@ -14,6 +14,7 @@ import confgen
 import toolbox
 import xdg
 
+from log import log_err
 from winpathlib import to_posix_path
 
 # There are several tweaks, that can be specified in TWEAKS_DB:
@@ -262,8 +263,7 @@ def tweak_command(app_id, cmd_line):
             if 'args' in replacement:
                 return replacement['args']
             raise KeyError
-    toolbox.print_err('steam-dos: error: no suitable tweak found for:',
-                      cmd_line)
+    log_err('no suitable tweak found for:', cmd_line)
     return cmd_line[1:]
 
 

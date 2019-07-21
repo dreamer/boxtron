@@ -10,15 +10,9 @@ import pathlib
 import re
 import shlex
 import subprocess
-import sys
 import zipfile
 
 import winpathlib
-
-
-def print_err(*value, sep=' ', end='\n', flush=False):
-    """Prints the values to stderr."""
-    print(*value, sep=sep, end=end, file=sys.stderr, flush=flush)
 
 
 def enabled_in_env(var):

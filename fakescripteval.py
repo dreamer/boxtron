@@ -13,7 +13,8 @@ import tweaks
 import xdg
 
 import toolbox
-from toolbox import print_err
+
+from log import log
 
 STEAM_APP_ID = os.environ.get('SteamAppId', '0')
 
@@ -29,8 +30,7 @@ def wait_for_previous_process():
     except FileNotFoundError:
         pass
     if pid and os.path.isfile('/proc/{0}/cmdline'.format(pid)):
-        print_err('steam-dos: waiting for process', pid, 'to stop',
-                  'and delete file', PID_FILE)
+        log('waiting for process', pid, 'to stop and delete file', PID_FILE)
         subprocess.call(['inotifywait', '-e', 'delete', PID_FILE])
 
 
@@ -41,7 +41,7 @@ def download_item(i, num, name, desc):
     cache_file = xdg.cached_file(name)
     if os.path.isfile(cache_file):
         return
-    print_err('steam-dos: downloading', url, 'to', cache_file)
+    log('downloading', url, 'to', cache_file)
     msg = '{}/{}: {}'.format(i, num, txt)
     # TODO use runtime dir instead of cache here
     with open(xdg.cached_file('desc.txt'), 'w') as msg_file:

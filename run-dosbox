@@ -28,13 +28,13 @@ import confgen
 import fakescripteval
 import midi
 import preconfig
+import toolbox
 import tweaks
 import version
-import toolbox
 
-from toolbox import print_err
-from settings import SETTINGS as settings
 from fakesierralauncher import SierraLauncherConfig
+from log import log, log_err, log_warn
+from settings import SETTINGS as settings
 
 STEAM_APP_ID = os.environ.get('SteamAppId', '0')
 
@@ -47,7 +47,7 @@ def setup_midi():
     if midi_preset == 'auto':
         setup_midi_game()
     if midi_preset == 'disable':
-        print_err('steam-dos: info: this game does not support MIDI music')
+        log('info: this game does not support MIDI music')
         settings.set_midi_on(False)
     midi.setup_midi_soft_synth()
 
@@ -56,18 +56,17 @@ def setup_midi_game():
     """Configure game to use (or not) MIDI."""
 
     if not preconfig.verify():
-        print_err('steam-dos: error: checksum on resource file failed')
+        log_err('checksum on resource file failed')
         return
 
     rfile_name = preconfig.find_resource_file()
-    print_err('steam-dos: using resource file', rfile_name)
+    log('using resource file', rfile_name)
     with preconfig.open_resource(rfile_name) as rfile:
         if not rfile.includes(STEAM_APP_ID):
-            print_err('steam-dos: error: resource file does not include',
-                      'files for', STEAM_APP_ID)
+            log_err('resource file does not include files for', STEAM_APP_ID)
             return
         x = 'on' if settings.get_midi_on() else 'off'
-        print_err('steam-dos: turning MIDI {} for {}'.format(x, STEAM_APP_ID))
+        log('turning MIDI {} for {}'.format(x, STEAM_APP_ID))
         rfile.extract(STEAM_APP_ID, 'midi_' + x)
         rfile.apply_rpatch(STEAM_APP_ID, 'midi_' + x)
 
@@ -82,26 +81,26 @@ def setup_bundle(distdir):
             sys_path_str = os.getenv(env_var, None)
             sys_path = sys_path_str.split(os.pathsep) if sys_path_str else []
             if path not in sys_path:
-                print_err('steam-dos: adding {} to {}'.format(path, env_var))
+                log('adding {} to {}'.format(path, env_var))
                 sys_path.append(path)
                 os.environ[env_var] = os.pathsep.join(sys_path)
 
 
 def run_dosbox(args):
     cmd = settings.get_dosbox_cmd()
-    print_err('steam-dos: working dir: "{}"'.format(os.getcwd()))
+    log('working dir: "{}"'.format(os.getcwd()))
     install_dir = toolbox.guess_game_install_dir()
     if install_dir:
         cmd = [x.replace('%install_dir%', install_dir) for x in cmd]
     else:
-        print_err('steam-dos: warning: unrecognized installation directory')
-    print_err('steam-dos:', cmd + args)
+        log_warn('unrecognized installation directory')
+    log(cmd + args)
     sys.stderr.flush()
     with toolbox.PidFile(fakescripteval.PID_FILE):
         try:
             subprocess.call(cmd + args)
         except FileNotFoundError as err:
-            print_err('steam-dos: error:', err)
+            log_err(err)
 
 
 def run_dosbox_with_conf(args):
@@ -110,7 +109,7 @@ def run_dosbox_with_conf(args):
     tweaked_conf = tweaks.get_conf_tweak(STEAM_APP_ID)
     static_conf = confgen.create_dosbox_configuration(args, tweaked_conf)
     if settings.get_confgen_force() or not os.path.isfile(name):
-        print_err('steam-dos: saving', name, 'based on', args)
+        log('saving', name, 'based on', args)
         confgen.create_user_conf_file(name, static_conf, args)
     setup_midi()
     auto_conf = confgen.create_auto_conf_file(static_conf)
@@ -118,8 +117,8 @@ def run_dosbox_with_conf(args):
 
 
 def run(cmd_line, wait=False):
-    print_err('steam-dos: working dir: "{}"'.format(os.getcwd()))
-    print_err('steam-dos: original command:', cmd_line)
+    log('working dir: "{}"'.format(os.getcwd()))
+    log('original command:', cmd_line)
 
     if wait:
         fakescripteval.wait_for_previous_process()
@@ -137,12 +136,11 @@ def run(cmd_line, wait=False):
     chdir_tweak_needed, path = tweaks.check_cwd(cmd_line)
     if chdir_tweak_needed:
         if path:
-            print_err('run_dosbox: warning: game not found in', os.getcwd())
-            print_err('run_dosbox: warning: changing working dir to', path)
+            log_warn('game not found in', os.getcwd())
+            log_warn('changing working dir to', path)
             os.chdir(path)
         else:
-            print_err("run_dosbox: error: can't figure out what to do with",
-                      "this command:")
+            log_err("can't figure out what to do with this command.")
             sys.exit(2)
 
     if tweaks.install_tweak_needed(STEAM_APP_ID):
@@ -169,7 +167,7 @@ def run_file(path, exe, cmd_line):
     elif tweaks.command_tweak_needed(STEAM_APP_ID):
         # If AppId is included in known tweaks, then modify command line
         # before handing it over to .conf generator:
-        print_err('run_dosbox: tweaking command for app', STEAM_APP_ID)
+        log('tweaking command for app', STEAM_APP_ID)
         tweaked_cmd = tweaks.tweak_command(STEAM_APP_ID, cmd_line)
         if not tweaked_cmd:
             sys.exit(1)
@@ -199,16 +197,16 @@ def run_file(path, exe, cmd_line):
         # instead of running the DOSBox directly.
         ini_file = os.path.join(path, 'SierraLauncher.ini')
         if not os.path.isfile(ini_file):
-            print_err('run_dosbox: Sierra Launcher configuration file missing')
+            log_err('Sierra Launcher configuration file missing')
             sys.exit(1)
-        print_err('steam-dos: parsing', ini_file)
+        log('parsing', ini_file)
         launcher = SierraLauncherConfig(ini_file=ini_file)
-        print_err('steam-dos: launching', launcher.get_name())
+        log('launching', launcher.get_name())
         launcher.chdir()
         run_dosbox_with_conf(launcher.get_args())
 
     else:
-        print_err('run_dosbox: ignoring command:', cmd_line)
+        log('ignoring command:', cmd_line)
 
 
 def main():

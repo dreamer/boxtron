@@ -14,7 +14,7 @@ import itertools
 import xdg
 import xlib
 
-from toolbox import print_err
+from log import log, log_err, log_warn
 from toolbox import enabled_in_env
 
 SETTINGS_FILE = os.path.join(xdg.CONF_HOME, 'steam-dos.conf')
@@ -140,21 +140,20 @@ class Settings():
         all_screens = xlib.query_screens()
 
         if all_screens == {}:
-            print_err('steam-dos: error: no screens detected')
+            log_err('no screens detected')
         for number, info in all_screens.items():
-            print_err("steam-dos: screen '{}': {}x{}".format(
-                number, info.width, info.height))
+            log("screen '{}': {}x{}".format(number, info.width, info.height))
 
         if screen not in all_screens:
-            print_err("steam-dos: screen '{}' not found".format(screen))
+            log("screen '{}' not found".format(screen))
             if '0' in all_screens:
                 screen = '0'
-                print_err("steam-dos: using '" + screen + "' instead")
+                log("using '" + screen + "' instead")
             else:
-                print_err("steam-dos: using desktop as screen instead")
+                log("using desktop as screen instead")
                 return
 
-        print_err("steam-dos: selected screen '{}'".format(screen))
+        log("selected screen '{}'".format(screen))
         os.putenv('SDL_VIDEO_FULLSCREEN_DISPLAY', screen)  # SDL >= 1.2.14
         os.putenv('SDL_VIDEO_FULLSCREEN_HEAD', screen)  # SDL >= 1.2.10
         info = all_screens[screen]
@@ -164,7 +163,7 @@ class Settings():
         tokens = self.get_dosbox_fullscreenmode().split()
         screen = '0'
         if tokens == [] or tokens[0] != 'screen':
-            print_err('steam-dos: error: unknown option value:', tokens[0])
+            log_err('unknown option value:', tokens[0])
         if len(tokens) >= 2 and tokens[0] == 'screen':
             screen = tokens[1]
         screen = os.environ.get('SDL_VIDEO_FULLSCREEN_HEAD', screen)
@@ -211,7 +210,7 @@ class Settings():
             split = shlex.split(cmd, comments=True)
             return [os.path.expanduser(s) for s in split]
         except ValueError as err:
-            print_err('steam-dos: error: invalid dosbox.bin value:', err)
+            log_err('invalid dosbox.bin value:', err)
             return [DEFAULT_DOSBOX_BINARY]
 
     def set_dosbox_cmd(self, value):
@@ -242,14 +241,12 @@ class Settings():
                 use_sf2 = sf2_path
                 break
         if not use_sf2:
-            print_err('steam-dos: warning: No suitable soundfont found.',
-                      'Disabling MIDI support.')
+            log_warn('No suitable soundfont found. Disabling MIDI support.')
             self.store.set('midi', 'enable', 'False')
             return
         _, found_file = os.path.split(use_sf2)
         if found_file != sf2:
-            print_err(('steam-dos: warning: {0} soundfont not found. '
-                       'Using {1} instead.').format(sf2, found_file))
+            log_warn(sf2, 'soundfont not found. Using', found_file, 'instead.')
         self.store.set('midi', 'soundfont', use_sf2)
 
 

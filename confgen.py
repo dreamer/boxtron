@@ -12,8 +12,8 @@ import re
 
 import midi
 
+from log import log, print_err
 from settings import SETTINGS as settings
-from toolbox import print_err
 from winpathlib import to_posix_path
 
 COMMENT_SECTION = """
@@ -418,7 +418,7 @@ def write_sblaster_section(conf, file):
     base, irq, dma, hdma = 220, 7, 1, 5  # DOSBox defaults
     if conf and conf.has_section('sblaster'):
         irq = conf['sblaster'].get('force_irq', str(irq))
-    print_err('steam-dos: Setting up DOSBox audio:')
+    log('Setting up DOSBox audio:')
     print_err(SBLASTER_INFO.format(base=base, irq=irq, dma=dma))
     file.write(SBLASTER_SECTION.format(base=base, irq=irq, dma=dma, hdma=hdma))
 
@@ -427,7 +427,7 @@ def write_midi_section(file):
     """Write midi section."""
     mport = midi.find_midi_port()
     if mport:
-        print_err('steam-dos: Detected', mport.name, 'on', mport.addr)
+        log('Detected', mport.name, 'on', mport.addr)
         print_err(MIDI_INFO)
         file.write(MIDI_SECTION.format(port=mport.addr))
     else:

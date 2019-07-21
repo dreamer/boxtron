@@ -7,7 +7,8 @@ Fake Sierra Launcher
 import configparser
 import os
 
-from toolbox import argsplit_windows, print_err
+from log import log_warn, log_err
+from toolbox import argsplit_windows
 from winpathlib import to_posix_path
 
 SIERRA_GAME = os.environ.get('SDOS_SIERRA_GAME', '1')
@@ -40,13 +41,12 @@ class SierraLauncherConfig:
         try:
             index = int(SIERRA_GAME) - 1
         except ValueError:
-            print_err('steam-dos: warning: SDOS_SIERRA_GAME must be',
-                      'a numerical value')
+            log_warn('SDOS_SIERRA_GAME must be a numerical value')
         self.selected_game = min(max(0, index), self.games_num - 1)
         if self.selected_game != index:
-            print_err('steam-dos: warning: game', SIERRA_GAME, 'not found.')
-            print_err('steam-dos: warning: This collection defines games',
-                      '1..' + str(self.games_num))
+            log_warn('game', SIERRA_GAME, 'not found.')
+            log_warn('This collection defines games',
+                     '1..' + str(self.games_num))
             self.selected_game = 0
 
     def __parse_config__(self, ini_file, ini_dir):
@@ -74,7 +74,7 @@ class SierraLauncherConfig:
         if real_path:
             game['path'] = os.path.join(ini_dir, real_path)
         else:
-            print_err("steam-dos: error: can't find path", path)
+            log_err("can't find path", path)
             game['path'] = orig_cwd
         if prog.lower() == 'dosbox':  # used only in Legacy launcher
             game['args'] = ['-c', 'mount C .',
