@@ -20,8 +20,9 @@ tool_dir_dev          = steam-dos-dev
 files = run-dosbox \
 	install-gog-game \
 	confgen.py \
-	fakesierralauncher.py \
 	fakescripteval.py \
+	fakesierralauncher.py \
+	log.py \
 	midi.py \
 	preconfig.py \
 	preconfig.tar \
