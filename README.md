@@ -6,6 +6,8 @@
 
 Compatibility tool to run DOS games on Steam through native Linux DOSBox.
 
+This is a sister project of [Luxtorpeda](https://github.com/dreamer/luxtorpeda).
+
 ![steam-dos](https://user-images.githubusercontent.com/3967/57303584-f448b600-70dd-11e9-91f9-e7f45a8157f5.png)
 
 Official mirrors:
