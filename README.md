@@ -1,4 +1,4 @@
-# steam-dos
+# Boxtron (old name: steam-dos)
 
 [![Build Status](https://travis-ci.com/dreamer/steam-dos.svg?branch=master)](https://travis-ci.com/dreamer/steam-dos)
 [![steam-dos discord](https://img.shields.io/discord/514567252864008206.svg?label=discord)](https://discord.gg/8mFhUPX)
@@ -64,7 +64,7 @@ Optionally for MIDI support: TiMidity++ or FluidSynth and a soundfont.
 
 3. Start Steam.
 4. In game properties window select "Force the use of a specific Steam Play
-   compatibility tool" and select "DOSBox&nbsp;(native)".
+   compatibility tool" and select "Boxtron (native DOSBox)".
 
 
 ## Installation (from source)
@@ -78,7 +78,7 @@ Optionally for MIDI support: TiMidity++ or FluidSynth and a soundfont.
 
 3. Start Steam.
 4. In game properties window select "Force the use of a specific Steam Play
-   compatibility tool" and select "steam-dos&nbsp;(dev)".
+   compatibility tool" and select "Boxtron (dev)".
 
 
 ## Configuration
@@ -99,7 +99,7 @@ To easily install a DOS game from GOG to your Steam library, use included script
 
 It will unpack the game to `~/.local/share/games`, prepare a setup that works around all
 known Steam bugs and generate `.desktop` file to be added to your Steam library. After
-that you can play the game using steam-dos or Proton.
+that you can play the game using Boxtron or Proton.
 
 Installation script depends only on Python standard library, you can put it in your
 PATH or wherever you like.
@@ -107,7 +107,7 @@ PATH or wherever you like.
 
 ## MIDI auto-setup
 
-steam-dos preconfigures selected titles to turn MIDI music on/off, depending on user
+Boxtron preconfigures selected titles to turn MIDI music on/off, depending on user
 preferences. Supported games are:
 
 * [STAR WARS™ - Dark Forces](https://store.steampowered.com/app/32400/)

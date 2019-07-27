@@ -65,15 +65,14 @@ Steam will detect new tool being installed after you restart the client.
 As long as you don't touch .vdf files, there's no need to keep restarting
 it, though.
 
-To install/remove development version of steam-dos:
+To install/remove development version of Boxtron:
 
     $ make user-install
     $ make user-uninstall
 
 To create tarballs:
 
-    $ make steam-dos.tar.xz
-    $ make steam-dos.zip
+    $ make boxtron.tar.xz
 
 Target `install` is reserved for distro packagers, to be used as such:
 
