@@ -7,15 +7,15 @@
 
 # These variables are used to generate compatibilitytool.vdf:
 #
-tool_name             = steam_dos
-tool_name_dev         = steam_dos_dev
-tool_name_display     = DOSBox (native)
-tool_name_display_dev = steam-dos (dev)
+tool_name             = boxtron
+tool_name_dev         = boxtron_dev
+tool_name_display     = Boxtron (native DOSBox)
+tool_name_display_dev = Boxtron (dev)
 
 # Default names for installation directories:
 #
-tool_dir              = steam-dos
-tool_dir_dev          = steam-dos-dev
+tool_dir              = boxtron
+tool_dir_dev          = boxtron-dev
 
 files = run-dosbox \
 	install-gog-game \

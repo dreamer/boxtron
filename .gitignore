@@ -8,6 +8,6 @@ version.py
 Pipfile
 Pipfile.lock
 /preconfig.tar
-steam-dos.tar.xz
-steam-dos.zip
+boxtron.tar.xz
+boxtron.zip
 TODO.md
