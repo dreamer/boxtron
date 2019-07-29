@@ -38,10 +38,10 @@ Check Formatting:
 Create Packages:
   stage: package
   script:
-  - make steam-dos.tar.xz
-  - make steam-dos.zip
+  - make boxtron.tar.xz
+  - make boxtron.zip
   artifacts:
     paths:
-    - steam-dos.tar.xz
-    - steam-dos.zip
+    - boxtron.tar.xz
+    - boxtron.zip
     expire_in: 1 week
