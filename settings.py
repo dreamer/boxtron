@@ -88,7 +88,7 @@ fullscreenmode = {fullscreen_mode}
 
 # Pick the default scaler, that you want to use for all games.
 # You can override selection per-game by changing option render.scaler in file
-# steam_dos_<appid>_<id>.conf in game's installation dir.
+# boxtron_<appid>_<id>.conf in game's installation dir.
 # Here's comparison of different scalers: https://www.dosbox.com/wiki/Scaler
 scaler = {scaler}
 
