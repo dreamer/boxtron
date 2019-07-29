@@ -311,7 +311,7 @@ def get_midi_preset(app_id):
 #
 # If Steam fails to chdir into the correct directory before running the game
 # (which might happen - either as a result of Steam bug or publisher submitting
-# broken path), then steam-dos and DOSBox are going to fail because .conf files
+# broken path), then Boxtron and DOSBox are going to fail because .conf files
 # will not be in their expected location.
 #
 def check_cwd(command_line):

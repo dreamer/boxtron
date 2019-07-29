@@ -7,7 +7,7 @@ import sys
 
 import toolbox
 
-PREFIX = 'steam-dos:'
+PREFIX = 'boxtron:'
 
 QUIET = toolbox.enabled_in_env('SDOS_QUIET')
 

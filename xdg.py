@@ -28,5 +28,5 @@ def get_data_dirs(include_data_home=True):
 
 def cached_file(name):
     """Obtain path to cached file in application specific dir."""
-    os.makedirs(CACHE_HOME + '/steam-dos', exist_ok=True)
-    return os.path.join(CACHE_HOME, 'steam-dos', name)
+    os.makedirs(CACHE_HOME + '/boxtron', exist_ok=True)
+    return os.path.join(CACHE_HOME, 'boxtron', name)
