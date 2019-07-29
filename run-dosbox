@@ -221,7 +221,7 @@ def main():
     setup_bundle(distdir=settings.distdir)
 
     if args.version:
-        print('steam-dos version {0}'.format(version.VERSION[1:]))
+        print('Boxtron version {0}'.format(version.VERSION[1:]))
         sys.exit(0)
     if args.get_native_path:
         # TODO convert single path: Windows -> Linux

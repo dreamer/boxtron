@@ -37,7 +37,7 @@ DEFAULT_SCALER = 'normal3x'
 
 DEFAULT_SETTINGS = """
 [confgen]
-# Set this value to 'true' if you want steam-dos to re-create DOSBox
+# Set this value to 'true' if you want Boxtron to re-create DOSBox
 # configuration on every run.
 force = {confgen_force}
 
@@ -64,7 +64,7 @@ synthesiser = {midi_tool}
 #
 # use_sequencer =
 
-# steam-dos will look for a soundfont in following directories:
+# Boxtron will look for a soundfont in following directories:
 # /usr/share/soundfonts/
 # /usr/share/sounds/sf2/
 # /usr/local/share/soundfonts/
@@ -251,7 +251,7 @@ def init_settings_file():
     old_file_exists = os.path.isfile(old_settings_file)
     new_file_exists = os.path.isfile(SETTINGS_FILE)
 
-    # Upgrade steam-dos.conf to boxtron.conf
+    # Upgrade old configuration name to boxtron.conf
     #
     # I could simply move the file, but we have opportunity to
     # upgrade documentation in .conf file for all users that tried
