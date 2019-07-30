@@ -60,7 +60,7 @@ synthesiser = {midi_tool}
 # For example, to match client named 'CASIO USB-MIDI', you can use
 # value 'casio'.
 #
-# You can override this per-game with SDOS_USE_MIDI_SEQ environment variable.
+# You can override this per-game with BOXTRON_USE_MIDI_SEQ environment variable.
 #
 # use_sequencer =
 
@@ -192,7 +192,8 @@ class Settings():
 
     def get_midi_sequencer(self):
         seq = self.get_str('midi', 'use_sequencer', DEFAULT_MIDI_SEQ_REGEX)
-        return os.environ.get('SDOS_USE_MIDI_SEQ', seq).strip()
+        seq = os.environ.get('SDOS_USE_MIDI_SEQ', seq).strip()
+        return os.environ.get('BOXTRON_USE_MIDI_SEQ', seq)
 
     def get_dosbox_cmd(self):
         # dosbox.cmd is new name for dosbox.bin
