@@ -79,8 +79,8 @@ soundfont = {midi_soundfont}
 #   The game will use fullscreen on selected screen, without changing
 #   the native resolution of your display.  Mouse will be locked to the screen.
 #   Default is 'screen 0', which is your primary display.
-#   You can override this selection per-game with SDOS_SCREEN environment
-#   variable, e.g: 'SDOS_SCREEN=2 %command%'
+#   You can override this selection per-game with BOXTRON_SCREEN environment
+#   variable, e.g: 'BOXTRON_SCREEN=2 %command%'
 # - desktop:
 #   The whole desktop area will be used (all displays) with the game centred,
 #   the native resolution of your displays will be preserved.
@@ -124,7 +124,8 @@ class Settings():
 
     def __setup_fullscreen__(self):
         user_choice = self.get_dosbox_fullscreenmode()
-        env_override = 'SDOS_SCREEN' in os.environ or \
+        env_override = 'BOXTRON_SCREEN' in os.environ or \
+                       'SDOS_SCREEN' in os.environ or \
                        'SDL_VIDEO_FULLSCREEN_DISPLAY' in os.environ or \
                        'SDL_VIDEO_FULLSCREEN_HEAD' in os.environ
 
@@ -164,6 +165,7 @@ class Settings():
         screen = os.environ.get('SDL_VIDEO_FULLSCREEN_HEAD', screen)
         screen = os.environ.get('SDL_VIDEO_FULLSCREEN_DISPLAY', screen)
         screen = os.environ.get('SDOS_SCREEN', screen)
+        screen = os.environ.get('BOXTRON_SCREEN', screen)
         return screen
 
     def get_bool(self, section, val, default):
