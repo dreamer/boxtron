@@ -12,7 +12,7 @@ This is a sister project of [Luxtorpeda](https://github.com/dreamer/luxtorpeda).
 
 Official mirrors:
 [GitHub](https://github.com/dreamer/steam-dos),
-[GitLab](https://gitlab.com/dreamer-tan/steam-dos).
+[GitLab](https://gitlab.com/luxtorpeda/steam-dos).
 
 Game compatibility reports:
 [Steam](https://github.com/dreamer/steam-dos/wiki/Compatibility-reports-(Steam)),
