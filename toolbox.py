@@ -15,10 +15,11 @@ import zipfile
 import winpathlib
 
 
-def enabled_in_env(var):
+def enabled_in_env(var, fallback_var=None):
     """Returns True for environment variables with non-zero value."""
-    val = os.environ.get(var)
-    return val and val != '0'
+    val1 = os.environ.get(var)
+    val2 = os.environ.get(fallback_var) if fallback_var else None
+    return (val1 and val1 != '0') or (val2 and val2 != '0')
 
 
 def which(cmd):

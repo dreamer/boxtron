@@ -296,7 +296,7 @@ def get_midi_preset(app_id):
     auto    - pre-configure game to automatically turn midi on/off depending
               on user preference
     """
-    if toolbox.enabled_in_env('SDOS_NO_MIDI_PRESET'):
+    if toolbox.enabled_in_env('BOXTRON_NO_MIDI_PRESET', 'SDOS_NO_MIDI_PRESET'):
         return 'enable'
     if app_id not in TWEAKS_DB:
         return 'enable'

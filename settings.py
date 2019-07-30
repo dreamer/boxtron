@@ -176,7 +176,7 @@ class Settings():
         return self.get_bool('confgen', 'force', DEFAULT_CONFGEN_FORCE)
 
     def get_midi_on(self):
-        if enabled_in_env('SDOS_NO_MIDI'):
+        if enabled_in_env('BOXTRON_NO_MIDI', 'SDOS_NO_MIDI'):
             return False
         return self.get_bool('midi', 'enable', DEFAULT_MIDI_ENABLE)
 
