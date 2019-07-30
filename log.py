@@ -9,7 +9,7 @@ import toolbox
 
 PREFIX = 'boxtron:'
 
-QUIET = toolbox.enabled_in_env('SDOS_QUIET')
+QUIET = toolbox.enabled_in_env('BOXTRON_QUIET')
 
 
 def print_err(*value, sep=' ', end='\n', flush=False):

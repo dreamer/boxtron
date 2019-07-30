@@ -61,7 +61,7 @@ lint: version.py
 
 test: preconfig.tar
 	XDG_CONFIG_HOME=$(shell pwd)/tests/files/xdg_config_home \
-	SDOS_QUIET=1 python3 -m unittest discover -v -s tests
+	BOXTRON_QUIET=1 python3 -m unittest discover -v -s tests
 
 coverage: preconfig.tar
 	bash tests/coverage-report.sh 2> /dev/null
