@@ -11,7 +11,8 @@ from log import log_warn, log_err
 from toolbox import argsplit_windows
 from winpathlib import to_posix_path
 
-SIERRA_GAME = os.environ.get('SDOS_SIERRA_GAME', '1')
+SIERRA_GAME = os.environ.get('BOXTRON_SIERRA_GAME') or \
+              os.environ.get('SDOS_SIERRA_GAME', '1')
 
 
 class SierraLauncherConfig:
@@ -41,7 +42,7 @@ class SierraLauncherConfig:
         try:
             index = int(SIERRA_GAME) - 1
         except ValueError:
-            log_warn('SDOS_SIERRA_GAME must be a numerical value')
+            log_warn('BOXTRON_SIERRA_GAME must be a numerical value')
         self.selected_game = min(max(0, index), self.games_num - 1)
         if self.selected_game != index:
             log_warn('game', SIERRA_GAME, 'not found.')

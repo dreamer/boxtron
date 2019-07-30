@@ -146,13 +146,13 @@ create a bug report, please!
 
 Some game collections on Steam use "Sierra Classics Launcher" graphical frontend.
 There's no support for graphical version of this launcher - the first game in a collection
-will be started by default. You can select different game to run with `SDOS_SIERRA_GAME`
+will be started by default. You can select different game to run with `BOXTRON_SIERRA_GAME`
 environment variable.
 
 For example, to start King's Quest 6 from
 [King's Quest Collection](https://store.steampowered.com/app/10100/):
 
-    SDOS_SIERRA_GAME=6 %command%
+    BOXTRON_SIERRA_GAME=6 %command%
 
 Check `SierraLauncher.ini` file in game's installation dir to learn which number
 corresponds to which game.
