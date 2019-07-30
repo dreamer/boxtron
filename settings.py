@@ -201,6 +201,7 @@ class Settings():
         if not dosbox_cmd:
             dosbox_cmd = dosbox_bin
         cmd = os.environ.get('SDOS_DOSBOX_CMD', dosbox_cmd)
+        cmd = os.environ.get('BOXTRON_DOSBOX_CMD', cmd)
         try:
             split = shlex.split(cmd, comments=True)
             return [os.path.expanduser(s) for s in split]
