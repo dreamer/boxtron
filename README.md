@@ -1,4 +1,4 @@
-# Boxtron (old name: steam-dos)
+# Boxtron (formerly: steam-dos)
 
 [![Build Status](https://travis-ci.com/dreamer/steam-dos.svg?branch=master)](https://travis-ci.com/dreamer/steam-dos)
 [![Boxtron Discord](https://img.shields.io/discord/514567252864008206.svg?label=discord)](https://discord.gg/8mFhUPX)
@@ -12,7 +12,7 @@ This is a sister project of [Luxtorpeda](https://github.com/dreamer/luxtorpeda).
 
 Official mirrors:
 [GitHub](https://github.com/dreamer/steam-dos),
-[GitLab](https://gitlab.com/luxtorpeda/steam-dos).
+[GitLab](https://gitlab.com/luxtorpeda/boxtron).
 
 Game compatibility reports:
 [Steam](https://github.com/dreamer/steam-dos/wiki/Compatibility-reports-(Steam)),
