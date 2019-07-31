@@ -1,6 +1,6 @@
 # Boxtron (formerly: steam-dos)
 
-[![Build Status](https://travis-ci.com/dreamer/steam-dos.svg?branch=master)](https://travis-ci.com/dreamer/steam-dos)
+[![Build Status](https://travis-ci.com/dreamer/boxtron.svg?branch=master)](https://travis-ci.com/dreamer/boxtron)
 [![Boxtron Discord](https://img.shields.io/discord/514567252864008206.svg?label=discord)](https://discord.gg/8mFhUPX)
 [![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/dreamer)
 
