@@ -2,7 +2,7 @@
 
 # Sync GitHub and GitLab wikis while allowing edits on both.
 
-readonly github_addr=git@github.com:dreamer/steam-dos.wiki.git
+readonly github_addr=git@github.com:dreamer/boxtron.wiki.git
 readonly gitlab_addr=git@gitlab.com:luxtorpeda/boxtron.wiki.git
 readonly repo_name=boxtron.wiki
 

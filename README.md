@@ -11,12 +11,12 @@ This is a sister project of [Luxtorpeda](https://github.com/dreamer/luxtorpeda).
 ![boxtron](https://user-images.githubusercontent.com/3967/62228547-29ebfb00-b3be-11e9-9011-625460706f25.png)
 
 Official mirrors:
-[GitHub](https://github.com/dreamer/steam-dos),
+[GitHub](https://github.com/dreamer/boxtron),
 [GitLab](https://gitlab.com/luxtorpeda/boxtron).
 
 Game compatibility reports:
-[Steam](https://github.com/dreamer/steam-dos/wiki/Compatibility-reports-(Steam)),
-[GOG](https://github.com/dreamer/steam-dos/wiki/Compatibility-reports-(GOG)).
+[Steam](https://github.com/dreamer/boxtron/wiki/Compatibility-reports-(Steam)),
+[GOG](https://github.com/dreamer/boxtron/wiki/Compatibility-reports-(GOG)).
 
 
 ## Features
@@ -25,7 +25,7 @@ Game compatibility reports:
 * Steam features working as expected (e.g. Steam Cloud, Controller settings or recording of time played)
 * Better fullscreen support, especially on multi-monitor setups\*
 * Steam Overlay working out of the box\*
-* More [configuration options](https://github.com/dreamer/steam-dos/wiki/Configuration) and better defaults\*
+* More [configuration options](https://github.com/dreamer/boxtron/wiki/Configuration) and better defaults\*
 * Automatic detection of MIDI hardware, with software synthesiser used as fallback
 * Automatic MIDI setup for supported titles (click Play and enjoy pre-configured MIDI music)
 
@@ -60,7 +60,7 @@ Optionally for MIDI support: TiMidity++ or FluidSynth and a soundfont.
 2. Download and unpack tarball to `compatibilitytools.d` directory (create one if it does not exist):
 
        $ cd ~/.local/share/Steam/compatibilitytools.d/ || cd ~/.steam/root/compatibilitytools.d/
-       $ curl -L https://github.com/dreamer/steam-dos/releases/download/v0.4.3/steam-dos.tar.xz | tar xJf -
+       $ curl -L https://github.com/dreamer/boxtron/releases/download/v0.4.3/boxtron.tar.xz | tar xJf -
 
 3. Start Steam.
 4. In game properties window select "Force the use of a specific Steam Play
@@ -72,8 +72,8 @@ Optionally for MIDI support: TiMidity++ or FluidSynth and a soundfont.
 1. Close Steam.
 2. Clone the repository and install the script to user directory:
 
-       $ git clone https://github.com/dreamer/steam-dos.git
-       $ cd steam-dos
+       $ git clone https://github.com/dreamer/boxtron.git
+       $ cd boxtron
        $ make user-install
 
 3. Start Steam.
@@ -83,12 +83,12 @@ Optionally for MIDI support: TiMidity++ or FluidSynth and a soundfont.
 
 ## Configuration
 
-Read [Configuration](https://github.com/dreamer/steam-dos/wiki/Configuration) article on project Wiki.
+Read [Configuration](https://github.com/dreamer/boxtron/wiki/Configuration) article on project Wiki.
 
 
 ## Development
 
-Read all about it in the [contributing guide](https://github.com/dreamer/steam-dos/blob/master/CONTRIBUTING.md) :)
+Read all about it in the [contributing guide](https://github.com/dreamer/boxtron/blob/master/CONTRIBUTING.md) :)
 
 
 ## GOG Games
@@ -162,7 +162,7 @@ corresponds to which game.
 
 As of June/July 2019 you are likely to encounter one of these bugs:
 
-* Steam Overlay causes [visual glitch](https://github.com/dreamer/steam-dos/issues/8). DOSBox issue, fixed in 0.74-3.
-* Mouse [cursor issues](https://github.com/dreamer/steam-dos/issues/7) in Gnome 3.30. Gnome issue, fixed in 3.32.
+* Steam Overlay causes [visual glitch](https://github.com/dreamer/boxtron/issues/8). DOSBox issue, fixed in 0.74-3.
+* Mouse [cursor issues](https://github.com/dreamer/boxtron/issues/7) in Gnome 3.30. Gnome issue, fixed in 3.32.
 * Some games experience random KeyUp events. [DOSBox issue](https://www.vogons.org/viewtopic.php?f=31&t=66491).
 * Alt+Tab does not work in fullscreen. DOSBox does not support borderless window mode (yet) - use **Alt+Enter** to leave fullscreen and interact with your desktop.
