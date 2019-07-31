@@ -160,7 +160,7 @@ corresponds to which game.
 
 ## Known issues
 
-As of June/July 2019 you are likely to encounter one of these bugs:
+As of August 2019 you are likely to encounter one of these bugs:
 
 * Steam Overlay causes [visual glitch](https://github.com/dreamer/boxtron/issues/8). DOSBox issue, fixed in 0.74-3.
 * Mouse [cursor issues](https://github.com/dreamer/boxtron/issues/7) in Gnome 3.30. Gnome issue, fixed in 3.32.
