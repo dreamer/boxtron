@@ -1,14 +1,14 @@
-# steam-dos
+# Boxtron (old name: steam-dos)
 
 [![Build Status](https://travis-ci.com/dreamer/steam-dos.svg?branch=master)](https://travis-ci.com/dreamer/steam-dos)
-[![steam-dos discord](https://img.shields.io/discord/514567252864008206.svg?label=discord)](https://discord.gg/8mFhUPX)
+[![Boxtron Discord](https://img.shields.io/discord/514567252864008206.svg?label=discord)](https://discord.gg/8mFhUPX)
 [![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/dreamer)
 
 Compatibility tool to run DOS games on Steam through native Linux DOSBox.
 
 This is a sister project of [Luxtorpeda](https://github.com/dreamer/luxtorpeda).
 
-![steam-dos](https://user-images.githubusercontent.com/3967/57303584-f448b600-70dd-11e9-91f9-e7f45a8157f5.png)
+![boxtron](https://user-images.githubusercontent.com/3967/62228547-29ebfb00-b3be-11e9-9011-625460706f25.png)
 
 Official mirrors:
 [GitHub](https://github.com/dreamer/steam-dos),
@@ -64,7 +64,7 @@ Optionally for MIDI support: TiMidity++ or FluidSynth and a soundfont.
 
 3. Start Steam.
 4. In game properties window select "Force the use of a specific Steam Play
-   compatibility tool" and select "DOSBox&nbsp;(native)".
+   compatibility tool" and select "Boxtron (native DOSBox)".
 
 
 ## Installation (from source)
@@ -78,7 +78,7 @@ Optionally for MIDI support: TiMidity++ or FluidSynth and a soundfont.
 
 3. Start Steam.
 4. In game properties window select "Force the use of a specific Steam Play
-   compatibility tool" and select "steam-dos&nbsp;(dev)".
+   compatibility tool" and select "Boxtron (dev)".
 
 
 ## Configuration
@@ -99,7 +99,7 @@ To easily install a DOS game from GOG to your Steam library, use included script
 
 It will unpack the game to `~/.local/share/games`, prepare a setup that works around all
 known Steam bugs and generate `.desktop` file to be added to your Steam library. After
-that you can play the game using steam-dos or Proton.
+that you can play the game using Boxtron or Proton.
 
 Installation script depends only on Python standard library, you can put it in your
 PATH or wherever you like.
@@ -107,7 +107,7 @@ PATH or wherever you like.
 
 ## MIDI auto-setup
 
-steam-dos preconfigures selected titles to turn MIDI music on/off, depending on user
+Boxtron preconfigures selected titles to turn MIDI music on/off, depending on user
 preferences. Supported games are:
 
 * [STAR WARS™ - Dark Forces](https://store.steampowered.com/app/32400/)
@@ -146,13 +146,13 @@ create a bug report, please!
 
 Some game collections on Steam use "Sierra Classics Launcher" graphical frontend.
 There's no support for graphical version of this launcher - the first game in a collection
-will be started by default. You can select different game to run with `SDOS_SIERRA_GAME`
+will be started by default. You can select different game to run with `BOXTRON_SIERRA_GAME`
 environment variable.
 
 For example, to start King's Quest 6 from
 [King's Quest Collection](https://store.steampowered.com/app/10100/):
 
-    SDOS_SIERRA_GAME=6 %command%
+    BOXTRON_SIERRA_GAME=6 %command%
 
 Check `SierraLauncher.ini` file in game's installation dir to learn which number
 corresponds to which game.

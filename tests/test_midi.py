@@ -12,10 +12,10 @@ import midi
 class TestAlsaMidiClients(unittest.TestCase):
 
     def setUp(self):
-        os.environ.pop('SDOS_USE_MIDI_SEQ', None)
+        os.environ.pop('BOXTRON_USE_MIDI_SEQ', None)
 
     def tearDown(self):
-        os.environ.pop('SDOS_USE_MIDI_SEQ', None)
+        os.environ.pop('BOXTRON_USE_MIDI_SEQ', None)
 
     def test_list_default(self):
         fake_seq_list = 'tests/files/alsa/default'
@@ -51,7 +51,7 @@ class TestAlsaMidiClients(unittest.TestCase):
         port = midi.find_midi_port(seq_clients=fake_seq_list)
         self.assertIsNotNone(port)
         self.assertEqual(port.addr, '16:0')
-        os.environ['SDOS_USE_MIDI_SEQ'] = '.*one'
+        os.environ['BOXTRON_USE_MIDI_SEQ'] = '.*one'
         port = midi.find_midi_port(seq_clients=fake_seq_list)
         self.assertIsNotNone(port)
         self.assertEqual(port.addr, '24:0')

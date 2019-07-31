@@ -7,15 +7,15 @@
 
 # These variables are used to generate compatibilitytool.vdf:
 #
-tool_name             = steam_dos
-tool_name_dev         = steam_dos_dev
-tool_name_display     = DOSBox (native)
-tool_name_display_dev = steam-dos (dev)
+tool_name             = boxtron
+tool_name_dev         = boxtron_dev
+tool_name_display     = Boxtron (native DOSBox)
+tool_name_display_dev = Boxtron (dev)
 
 # Default names for installation directories:
 #
-tool_dir              = steam-dos
-tool_dir_dev          = steam-dos-dev
+tool_dir              = boxtron
+tool_dir_dev          = boxtron-dev
 
 files = run-dosbox \
 	install-gog-game \
@@ -61,7 +61,7 @@ lint: version.py
 
 test: preconfig.tar
 	XDG_CONFIG_HOME=$(shell pwd)/tests/files/xdg_config_home \
-	SDOS_QUIET=1 python3 -m unittest discover -v -s tests
+	BOXTRON_QUIET=1 python3 -m unittest discover -v -s tests
 
 coverage: preconfig.tar
 	bash tests/coverage-report.sh 2> /dev/null

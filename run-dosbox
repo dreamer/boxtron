@@ -38,7 +38,7 @@ from settings import SETTINGS as settings
 
 STEAM_APP_ID = os.environ.get('SteamAppId', '0')
 
-RUN_EXE = os.environ.get('SDOS_RUN_EXE')
+RUN_EXE = os.environ.get('BOXTRON_RUN_EXE') or os.environ.get('SDOS_RUN_EXE')
 
 
 def setup_midi():
@@ -220,8 +220,11 @@ def main():
 
     setup_bundle(distdir=settings.distdir)
 
+    if len(sys.argv) == 1:
+        parser.print_help()
+        sys.exit(0)
     if args.version:
-        print('steam-dos version {0}'.format(version.VERSION[1:]))
+        print('Boxtron version {0}'.format(version.VERSION[1:]))
         sys.exit(0)
     if args.get_native_path:
         # TODO convert single path: Windows -> Linux

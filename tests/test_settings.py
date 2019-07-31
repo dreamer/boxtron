@@ -17,7 +17,7 @@ class TestSettings(unittest.TestCase):
 
     def tearDown(self):
         settings.set_dosbox_cmd(' '.join(self.original))
-        os.environ.pop('SDOS_DOSBOX_CMD', None)
+        os.environ.pop('BOXTRON_DOSBOX_CMD', None)
 
     def test_dosbox_cmd_file(self):
         expected = os.path.expanduser('~/bin/my-awesome-dosbox')
@@ -54,7 +54,7 @@ class TestSettings(unittest.TestCase):
                          ['/bin/foo foo', 'bar', '/opt/baz baz/baz'])
 
     def test_dosbox_cmd_env_override(self):
-        os.environ['SDOS_DOSBOX_CMD'] = 'test'
+        os.environ['BOXTRON_DOSBOX_CMD'] = 'test'
         self.assertEqual(settings.get_dosbox_cmd(), ['test'])
 
     def test_dosbox_setup(self):

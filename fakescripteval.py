@@ -18,7 +18,7 @@ from log import log
 
 STEAM_APP_ID = os.environ.get('SteamAppId', '0')
 
-PID_FILE = '/tmp/steam_dos_{0}'.format(STEAM_APP_ID)
+PID_FILE = '/tmp/boxtron_{0}'.format(STEAM_APP_ID)
 
 
 def wait_for_previous_process():
@@ -84,7 +84,7 @@ def iscriptevaluator(args):
 
     download_links = tweaks.TWEAKS_DB[steam_app_id]['download']
     num = len(download_links)
-    pid_file = '/tmp/steam_dos_{0}'.format(steam_app_id)
+    pid_file = '/tmp/boxtron_{0}'.format(steam_app_id)
     i = 0
     with toolbox.PidFile(pid_file):
         for name, desc in download_links.items():

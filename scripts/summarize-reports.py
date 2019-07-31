@@ -3,9 +3,16 @@
 # pylint: disable=invalid-name
 # pylint: disable=missing-docstring
 
+import os
 import re
+import subprocess
 
-REPORTS_PATH = '../../steam-dos.wiki/Compatibility-reports-(Steam).md'
+REPORTS_PATH = '../boxtron.wiki/Compatibility-reports-(Steam).md'
+
+
+def go_to_root():
+    root = subprocess.check_output(['git', 'rev-parse', '--show-toplevel'])
+    os.chdir(root.strip())
 
 
 def parse_link(md_link):
@@ -66,4 +73,5 @@ def main():
 
 
 if __name__ == "__main__":
+    go_to_root()
     main()
