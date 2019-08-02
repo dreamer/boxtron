@@ -128,6 +128,22 @@ TWEAKS_DB = {
             },
         },
     },
+    # Earthworm Jim
+    '38480': {
+        'commands': {
+            r'.*':  {
+                'args': ['-conf', 'ewj1.conf'],
+            },
+        },
+    },
+    # Earthworm Jim 2
+    '38490': {
+        'commands': {
+            r'.*':  {
+                'args': ['-conf', 'ewj2.conf'],
+            },
+        },
+    },
     # Retro City Rampage™ DX
     '204630': {
         'install': 'install_retro_city_rampage',
