@@ -249,6 +249,23 @@ class DosboxConfiguration(dict):
         self[section][option] = value
 
 
+class CueParser():
+    """Class for storage and conversion of .cue files content"""
+
+    def __init__(self, file):
+        pass
+
+    def is_cue_file(self):
+        """Return true if represents a .cue file."""
+        assert self
+        return False
+
+    def verify_files(self):
+        """Return true if files inside .cue represent real paths."""
+        assert self
+        return False
+
+
 def cleanup_old_conf_files(app_id, args):
     """Remove old unused, versions of .conf files."""
     old_v0 = uniq_conf_name_salted('steam_dos', app_id, args, '')
@@ -295,6 +312,11 @@ def parse_dosbox_config(conf_file):
     return config, encoding
 
 
+def convert_cue_file(path):
+    """Handle case-sensitive paths inside .cue files."""
+    return path
+
+
 def to_linux_autoexec(autoexec):
     """Convert case-sensitive parts in autoexec."""
     cmd_1 = r'@? *(mount|imgmount) +([a-z]):? +"([^"]+)"( +(.*))?'
@@ -308,6 +330,8 @@ def to_linux_autoexec(autoexec):
             cmd = match.group(1).lower()
             drive = match.group(2).upper()
             path = to_posix_path(match.group(3))
+            if cmd == 'imgmount':
+                path = convert_cue_file(path)
             rest = match.group(4) or ''
             yield '{0} {1} "{2}"{3}'.format(cmd, drive, path, rest)
             continue
