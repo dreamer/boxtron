@@ -4,7 +4,7 @@
 [![Boxtron Discord](https://img.shields.io/discord/514567252864008206.svg?label=discord)](https://discord.gg/8mFhUPX)
 [![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/dreamer)
 
-Compatibility tool to run DOS games on Steam through native Linux DOSBox.
+Steam Play compatibility tool to run DOS games through native Linux DOSBox.
 
 This is a sister project of [Luxtorpeda](https://github.com/dreamer/luxtorpeda).
 
