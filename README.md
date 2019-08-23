@@ -1,12 +1,14 @@
 # Boxtron (formerly: steam-dos)
 
 [![Build Status](https://travis-ci.com/dreamer/boxtron.svg?branch=master)](https://travis-ci.com/dreamer/boxtron)
-[![Boxtron Discord](https://img.shields.io/discord/514567252864008206.svg?label=discord)](https://discord.gg/8mFhUPX)
+[![Luxtorpeda project Discord](https://img.shields.io/discord/514567252864008206.svg?label=discord)](https://discord.gg/8mFhUPX)
 [![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/dreamer)
 
-Steam Play compatibility tool to run DOS games through native Linux DOSBox.
+Steam Play compatibility tool to run DOS games using native Linux DOSBox
 
-This is a sister project of [Luxtorpeda](https://github.com/dreamer/luxtorpeda).
+This is a sister project of
+[Luxtorpeda](https://github.com/dreamer/luxtorpeda) and
+[Roberta](https://github.com/dreamer/roberta).
 
 ![boxtron](https://user-images.githubusercontent.com/3967/62228547-29ebfb00-b3be-11e9-9011-625460706f25.png)
 
