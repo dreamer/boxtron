@@ -25,7 +25,6 @@ def is_cue_file(path):
             return False
         first_line = lines[0].strip()
         return first_line.startswith('FILE ')
-    return False
 
 
 def list_file_entries(cue_path):
@@ -41,3 +40,13 @@ def list_file_entries(cue_path):
                 file_path = match.group(1)
                 file_type = match.group(2)
                 yield file_path, file_type
+
+
+def valid_cue_file_paths(cue_path):
+    """Return true if all paths in a .cue file refer to existing files"""
+
+    def is_file(file_entry):
+        path, _ = file_entry
+        return os.path.isfile(path)
+
+    return all(map(is_file, list_file_entries(cue_path)))

@@ -76,6 +76,18 @@ class TestCueScanner(unittest.TestCase):
         ]
         self.assertEqual(expected, found_entries)
 
+    def test_cue_file_paths_1(self):
+        os.chdir('tests/files/cue/descent2')
+        self.assertFalse(cuescanner.valid_cue_file_paths('descent_ii.inst'))
+
+    def test_cue_file_paths_2(self):
+        os.chdir('tests/files/cue/tr1')
+        self.assertTrue(cuescanner.valid_cue_file_paths('GAME.DAT'))
+
+    def test_cue_file_paths_3(self):
+        os.chdir('tests/files/cue/worms')
+        self.assertTrue(cuescanner.valid_cue_file_paths('worms.cue'))
+
 
 if __name__ == '__main__':  # pragma: no cover
     unittest.main()
