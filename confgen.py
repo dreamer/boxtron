@@ -249,23 +249,6 @@ class DosboxConfiguration(dict):
         self[section][option] = value
 
 
-class CueParser():
-    """Class for storage and conversion of .cue files content"""
-
-    def __init__(self, file):
-        pass
-
-    def is_cue_file(self):
-        """Return true if represents a .cue file."""
-        assert self
-        return False
-
-    def verify_files(self):
-        """Return true if files inside .cue represent real paths."""
-        assert self
-        return False
-
-
 def cleanup_old_conf_files(app_id, args):
     """Remove old unused, versions of .conf files."""
     old_v0 = uniq_conf_name_salted('steam_dos', app_id, args, '')
