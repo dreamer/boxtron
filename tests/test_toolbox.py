@@ -94,11 +94,6 @@ class TestEnabledInEnv(unittest.TestCase):
         self.assertFalse(toolbox.enabled_in_env('THIS_VAR_DOES_NOT_EXIST'))
 
 
-def get_lines(txt_file):
-    with open(txt_file) as tfile:
-        return tfile.readlines()
-
-
 class TestSed(unittest.TestCase):
 
     def setUp(self):
@@ -110,11 +105,11 @@ class TestSed(unittest.TestCase):
         os.remove(self.test_file)
 
     def test_sed(self):
-        self.assertEqual(get_lines(self.test_file), ['foo\n', 'bar\n'])
+        self.assertEqual(toolbox.get_lines(self.test_file), ['foo\n', 'bar\n'])
         toolbox.sed(self.test_file, r'bar', r'BAR')
-        self.assertEqual(get_lines(self.test_file), ['foo\n', 'BAR\n'])
+        self.assertEqual(toolbox.get_lines(self.test_file), ['foo\n', 'BAR\n'])
         toolbox.sed(self.test_file, r'BAR', r'bar')
-        self.assertEqual(get_lines(self.test_file), ['foo\n', 'bar\n'])
+        self.assertEqual(toolbox.get_lines(self.test_file), ['foo\n', 'bar\n'])
 
 
 class TestRpatch(unittest.TestCase):
@@ -145,9 +140,9 @@ class TestRpatch(unittest.TestCase):
             ''
         ]
         toolbox.apply_resource_patch(rpatch)
-        self.assertEqual(get_lines(self.test_file_1),
+        self.assertEqual(toolbox.get_lines(self.test_file_1),
                          ['abc\n', 'DEF\n', 'xyi\n'])
-        self.assertEqual(get_lines(self.test_file_2),
+        self.assertEqual(toolbox.get_lines(self.test_file_2),
                          ['xyy3\n', 'defdef\n', '78zzz\n', 'b0a0\n'])
 
     def test_rpatch_missing_file(self):
@@ -162,7 +157,7 @@ class TestRpatch(unittest.TestCase):
             r's:/abc/ABC/',
         ]
         toolbox.apply_resource_patch(rpatch)
-        self.assertEqual(get_lines(self.test_file_1),
+        self.assertEqual(toolbox.get_lines(self.test_file_1),
                          ['abc\n', 'DEF\n', 'ghi\n'])
         self.assertFalse(os.path.isfile(missing_file))
 

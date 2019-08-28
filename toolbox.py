@@ -225,3 +225,9 @@ def sha256sum(path):
         block = file.read()
         algo.update(block)
     return algo.hexdigest()
+
+
+def get_lines(txt_file):
+    """Simply get list of lines."""
+    with open(txt_file) as tfile:
+        return tfile.readlines()

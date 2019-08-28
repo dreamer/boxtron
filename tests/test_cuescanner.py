@@ -7,14 +7,19 @@ import os
 import unittest
 
 import cuescanner
+import toolbox
 
 
 class TestCueScanner(unittest.TestCase):
 
     def setUp(self):
+        self.test_file_1 = None
         self.original_dir = os.getcwd()
 
     def tearDown(self):
+        if self.test_file_1:
+            os.remove(self.test_file_1)
+            self.test_file_1 = None
         os.chdir(self.original_dir)
 
     def test_is_cue_1(self):
@@ -87,6 +92,15 @@ class TestCueScanner(unittest.TestCase):
     def test_cue_file_paths_3(self):
         os.chdir('tests/files/cue/worms')
         self.assertTrue(cuescanner.valid_cue_file_paths('worms.cue'))
+
+    def test_cue_file_correction(self):
+        os.chdir('tests/files/cue/descent2')
+        self.test_file_1 = 'new.cue'
+        self.assertFalse(os.path.isfile('new.cue'))
+        cuescanner.create_fixed_cue_file('descent_ii.inst', 'new.cue')
+        self.assertTrue(os.path.isfile('new.cue'))
+        line_0 = toolbox.get_lines('new.cue')[0]
+        self.assertEqual('FILE "descent_ii.gog" BINARY\n', line_0)
 
 
 if __name__ == '__main__':  # pragma: no cover

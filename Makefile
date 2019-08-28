@@ -124,9 +124,9 @@ shortlog:
 
 check-formatting:
 	yapf --version
+	yapf -d -vv run-dosbox install-gog-game *.py scripts/*.py
 	bash scripts/codestyle.sh --max-line-length=80 \
 		run-dosbox install-gog-game *.py tests/*.py scripts/*.py
-	yapf -d -vv run-dosbox install-gog-game *.py scripts/*.py
 
 pretty-code:
 	yapf -i -vv run-dosbox install-gog-game *.py

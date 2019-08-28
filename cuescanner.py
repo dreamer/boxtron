@@ -7,6 +7,8 @@ TODO module description
 import os
 import re
 
+import winpathlib
+
 # Things to consider before I forget them again:
 #
 # - for cue file we don't really need proper parser -
@@ -50,3 +52,22 @@ def valid_cue_file_paths(cue_path):
         return os.path.isfile(path)
 
     return all(map(is_file, list_file_entries(cue_path)))
+
+
+def create_fixed_cue_file(cue_path, new_path):
+    """Filter content of .cue file and save as fixed file"""
+    with open(cue_path, 'r') as cue_file, open(new_path, 'w') as out_file:
+        pattern_1 = r'( *)FILE +"([^"]+)" +(.*)'
+        pattern_2 = r'( *)FILE +([^ ]+) +(.*)'
+        file_entry_1 = re.compile(pattern_1)
+        file_entry_2 = re.compile(pattern_2)
+        for line in cue_file:
+            match = file_entry_1.match(line) or file_entry_2.match(line)
+            if match:
+                space_pfx = match.group(1)
+                file_path = winpathlib.to_posix_path(match.group(2))
+                file_type = match.group(3)
+                out_file.write('{}FILE "{}" {}\n'.format(
+                    space_pfx, file_path, file_type))
+            else:
+                out_file.write(line)
