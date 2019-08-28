@@ -17,7 +17,7 @@ Official mirrors:
 [GitLab](https://gitlab.com/luxtorpeda/boxtron).
 
 Game compatibility reports:
-[Steam](https://github.com/dreamer/boxtron/wiki/Compatibility-reports-(Steam)),
+[Steam](https://github.com/dreamer/boxtron/wiki/Compatibility-reports),
 [GOG](https://github.com/dreamer/boxtron/wiki/Compatibility-reports-(GOG)).
 
 

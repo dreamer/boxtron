@@ -7,7 +7,7 @@ import os
 import re
 import subprocess
 
-REPORTS_PATH = '../boxtron.wiki/Compatibility-reports-(Steam).md'
+REPORTS_PATH = '../boxtron.wiki/Compatibility-reports.md'
 
 
 def go_to_root():
@@ -23,10 +23,14 @@ def parse_link(md_link):
 
 def list_reports():
     with open(REPORTS_PATH) as reports_md:
+        table_candidate = False
         in_table = False
         for line in reports_md:
+            if line.startswith('| AppId'):
+                table_candidate = True
+                continue
             if line.startswith('|---'):
-                in_table = True
+                in_table = table_candidate
                 continue
             if not in_table:
                 continue
