@@ -5,15 +5,12 @@ TODO module description
 """
 
 import os
+import re
 
 # Things to consider before I forget them again:
 #
-# - referenced path is not guaranteed to be a cue file at all
-#   often it will be an ISO image or maybe other binary blob
-#
 # - for cue file we don't really need proper parser -
 #   we only need a filter that can transform file names inside a cue file
-#
 
 
 def is_cue_file(path):
@@ -31,6 +28,16 @@ def is_cue_file(path):
     return False
 
 
-def parse_cue_file(path):
-    """TODO"""
-    assert path
+def list_file_entries(cue_path):
+    """Return iterator over file entries"""
+    with open(cue_path, 'r') as cue_file:
+        pattern_1 = r' *FILE +"([^"]+)" +(.*)'
+        pattern_2 = r' *FILE +([^ ]+) +(.*)'
+        file_entry_1 = re.compile(pattern_1)
+        file_entry_2 = re.compile(pattern_2)
+        for line in cue_file:
+            match = file_entry_1.match(line) or file_entry_2.match(line)
+            if match:
+                file_path = match.group(1)
+                file_type = match.group(2)
+                yield file_path, file_type
