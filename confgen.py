@@ -10,6 +10,7 @@ import hashlib
 import os
 import re
 
+import cuescanner
 import midi
 
 from log import log, print_err
@@ -297,7 +298,12 @@ def parse_dosbox_config(conf_file):
 
 def convert_cue_file(path):
     """Handle case-sensitive paths inside .cue files."""
-    return path
+    if not cuescanner.is_cue_file(path):
+        return path
+    if cuescanner.valid_cue_file_paths(path):
+        return path
+    cuescanner.create_fixed_cue_file(path, 'boxtron.cue')
+    return 'boxtron.cue'
 
 
 def to_linux_autoexec(autoexec):

@@ -20,6 +20,7 @@ tool_dir_dev          = boxtron-dev
 files = run-dosbox \
 	install-gog-game \
 	confgen.py \
+	cuescanner.py \
 	fakescripteval.py \
 	fakesierralauncher.py \
 	log.py \
