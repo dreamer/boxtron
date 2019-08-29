@@ -13,7 +13,7 @@ import re
 import cuescanner
 import midi
 
-from log import log, print_err
+from log import log, log_err, print_err
 from settings import SETTINGS as settings
 from winpathlib import to_posix_path
 
@@ -351,6 +351,9 @@ def parse_dosbox_arguments(args):
 def create_dosbox_configuration(dosbox_args, tweak_conf):
     """Interpret DOSBox configuration."""
     args = parse_dosbox_arguments(dosbox_args)
+    if not (args.conf or args.c or args.file):
+        log_err("these are not DOSBox commandline arguments.")
+        return None
     conf = DosboxConfiguration(conf_files=(args.conf or []),
                                commands=args.c,
                                exe=args.file,

@@ -108,6 +108,8 @@ def run_dosbox_with_conf(args):
     name = confgen.uniq_conf_name(STEAM_APP_ID, args)
     tweaked_conf = tweaks.get_conf_tweak(STEAM_APP_ID)
     static_conf = confgen.create_dosbox_configuration(args, tweaked_conf)
+    if not static_conf:
+        sys.exit(1)
     if settings.get_confgen_force() or not os.path.isfile(name):
         log('saving', name, 'based on', args)
         confgen.create_user_conf_file(name, static_conf, args)
