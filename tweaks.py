@@ -243,6 +243,17 @@ TWEAKS_DB = {
             },
         },
     },
+    # Leisure Suit Larry 1
+    '763970': {
+        'commands': {
+            r'.*':  {
+                'args': ['-c', 'mount C .',
+                         '-c', 'C:',
+                         '-c', 'SIERRA',
+                         '-c', 'exit'],
+            },
+        },
+    },
     # Leisure Suit Larry 2
     '765840': {
         'commands': {
