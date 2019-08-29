@@ -86,6 +86,16 @@ def setup_bundle(distdir):
                 os.environ[env_var] = os.pathsep.join(sys_path)
 
 
+def zenity_err(msg):
+    steam_zenity = os.environ.get('STEAM_ZENITY', '/usr/bin/zenity')
+    cmd = [steam_zenity, '--error', '--no-wrap', '--title=Boxtron Error']
+    log_err(msg)
+    if os.path.isfile(steam_zenity):
+        subprocess.call(cmd + ['--text={}'.format(msg)])
+    else:
+        log_err('zenity ({}) is missing'.format(steam_zenity))
+
+
 def run_dosbox(args):
     cmd = settings.get_dosbox_cmd()
     log('working dir: "{}"'.format(os.getcwd()))
@@ -109,6 +119,7 @@ def run_dosbox_with_conf(args):
     tweaked_conf = tweaks.get_conf_tweak(STEAM_APP_ID)
     static_conf = confgen.create_dosbox_configuration(args, tweaked_conf)
     if not static_conf:
+        zenity_err("Game not recognized as DOSBox compatible.")
         sys.exit(1)
     if settings.get_confgen_force() or not os.path.isfile(name):
         log('saving', name, 'based on', args)
@@ -143,6 +154,8 @@ def run(cmd_line, wait=False):
             os.chdir(path)
         else:
             log_err("can't figure out what to do with this command.")
+            zenity_err("Error during detection of game installation.\nReport"
+                       "this to: https://github.com/dreamer/boxtron/issues")
             sys.exit(2)
 
     if tweaks.install_tweak_needed(STEAM_APP_ID):
@@ -172,6 +185,7 @@ def run_file(path, exe, cmd_line):
         log('tweaking command for app', STEAM_APP_ID)
         tweaked_cmd = tweaks.tweak_command(STEAM_APP_ID, cmd_line)
         if not tweaked_cmd:
+            zenity_err('Game command line was not recognized.')
             sys.exit(1)
         run_dosbox_with_conf(tweaked_cmd)
 
@@ -199,7 +213,7 @@ def run_file(path, exe, cmd_line):
         # instead of running the DOSBox directly.
         ini_file = os.path.join(path, 'SierraLauncher.ini')
         if not os.path.isfile(ini_file):
-            log_err('Sierra Launcher configuration file missing')
+            zenity_err('Sierra Launcher configuration file is missing.')
             sys.exit(1)
         log('parsing', ini_file)
         launcher = SierraLauncherConfig(ini_file=ini_file)
@@ -209,6 +223,7 @@ def run_file(path, exe, cmd_line):
 
     else:
         log('ignoring command:', cmd_line)
+        zenity_err("Game not recognized as DOSBox compatible.")
 
 
 def main():
