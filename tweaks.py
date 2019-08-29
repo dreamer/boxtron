@@ -250,6 +250,30 @@ TWEAKS_DB = {
             },
         },
     },
+    # Leisure Suit Larry 2
+    '765840': {
+        'commands': {
+            r'.*':  {
+                'args': ['SCIV.EXE', '-exit'],
+            },
+        },
+    },
+    # Leisure Suit Larry 3
+    '765850': {
+        'commands': {
+            r'.*':  {
+                'args': ['SCIV.EXE', '-exit'],
+            },
+        },
+    },
+    # Leisure Suit Larry 5
+    '765860': {
+        'commands': {
+            r'.*':  {
+                'args': ['SCIDHUV.EXE', '-exit'],
+            },
+        },
+    },
 }  # yapf: disable
 
 
