@@ -249,7 +249,7 @@ TWEAKS_DB = {
             r'.*':  {
                 'args': ['-c', 'mount C .',
                          '-c', 'C:',
-                         '-c', 'SIERRA',
+                         '-c', 'call SIERRA',
                          '-c', 'exit'],
             },
         },
