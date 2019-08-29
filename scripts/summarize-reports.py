@@ -26,6 +26,8 @@ def list_reports():
         table_candidate = False
         in_table = False
         for line in reports_md:
+            if not line.strip():
+                continue
             if line.startswith('| AppId'):
                 table_candidate = True
                 continue
