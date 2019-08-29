@@ -29,9 +29,6 @@ TWEAKS_DB = {
     # The Ultimate DOOM
     '2280': {
         'midi': 'auto',
-        'conf': {
-            'render': {'aspect': 'true'},
-        },
     },
     # Final DOOM
     '2290': {
@@ -83,27 +80,24 @@ TWEAKS_DB = {
     # X-COM: Terror from the Deep
     '7650': {
         'midi': 'auto',
+        'conf': {
+            'render': {'force_aspect': 'false'},
+        },
     },
     # X-COM: UFO Defence / UFO: Enemy Unknown
     '7760': {
         'midi': 'auto',
+        'conf': {
+            'render': {'force_aspect': 'false'},
+        },
     },
     # Master Levels for DOOM II
     '9160': {
         'midi': 'auto',
     },
-    # King's Quest™ Collection
-    '10100': {
-        'conf': {
-            'render': {'aspect': 'true'},
-        },
-    },
     # STAR WARS™ - Dark Forces
     '32400': {
         'midi': 'auto',
-        'conf': {
-            'render': {'aspect': 'true'},
-        },
     },
     # Fallout: A Post Nuclear Role Playing Game
     '38400': {
@@ -228,7 +222,6 @@ TWEAKS_DB = {
         'midi': 'disable',
         'conf': {
             'sblaster': {'force_irq': '5'},
-            'render': {'aspect': 'true'},
         },
         'commands': {
             r'.*':  {

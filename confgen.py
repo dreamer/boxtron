@@ -409,9 +409,9 @@ def write_sdl_section(file):
 
 def write_render_section(conf, file):
     """Write render section."""
-    render_aspect = 'false'
+    render_aspect = 'true'
     if conf and conf.has_section('render'):
-        render_aspect = conf['render'].get('aspect', 'false')
+        render_aspect = conf['render'].get('force_aspect', render_aspect)
     file.write(
         RENDER_SECTION_1.format(scaler=settings.get_dosbox_scaler(),
                                 aspect=render_aspect))
