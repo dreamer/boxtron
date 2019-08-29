@@ -133,6 +133,8 @@ def run(cmd_line, wait=False):
     log('working dir: "{}"'.format(os.getcwd()))
     log('original command:', cmd_line)
 
+    cmd_line = list(filter(lambda x: x != '^', cmd_line))
+
     if wait:
         fakescripteval.wait_for_previous_process()
 
