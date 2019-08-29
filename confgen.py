@@ -316,7 +316,9 @@ def to_linux_autoexec(autoexec):
     mount_cmd_3 = re.compile(cmd_3, re.IGNORECASE)
     change_drv = re.compile(r'@? *([a-z]:)\\? *$', re.IGNORECASE)
     for line in autoexec:
-        match = mount_cmd_1.match(line) or mount_cmd_2.match(line) or mount_cmd_3.match(line)
+        match = mount_cmd_1.match(line) or \
+                mount_cmd_2.match(line) or \
+                mount_cmd_3.match(line)
         if match:
             cmd = match.group(1).lower()
             drive = match.group(2).upper()
