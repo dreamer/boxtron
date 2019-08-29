@@ -123,9 +123,10 @@ preferences. Supported games are:
 * [The Ultimate DOOM](https://store.steampowered.com/app/2280/Ultimate_Doom/)
 * [Final DOOM](https://store.steampowered.com/app/2290/Final_DOOM/)
 * [DOOM II](https://store.steampowered.com/app/2300/DOOM_II/)
-* [Master Levels for DOOM II](https://store.steampowered.com/app/9160/Master_Levels_for_Doom_II/)
-* [Heretic: Shadow of the Serpent Riders](https://store.steampowered.com/app/2390/Heretic_Shadow_of_the_Serpent_Riders/)
-* [Hexen: Beyond Heretic](https://store.steampowered.com/app/2360/HeXen_Beyond_Heretic/)
+* [Master Levels for DOOM II](https://store.steampowered.com/app/9160/)
+* [Heretic: Shadow of the Serpent Riders](https://store.steampowered.com/app/2390/)
+* [Hexen: Beyond Heretic](https://store.steampowered.com/app/2360/)
+* [Hexen: Deathkings of the Dark Citadel](https://store.steampowered.com/app/2370/)
 * [Duke Nukem 3D (Classic)](https://steamdb.info/app/225140/info/)
 
 
