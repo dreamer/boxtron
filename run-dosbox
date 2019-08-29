@@ -240,17 +240,18 @@ def main():
     if len(sys.argv) == 1:
         parser.print_help()
         sys.exit(0)
+
     if args.version:
         print('Boxtron version {0}'.format(version.VERSION[1:]))
         sys.exit(0)
+
     if args.get_native_path:
-        # TODO convert single path: Windows -> Linux
         sys.exit(1)
-    elif args.get_compat_path:
-        # TODO convert single path: Linux -> Windows
+
+    if args.get_compat_path:
         sys.exit(1)
-    else:
-        run(run_cmd_line, wait=args.wait_before_run)
+
+    run(run_cmd_line, wait=args.wait_before_run)
 
 
 if __name__ == "__main__":
