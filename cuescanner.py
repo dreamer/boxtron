@@ -1,18 +1,13 @@
 #!/usr/bin/python3
 
 """
-TODO module description
+Simple introspection and filtering of .cue files.
 """
 
 import os
 import re
 
 import winpathlib
-
-# Things to consider before I forget them again:
-#
-# - for cue file we don't really need proper parser -
-#   we only need a filter that can transform file names inside a cue file
 
 
 def is_cue_file(path):
