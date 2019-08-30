@@ -128,6 +128,7 @@ preferences. Supported games are:
 * [Hexen: Beyond Heretic](https://store.steampowered.com/app/2360/)
 * [Hexen: Deathkings of the Dark Citadel](https://store.steampowered.com/app/2370/)
 * [Duke Nukem 3D (Classic)](https://steamdb.info/app/225140/info/)
+* [King's Table - The Legend of Ragnarok](https://store.steampowered.com/app/719310/)
 
 
 Just click "Play" and enjoy glorious MIDI music, there's no need to hunt those

@@ -213,6 +213,10 @@ TWEAKS_DB = {
     '283270': {
         'midi': 'auto',
     },
+    # King's Table - The Legend of Ragnarok
+    '719310': {
+        'midi': 'auto',
+    },
     # MegaRace
     #
     # This game uses different .conf files depending on game language.
