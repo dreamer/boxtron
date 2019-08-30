@@ -36,8 +36,8 @@ Game compatibility reports:
 
 ## Prerequisites
 
-You will need Python (>= 3.5), DOSBox (>= 0.74) and inotify-tools.
-Optionally for MIDI support: TiMidity++ or FluidSynth and a soundfont.
+You will need Python (>= 3.5), DOSBox (>= 0.74), inotify-tools, TiMidity++,
+and a soundfont.  Optionally, you can use FluidSynth as well.
 
 #### Fedora
 
