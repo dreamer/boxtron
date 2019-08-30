@@ -148,6 +148,9 @@ create a bug report, please!
 
 ## Sierra Launcher
 
+*For most Sierra games, you might be interested in using
+[Roberta](https://github.com/dreamer/roberta/) instead of Boxtron.*
+
 Some game collections on Steam use "Sierra Classics Launcher" graphical frontend.
 There's no support for graphical version of this launcher - the first game in a collection
 will be started by default. You can select different game to run with `BOXTRON_SIERRA_GAME`
