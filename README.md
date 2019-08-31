@@ -101,9 +101,9 @@ To easily install a DOS game from GOG to your Steam library, use included script
 
 It will unpack the game to `~/.local/share/games`, prepare a setup that works around all
 known Steam bugs and generate `.desktop` file to be added to your Steam library. After
-that you can play the game using Boxtron or Proton.
+that, you can play the game using Boxtron or Proton.
 
-Installation script depends only on Python standard library, you can put it in your
+Installation script depends only on the Python standard library; you can put it in your
 PATH or wherever you like.
 
 
