@@ -235,5 +235,48 @@ class TestHashing(unittest.TestCase):
         self.assertEqual(val, exp)
 
 
+class TestGameId(unittest.TestCase):
+
+    def tearDown(self):
+        os.environ.pop('SteamAppId', None)
+        os.environ.pop('SteamGameId', None)
+        os.environ.pop('GOG_GAME_ID', None)
+
+    def test_defaults(self):
+        os.environ.pop('SteamAppId', None)
+        os.environ.pop('SteamGameId', None)
+        os.environ.pop('GOG_GAME_ID', None)
+        self.assertEqual('0', toolbox.get_game_install_id())
+        self.assertIsNone(toolbox.get_game_global_id())
+
+    def test_install_id_steam_game(self):
+        os.environ['SteamAppId'] = '12340'
+        os.environ['SteamGameId'] = '12340'
+        self.assertEqual('12340', toolbox.get_game_install_id())
+
+    def test_global_id_steam_game(self):
+        os.environ['SteamAppId'] = '12340'
+        os.environ['SteamGameId'] = '12340'
+        self.assertEqual('steam:12340', toolbox.get_game_global_id())
+
+    def test_install_id_non_steam_game(self):
+        os.environ['SteamAppId'] = '0'
+        os.environ['SteamGameId'] = '123456789'
+        self.assertEqual('123456789', toolbox.get_game_install_id())
+
+    def test_global_id_non_steam_game(self):
+        os.environ['SteamAppId'] = '0'
+        os.environ['SteamGameId'] = '123456789'
+        self.assertIsNone(toolbox.get_game_global_id())
+
+    def test_install_id_gog(self):
+        os.environ['GOG_GAME_ID'] = '9090909'
+        self.assertEqual('9090909', toolbox.get_game_install_id())
+
+    def test_global_id_gog(self):
+        os.environ['GOG_GAME_ID'] = '9090909'
+        self.assertEqual('gog:9090909', toolbox.get_game_global_id())
+
+
 if __name__ == '__main__':  # pragma: no cover
     unittest.main()

@@ -231,3 +231,37 @@ def get_lines(txt_file):
     """Simply get list of lines."""
     with open(txt_file) as tfile:
         return tfile.readlines()
+
+
+# - SteamAppId - Steam sets this variable for games distributed through Steam
+#
+# - SteamGameId - Steam sets this variable for all games started via Steam
+#                 interface. For non-Steam games this id is unique per
+#                 game installation.
+#
+# - GOG_GAME_ID - Use this variable when starting GOG game whenever possible
+
+
+def get_game_install_id():
+    """Return a string identifying game installation"""
+    steam_app_id = os.environ.get('SteamAppId', '0')
+    gog_game_id = os.environ.get('GOG_GAME_ID', '0')
+    steam_game_id = os.environ.get('SteamGameId', '0')
+    if steam_app_id != '0':
+        return steam_app_id
+    if steam_game_id != '0':
+        return steam_game_id
+    if gog_game_id != '0':
+        return gog_game_id
+    return '0'
+
+
+def get_game_global_id():
+    """Return a string identifying specific game"""
+    steam_app_id = os.environ.get('SteamAppId', '0')
+    gog_game_id = os.environ.get('GOG_GAME_ID', '0')
+    if steam_app_id != '0':
+        return 'steam:' + steam_app_id
+    if gog_game_id != '0':
+        return 'gog:' + gog_game_id
+    return None
