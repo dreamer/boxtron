@@ -250,25 +250,25 @@ class DosboxConfiguration(dict):
         self[section][option] = value
 
 
-def cleanup_old_conf_files(app_id, args):
+def cleanup_old_conf_files(game_id, args):
     """Remove old unused, versions of .conf files."""
-    old_v0 = uniq_conf_name_salted('steam_dos', app_id, args, '')
-    old_v1 = uniq_conf_name_salted('steam_dos', app_id, args, 'v1')
+    old_v0 = uniq_conf_name_salted('steam_dos', game_id, args, '')
+    old_v1 = uniq_conf_name_salted('steam_dos', game_id, args, 'v1')
     for name in 'steam_dos_audio.conf', 'steam_dos_auto.conf', old_v0, old_v1:
         if os.path.isfile(name):
             os.remove(name)
 
 
-def uniq_conf_name(app_id, args):
-    """Return unique .conf file name for given SteamAppId and arguments."""
-    return uniq_conf_name_salted('boxtron', app_id, args, 'v2')
+def uniq_conf_name(game_id, args):
+    """Return unique .conf file name for given game id and arguments."""
+    return uniq_conf_name_salted('boxtron', game_id, args, 'v2')
 
 
-def uniq_conf_name_salted(pfx, app_id, args, salt):
+def uniq_conf_name_salted(pfx, game_id, args, salt):
     """Implements .conf name generator."""
-    uid_line = app_id + ''.join(args) + salt
+    uid_line = game_id + ''.join(args) + salt
     uid = hashlib.sha1(uid_line.encode('utf-8')).hexdigest()[:6]
-    return '{0}_{1}_{2}.conf'.format(pfx, app_id, uid)
+    return '{0}_{1}_{2}.conf'.format(pfx, game_id, uid)
 
 
 def parse_dosbox_config(conf_file):

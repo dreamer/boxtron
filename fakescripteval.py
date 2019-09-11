@@ -16,9 +16,7 @@ import toolbox
 
 from log import log
 
-STEAM_APP_ID = os.environ.get('SteamAppId', '0')
-
-PID_FILE = '/tmp/boxtron_{0}'.format(STEAM_APP_ID)
+PID_FILE = '/tmp/boxtron_{0}'.format(toolbox.get_game_install_id())
 
 
 def wait_for_previous_process():
@@ -72,7 +70,7 @@ def iscriptevaluator(args):
         print_current_step()
         return 0
 
-    # STEAM_APP_ID is 0 during installation
+    # SteamAppId is 0 during installation
     steam_app_id = 0
     script_name_pattern = re.compile(r'.*script_(\d+)\.vdf')
     match = script_name_pattern.match(last_arg)

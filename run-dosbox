@@ -114,8 +114,9 @@ def run_dosbox(args):
 
 
 def run_dosbox_with_conf(args):
-    confgen.cleanup_old_conf_files(STEAM_APP_ID, args)
-    name = confgen.uniq_conf_name(STEAM_APP_ID, args)
+    game_install_id = toolbox.get_game_install_id()
+    confgen.cleanup_old_conf_files(game_install_id, args)
+    name = confgen.uniq_conf_name(game_install_id, args)
     tweaked_conf = tweaks.get_conf_tweak(STEAM_APP_ID)
     static_conf = confgen.create_dosbox_configuration(args, tweaked_conf)
     if not static_conf:
