@@ -378,7 +378,7 @@ def check_cwd(command_line):
     if not prog_path.is_absolute():
         return False, None
 
-    dbox_args = confgen.parse_dosbox_arguments(args)
+    dbox_args = confgen.parse_dosbox_arguments(args)  # throws RuntimeException
     conf_paths = (dbox_args.conf or [])
 
     def paths_found():
@@ -400,7 +400,7 @@ def check_cwd(command_line):
             break
 
     os.chdir(orig_cwd)
-    return False, None  # TODO show nice error to the user
+    return False, None
 
 
 def install_test_42():

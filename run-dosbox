@@ -148,7 +148,13 @@ def run(cmd_line, wait=False):
     # the actual game:
     settings.setup()
 
-    chdir_tweak_needed, path = tweaks.check_cwd(cmd_line)
+    chdir_tweak_needed, path = False, None
+    try:
+        chdir_tweak_needed, path = tweaks.check_cwd(cmd_line)
+    except RuntimeError as err:
+        zenity_err(err)
+        sys.exit(2)
+
     if chdir_tweak_needed:
         if path:
             log_warn('game not found in', os.getcwd())

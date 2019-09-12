@@ -336,9 +336,20 @@ def to_linux_autoexec(autoexec):
         yield line
 
 
+class DosboxArgumentParser(argparse.ArgumentParser):
+    """Subclass ArgumentParser for DOSBox usage
+
+    This is the cleanest way to avoid silent exit when parsing DOSBox
+    arguments.
+    """
+
+    def error(self, message):
+        raise RuntimeError('DOSBox argument error: "{}"'.format(message))
+
+
 def parse_dosbox_arguments(args):
     """Parse subset of DOSBox command line arguments."""
-    parser = argparse.ArgumentParser()
+    parser = DosboxArgumentParser()
     parser.add_argument('-conf', action='append')
     parser.add_argument('-c', action='append', nargs='?')
     parser.add_argument('-noautoexec', action='store_true')
