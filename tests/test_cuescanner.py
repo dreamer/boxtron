@@ -102,6 +102,24 @@ class TestCueScanner(unittest.TestCase):
         line_0 = toolbox.get_lines('new.cue')[0]
         self.assertEqual('FILE "descent_ii.gog" BINARY\n', line_0)
 
+    # Tracks in this file exist in relative location, but are mislabeled as MP3
+    #
+    def disabled_test_gog_mk3_1(self):
+        os.chdir('tests/files/cue/mk3/DOSBOX')
+        mk3_cue = '../mk3/IMAGE/MK3.cue'
+        self.assertTrue(cuescanner.is_cue_file(mk3_cue))
+        found_entries = list(cuescanner.list_file_entries(mk3_cue))
+
+        def tracks(first, last):
+            names = ['Track{:02d}.ogg'.format(i) for i in range(first, last+1)]
+            types = ['MP3'] * (last + 1 - first)
+            return list(zip(names, types))
+
+        expected = [('MK3.GOG', 'BINARY')] + tracks(2, 47)
+        self.assertEqual(expected, found_entries)
+        self.assertTrue(cuescanner.valid_cue_file_paths(mk3_cue))
+        # TODO paths are valid, but entries are not
+
 
 if __name__ == '__main__':  # pragma: no cover
     unittest.main()
