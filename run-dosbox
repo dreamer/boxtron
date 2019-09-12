@@ -36,14 +36,11 @@ from fakesierralauncher import SierraLauncherConfig
 from log import log, log_err, log_warn
 from settings import SETTINGS as settings
 
-STEAM_APP_ID = os.environ.get('SteamAppId', '0')
-
-RUN_EXE = os.environ.get('BOXTRON_RUN_EXE') or os.environ.get('SDOS_RUN_EXE')
-
 
 def setup_midi():
     """Handle whole MIDI setup based on user preference."""
-    midi_preset = tweaks.get_midi_preset(STEAM_APP_ID)
+    game_id = toolbox.get_game_global_id()
+    midi_preset = tweaks.get_midi_preset(game_id)
     if midi_preset == 'auto':
         setup_midi_game()
     if midi_preset == 'disable':
@@ -62,13 +59,14 @@ def setup_midi_game():
     rfile_name = preconfig.find_resource_file()
     log('using resource file', rfile_name)
     with preconfig.open_resource(rfile_name) as rfile:
-        if not rfile.includes(STEAM_APP_ID):
-            log_err('resource file does not include files for', STEAM_APP_ID)
+        steam_app_id = os.environ.get('SteamAppId', '0')
+        if not rfile.includes(steam_app_id):
+            log_err('resource file does not include files for', steam_app_id)
             return
         x = 'on' if settings.get_midi_on() else 'off'
-        log('turning MIDI {} for {}'.format(x, STEAM_APP_ID))
-        rfile.extract(STEAM_APP_ID, 'midi_' + x)
-        rfile.apply_rpatch(STEAM_APP_ID, 'midi_' + x)
+        log('turning MIDI {} for {}'.format(x, steam_app_id))
+        rfile.extract(steam_app_id, 'midi_' + x)
+        rfile.apply_rpatch(steam_app_id, 'midi_' + x)
 
 
 def setup_bundle(distdir):
@@ -117,7 +115,8 @@ def run_dosbox_with_conf(args):
     game_install_id = toolbox.get_game_install_id()
     confgen.cleanup_old_conf_files(game_install_id, args)
     name = confgen.uniq_conf_name(game_install_id, args)
-    tweaked_conf = tweaks.get_conf_tweak(STEAM_APP_ID)
+    game_id = toolbox.get_game_global_id()
+    tweaked_conf = tweaks.get_conf_tweak(game_id)
     static_conf = confgen.create_dosbox_configuration(args, tweaked_conf)
     if not static_conf:
         zenity_err("Game not recognized as DOSBox compatible.")
@@ -161,18 +160,22 @@ def run(cmd_line, wait=False):
                        "this to: https://github.com/dreamer/boxtron/issues")
             sys.exit(2)
 
-    if tweaks.install_tweak_needed(STEAM_APP_ID):
-        tweaks.install(STEAM_APP_ID)
+    game_id = toolbox.get_game_global_id()
+    if tweaks.install_tweak_needed(game_id):
+        tweaks.install(game_id)
 
     run_file(exe_path, exe, cmd_line)
 
 
 def run_file(path, exe, cmd_line):
 
-    if RUN_EXE:
+    game_id = toolbox.get_game_global_id()
+    run_exe = os.environ.get('BOXTRON_RUN_EXE', None)
+
+    if run_exe:
         # User wants to run different executable than the one
         # selected by Steam (e.g. sound setup).
-        exe = RUN_EXE
+        exe = run_exe
         setup_midi()
         if os.path.isfile(exe):
             run_dosbox_with_conf([exe, '-exit'])
@@ -182,11 +185,11 @@ def run_file(path, exe, cmd_line):
             run_dosbox(['-conf', confgen.create_auto_conf_file({}),
                         '-c', '@echo ' + msg])  # yapf: disable
 
-    elif tweaks.command_tweak_needed(STEAM_APP_ID):
+    elif tweaks.command_tweak_needed(game_id):
         # If AppId is included in known tweaks, then modify command line
         # before handing it over to .conf generator:
-        log('tweaking command for app', STEAM_APP_ID)
-        tweaked_cmd = tweaks.tweak_command(STEAM_APP_ID, cmd_line)
+        log('tweaking command for app', game_id)
+        tweaked_cmd = tweaks.tweak_command(game_id, cmd_line)
         if not tweaked_cmd:
             zenity_err('Game command line was not recognized.')
             sys.exit(1)

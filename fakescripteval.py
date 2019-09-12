@@ -66,7 +66,6 @@ def iscriptevaluator(args):
     last_arg = args[-1]
 
     if '--get-current-step' in args:
-        # steam_app_id = last_arg
         print_current_step()
         return 0
 
@@ -77,10 +76,11 @@ def iscriptevaluator(args):
     if match:
         steam_app_id = match.group(1)
 
-    if not tweaks.download_tweak_needed(steam_app_id):
+    game_id = 'steam:' + steam_app_id
+    if not tweaks.download_tweak_needed(game_id):
         return 0
 
-    download_links = tweaks.TWEAKS_DB[steam_app_id]['download']
+    download_links = tweaks.TWEAKS_DB[game_id]['download']
     num = len(download_links)
     pid_file = '/tmp/boxtron_{0}'.format(steam_app_id)
     i = 0

@@ -27,19 +27,19 @@ from winpathlib import to_posix_path
 
 TWEAKS_DB = {
     # The Ultimate DOOM
-    '2280': {
+    'steam:2280': {
         'midi': 'auto',
     },
     # Final DOOM
-    '2290': {
+    'steam:2290': {
         'midi': 'auto',
     },
     # DOOM II: Hell on Earth
-    '2300': {
+    'steam:2300': {
         'midi': 'auto',
     },
     # Quake
-    '2310': {
+    'steam:2310': {
         'commands': {
             r'.*':  {
                 'args': ['-c', 'mount C .',
@@ -50,11 +50,11 @@ TWEAKS_DB = {
         },
     },
     # HeXen: Beyond Heretic
-    '2360': {
+    'steam:2360': {
         'midi': 'auto',
     },
     # HeXen: Deathkings of the Dark Citadel
-    '2370': {
+    'steam:2370': {
         'midi': 'auto',
         'download': {
             'dkpatch.zip': {
@@ -74,33 +74,33 @@ TWEAKS_DB = {
         },
     },
     # Heretic: Shadow of the Serpent Riders
-    '2390': {
+    'steam:2390': {
         'midi': 'auto',
     },
     # X-COM: Terror from the Deep
-    '7650': {
+    'steam:7650': {
         'midi': 'auto',
         'conf': {
             'render': {'force_aspect': 'false'},
         },
     },
     # X-COM: UFO Defence / UFO: Enemy Unknown
-    '7760': {
+    'steam:7760': {
         'midi': 'auto',
         'conf': {
             'render': {'force_aspect': 'false'},
         },
     },
     # Master Levels for DOOM II
-    '9160': {
+    'steam:9160': {
         'midi': 'auto',
     },
     # STAR WARS™ - Dark Forces
-    '32400': {
+    'steam:32400': {
         'midi': 'auto',
     },
     # Fallout: A Post Nuclear Role Playing Game
-    '38400': {
+    'steam:38400': {
         'download': {
             'dos32a-912.zip': {
                 'txt': 'DOS/32 Advanced DOS Extender',
@@ -123,7 +123,7 @@ TWEAKS_DB = {
         },
     },
     # Earthworm Jim
-    '38480': {
+    'steam:38480': {
         'commands': {
             r'.*':  {
                 'args': ['-conf', 'ewj1.conf'],
@@ -131,7 +131,7 @@ TWEAKS_DB = {
         },
     },
     # Earthworm Jim 2
-    '38490': {
+    'steam:38490': {
         'commands': {
             r'.*':  {
                 'args': ['-conf', 'ewj2.conf'],
@@ -139,7 +139,7 @@ TWEAKS_DB = {
         },
     },
     # Retro City Rampage™ DX
-    '204630': {
+    'steam:204630': {
         'install': 'install_retro_city_rampage',
         'commands': {
             r'.*':  {
@@ -148,11 +148,11 @@ TWEAKS_DB = {
         },
     },
     # STAR WARS™ - X-Wing Special Edition
-    '354430': {
+    'steam:354430': {
         'midi': 'auto',
     },
     # Shadow Warrior (Classic)
-    '358400': {
+    'steam:358400': {
         'install': 'install_shadow_warrior',
         'midi': 'disable',
         'commands': {
@@ -167,7 +167,7 @@ TWEAKS_DB = {
         },
     },
     # Super 3D Noah's Ark
-    '371180': {
+    'steam:371180': {
         'midi': 'disable',
         'commands': {
             r'.*':  {
@@ -176,13 +176,13 @@ TWEAKS_DB = {
         },
     },
     # System Shock: Classic
-    '410700': {
+    'steam:410700': {
         'midi': 'auto',
     },
     # Tomb Raider I
     # As of 0.74-2, upstream DOSBox does not support GLide acceleration.
     # This tweak starts the game without hardware acceleration.
-    '224960': {
+    'steam:224960': {
         'commands': {
             r'.*':  {
                 'args': ['-conf', 'dosboxtr.conf', '-noautoexec',
@@ -196,7 +196,7 @@ TWEAKS_DB = {
         },
     },
     # Duke Nukem 3D (Classic)
-    '225140': {
+    'steam:225140': {
         'midi': 'auto',
         'commands': {
             r'.*bin/dosbox/dosbox\.exe':  {
@@ -210,11 +210,11 @@ TWEAKS_DB = {
     },
     # Jagged Alliance Gold
     # Jagged Alliance Deadly Games
-    '283270': {
+    'steam:283270': {
         'midi': 'auto',
     },
     # King's Table - The Legend of Ragnarok
-    '719310': {
+    'steam:719310': {
         'midi': 'auto',
     },
     # MegaRace
@@ -222,7 +222,7 @@ TWEAKS_DB = {
     # This game uses different .conf files depending on game language.
     # TODO provide fallback mechanism for missing .conf files or glob support
     #
-    '730580': {
+    'steam:730580': {
         'midi': 'disable',
         'conf': {
             'sblaster': {'force_irq': '5'},
@@ -234,7 +234,7 @@ TWEAKS_DB = {
         },
     },
     # MegaRace 2
-    '733760': {
+    'steam:733760': {
         'midi': 'disable',
         'commands': {
             r'.*':  {
@@ -248,7 +248,7 @@ TWEAKS_DB = {
         },
     },
     # Leisure Suit Larry 1
-    '763970': {
+    'steam:763970': {
         'commands': {
             r'.*':  {
                 'args': ['-c', 'mount C .',
@@ -259,7 +259,7 @@ TWEAKS_DB = {
         },
     },
     # Leisure Suit Larry 2
-    '765840': {
+    'steam:765840': {
         'commands': {
             r'.*':  {
                 'args': ['SCIV.EXE', '-exit'],
@@ -267,7 +267,7 @@ TWEAKS_DB = {
         },
     },
     # Leisure Suit Larry 3
-    '765850': {
+    'steam:765850': {
         'commands': {
             r'.*':  {
                 'args': ['SCIV.EXE', '-exit'],
@@ -275,7 +275,7 @@ TWEAKS_DB = {
         },
     },
     # Leisure Suit Larry 5
-    '765860': {
+    'steam:765860': {
         'commands': {
             r'.*':  {
                 'args': ['SCIDHUV.EXE', '-exit'],
