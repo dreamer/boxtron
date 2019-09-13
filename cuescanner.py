@@ -42,9 +42,12 @@ def list_file_entries(cue_path):
 def valid_cue_file_paths(cue_path):
     """Return true if all paths in a .cue file refer to existing files"""
 
+    cue_dir, _ = os.path.split(cue_path)
+
     def is_file(file_entry):
         path, _ = file_entry
-        return os.path.isfile(path)
+        ref_file = os.path.join(cue_dir, path)
+        return os.path.isfile(ref_file)
 
     return all(map(is_file, list_file_entries(cue_path)))
 

@@ -104,7 +104,11 @@ class TestCueScanner(unittest.TestCase):
 
     # Tracks in this file exist in relative location, but are mislabeled as MP3
     #
-    def disabled_test_gog_mk3_1(self):
+    # Surprisingly, it does not matter to DOSBox - it plays the files anyway
+    # It makes problem to DOSBox-X - it is unable to load .cue file from a
+    # different location, no matter if paths or types are correct or not.
+    #
+    def test_gog_mk3_1(self):
         os.chdir('tests/files/cue/mk3/DOSBOX')
         mk3_cue = '../mk3/IMAGE/MK3.cue'
         self.assertTrue(cuescanner.is_cue_file(mk3_cue))
@@ -118,7 +122,6 @@ class TestCueScanner(unittest.TestCase):
         expected = [('MK3.GOG', 'BINARY')] + tracks(2, 47)
         self.assertEqual(expected, found_entries)
         self.assertTrue(cuescanner.valid_cue_file_paths(mk3_cue))
-        # TODO paths are valid, but entries are not
 
 
 if __name__ == '__main__':  # pragma: no cover
