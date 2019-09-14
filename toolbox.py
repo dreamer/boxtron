@@ -42,7 +42,7 @@ def is_trivial_batch(file):
         return False
     with open(file, 'r') as bat_file:
         lines = bat_file.readlines(512)
-        return len(lines) <= 2
+        return all([known_bat_cmd(line) for line in lines])
     return False
 
 
@@ -85,6 +85,21 @@ def expand_batch_variables(file_path, line):
     return line.replace('%~dp0', dp0_path.replace('/', '\\'))
 
 
+def known_bat_cmd(bat_cmd_line):
+    """Test if a line qualifies as known batch file command"""
+    stripped_line = bat_cmd_line.strip()
+    if not stripped_line:  # empty line
+        return True
+    pseudo_expanded_line = stripped_line.replace('%~dp0', '')
+    line = argsplit_windows(pseudo_expanded_line)
+    first_word = line[0].lstrip('@').lower()
+    if first_word in ('echo', 'cd', 'exit'):
+        return True
+    win_path = pathlib.PureWindowsPath(first_word)
+    exe = win_path.parts[-1]
+    return exe in ('dosbox', 'dosbox.exe')
+
+
 def read_trivial_batch(file):
     """Find DOSBox command in batch file and return its argument list.
 
@@ -105,6 +120,8 @@ def read_trivial_batch(file):
             if not this_line:
                 continue
             first_word = this_line[0]
+            if first_word.lower() in ('exit', '@exit'):
+                continue
             if first_word.lower() in ('echo', '@echo'):
                 continue
             if first_word.lower() in ('cd', '@cd'):

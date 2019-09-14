@@ -84,6 +84,13 @@ class TestBatchFileDetection(unittest.TestCase):
         self.assertEqual(args, ['-conf', r'..\lsl7.conf',
                                 '-c', 'exit'])
 
+    def test_apogee_throwback_pack(self):
+        os.chdir('tests/files/bat/apogee_throwback_pack')
+        self.assertTrue(toolbox.is_trivial_batch('Rise of the Triad.bat'))
+        path, args = toolbox.read_trivial_batch('Rise of the Triad.bat')
+        self.assertEqual(path, 'DOSBOX')
+        self.assertEqual(args, ['-conf', 'ROTT.conf', '-noconsole', '-c'])
+
 
 class TestEnabledInEnv(unittest.TestCase):
 
