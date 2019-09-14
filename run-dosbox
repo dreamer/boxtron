@@ -173,6 +173,13 @@ def run(cmd_line, wait=False):
     run_file(exe_path, exe, cmd_line)
 
 
+def run_bat_file(bat):
+    new_path, dosbox_args = toolbox.read_trivial_batch(bat)
+    if new_path:
+        os.chdir(new_path)
+    run_dosbox_with_conf(dosbox_args)
+
+
 def run_file(path, exe, cmd_line):
 
     game_id = toolbox.get_game_global_id()
@@ -181,12 +188,14 @@ def run_file(path, exe, cmd_line):
     if run_exe:
         # User wants to run different executable than the one
         # selected by Steam (e.g. sound setup).
-        exe = run_exe
         setup_midi()
-        if os.path.isfile(exe):
-            run_dosbox_with_conf([exe, '-exit'])
+
+        if toolbox.is_trivial_batch(run_exe):
+            run_bat_file(run_exe)
+        elif os.path.isfile(exe):
+            run_dosbox_with_conf([run_exe, '-exit'])
         else:
-            exe_path = os.path.join(os.getcwd(), exe)
+            exe_path = os.path.join(os.getcwd(), run_exe)
             msg = 'File not found: ' + exe_path
             run_dosbox(['-conf', confgen.create_auto_conf_file({}),
                         '-c', '@echo ' + msg])  # yapf: disable
@@ -210,10 +219,7 @@ def run_file(path, exe, cmd_line):
 
     elif toolbox.is_trivial_batch(exe):
         # Publisher uploaded a .bat file to run dosbox
-        new_path, dosbox_args = toolbox.read_trivial_batch(exe)
-        if new_path:
-            os.chdir(new_path)
-        run_dosbox_with_conf(dosbox_args)
+        run_bat_file(exe)
 
     elif os.path.isfile('dosbox.conf'):
         # Executable is unrecognised, but at least there's a dosbox.conf
