@@ -123,6 +123,17 @@ class TestCueScanner(unittest.TestCase):
         self.assertEqual(expected, found_entries)
         self.assertTrue(cuescanner.valid_cue_file_paths(mk3_cue))
 
+    # Alone in the Dark 1 has audio tracks embedded in the image.
+    #
+    def test_alone1(self):
+        os.chdir('tests/files/cue/alone1/DOSBOX')
+        alone1_cue = '../GAME.INST'
+        found_entries = list(cuescanner.list_file_entries(alone1_cue))
+        expected = [('GAME.GOG', 'BINARY')]
+        self.assertEqual(expected, found_entries)
+        self.assertTrue(cuescanner.is_cue_file(alone1_cue))
+        self.assertTrue(cuescanner.valid_cue_file_paths(alone1_cue))
+
 
 if __name__ == '__main__':  # pragma: no cover
     unittest.main()
