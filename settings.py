@@ -84,6 +84,8 @@ soundfont = {midi_soundfont}
 # - desktop:
 #   The whole desktop area will be used (all displays) with the game centred,
 #   the native resolution of your displays will be preserved.
+# - disabled:
+#   Start DOSBox in windowed modeby default.
 fullscreenmode = {fullscreen_mode}
 
 # Pick the default scaler, that you want to use for all games.
@@ -129,7 +131,7 @@ class Settings():
                        'SDL_VIDEO_FULLSCREEN_DISPLAY' in os.environ or \
                        'SDL_VIDEO_FULLSCREEN_HEAD' in os.environ
 
-        if user_choice == 'desktop' and not env_override:
+        if user_choice in ('desktop', 'disabled') and not env_override:
             return
 
         screen = self.__get_screen_number__()
@@ -218,6 +220,11 @@ class Settings():
     def get_dosbox_fullscreenmode(self):
         return self.get_str('dosbox', 'fullscreenmode',
                             DEFAULT_FULLSCREEN_MODE)
+
+    def get_dosbox_fullscreen_on(self):
+        assert self.finalized
+        user_choice = self.get_dosbox_fullscreenmode()
+        return 'false' if user_choice == 'disabled' else 'true'
 
     def get_dosbox_fullresolution(self):
         assert self.finalized

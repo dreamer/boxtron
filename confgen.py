@@ -26,7 +26,7 @@ COMMENT_SECTION = """
 
 SDL_SECTION_1 = """
 [sdl]
-fullscreen=true
+fullscreen={fullscreen}
 fullresolution={resolution}
 output=opengl
 autolock=false
@@ -423,8 +423,10 @@ def create_user_conf_file(name, conf, dosbox_args):
 def write_sdl_section(file):
     """Write sdl section."""
     if settings.finalized:
-        sdl_fullresolution = settings.get_dosbox_fullresolution()
-        file.write(SDL_SECTION_1.format(resolution=sdl_fullresolution))
+        file.write(
+            SDL_SECTION_1.format(
+                fullscreen=settings.get_dosbox_fullscreen_on(),
+                resolution=settings.get_dosbox_fullresolution()))
 
 
 def write_render_section(conf, file):
