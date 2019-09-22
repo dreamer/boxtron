@@ -81,10 +81,9 @@ def valid_cue_file(cue_path):
 def create_fixed_cue_file(cue_path, new_path):
     """Filter content of .cue file and save as fixed file"""
     with open(cue_path, 'r') as cue_file, open(new_path, 'w') as out_file:
-        pattern_1 = r'( *)FILE +"([^"]+)" +(.*)'
-        pattern_2 = r'( *)FILE +([^ ]+) +(.*)'
-        file_entry_1 = re.compile(pattern_1)
-        file_entry_2 = re.compile(pattern_2)
+        file_entry_1 = re.compile(r'( *)FILE +"([^"]+)" +(.*)')
+        file_entry_2 = re.compile(r'( *)FILE +([^ ]+) +(.*)')
+        index_entry = re.compile(r'( *)INDEX +(\d+) +(.*)')
         for line in cue_file:
             match = file_entry_1.match(line) or file_entry_2.match(line)
             if match:
@@ -93,5 +92,14 @@ def create_fixed_cue_file(cue_path, new_path):
                 file_type = match.group(3)
                 out_file.write('{}FILE "{}" {}\n'.format(
                     space_pfx, file_path, file_type))
-            else:
-                out_file.write(line)
+                continue
+            match = index_entry.match(line)
+            if match:
+                space_pfx = match.group(1)
+                num = match.group(2)
+                time_pos = match.group(3)
+                fixed_number = '00' if num in ('0', '00') else '01'
+                out_file.write('{}INDEX {} {}\n'.format(
+                    space_pfx, fixed_number, time_pos))
+                continue
+            out_file.write(line)

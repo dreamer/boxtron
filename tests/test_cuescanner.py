@@ -104,6 +104,15 @@ class TestCueScanner(unittest.TestCase):
         self.assertTrue(os.path.isfile('new.cue'))
         line_0 = toolbox.get_lines('new.cue')[0]
         self.assertEqual('FILE "descent_ii.gog" BINARY\n', line_0)
+        self.assertTrue(cuescanner.valid_indexes('new.cue'))
+
+    def test_index_correction(self):
+        os.chdir('tests/files/cue/tr1')
+        self.test_file_1 = 'new.cue'
+        self.assertFalse(os.path.isfile('new.cue'))
+        cuescanner.create_fixed_cue_file('GAME.DAT', 'new.cue')
+        self.assertTrue(cuescanner.valid_cue_file_paths('new.cue'))
+        self.assertTrue(cuescanner.valid_indexes('new.cue'))
 
     # Tracks in this file exist in relative location, but are mislabeled as MP3
     #
