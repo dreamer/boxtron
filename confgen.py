@@ -298,10 +298,15 @@ def parse_dosbox_config(conf_file):
 
 def convert_cue_file(path):
     """Handle case-sensitive paths inside .cue files."""
+
+    # If it's not a .cue file, then it's an image file, don't
+    # try to convert it.
     if not cuescanner.is_cue_file(path):
         return path
-    if cuescanner.valid_cue_file_paths(path):
+
+    if cuescanner.valid_cue_file(path):
         return path
+
     cuescanner.create_fixed_cue_file(path, 'boxtron.cue')
     return 'boxtron.cue'
 

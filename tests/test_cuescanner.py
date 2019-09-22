@@ -81,17 +81,20 @@ class TestCueScanner(unittest.TestCase):
         ]
         self.assertEqual(expected, found_entries)
 
-    def test_cue_file_paths_1(self):
+    def test_descent_2(self):
         os.chdir('tests/files/cue/descent2')
         self.assertFalse(cuescanner.valid_cue_file_paths('descent_ii.inst'))
+        self.assertTrue(cuescanner.valid_indexes('descent_ii.inst'))
 
-    def test_cue_file_paths_2(self):
+    def test_tr1(self):
         os.chdir('tests/files/cue/tr1')
         self.assertTrue(cuescanner.valid_cue_file_paths('GAME.DAT'))
+        self.assertFalse(cuescanner.valid_indexes('GAME.DAT'))
 
-    def test_cue_file_paths_3(self):
+    def test_worms(self):
         os.chdir('tests/files/cue/worms')
         self.assertTrue(cuescanner.valid_cue_file_paths('worms.cue'))
+        self.assertTrue(cuescanner.valid_indexes('worms.cue'))
 
     def test_cue_file_correction(self):
         os.chdir('tests/files/cue/descent2')
@@ -122,6 +125,7 @@ class TestCueScanner(unittest.TestCase):
         expected = [('MK3.GOG', 'BINARY')] + tracks(2, 47)
         self.assertEqual(expected, found_entries)
         self.assertTrue(cuescanner.valid_cue_file_paths(mk3_cue))
+        self.assertTrue(cuescanner.valid_indexes(mk3_cue))
 
     # Alone in the Dark 1 has audio tracks embedded in the image.
     #
@@ -133,6 +137,7 @@ class TestCueScanner(unittest.TestCase):
         self.assertEqual(expected, found_entries)
         self.assertTrue(cuescanner.is_cue_file(alone1_cue))
         self.assertTrue(cuescanner.valid_cue_file_paths(alone1_cue))
+        self.assertTrue(cuescanner.valid_indexes(alone1_cue))
 
 
 if __name__ == '__main__':  # pragma: no cover

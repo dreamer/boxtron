@@ -39,6 +39,22 @@ def list_file_entries(cue_path):
                 yield file_path, file_type
 
 
+# Temporary implementation to fix TR1; proper implementation
+# involves implementing almost full cue parser, but TR1 is the only game with
+# broken indexes we found so far.
+#
+def list_indexes(cue_path):
+    """Return iterator over file entries"""
+    with open(cue_path, 'r') as cue_file:
+        pattern = r' *INDEX +(\d+) +.*'
+        index_entry = re.compile(pattern)
+        for line in cue_file:
+            match = index_entry.match(line)
+            if match:
+                index_num = match.group(1)
+                yield int(index_num)
+
+
 def valid_cue_file_paths(cue_path):
     """Return true if all paths in a .cue file refer to existing files"""
 
@@ -50,6 +66,16 @@ def valid_cue_file_paths(cue_path):
         return os.path.isfile(ref_file)
 
     return all(map(is_file, list_file_entries(cue_path)))
+
+
+def valid_indexes(cue_path):
+    """Return true if all indexes in a .cue file are either 0 or 1"""
+    return all(map(lambda x: x in (0, 1), list_indexes(cue_path)))
+
+
+def valid_cue_file(cue_path):
+    """Return true if .cue file is valid according to our checks"""
+    return valid_cue_file_paths(cue_path) and valid_indexes(cue_path)
 
 
 def create_fixed_cue_file(cue_path, new_path):
