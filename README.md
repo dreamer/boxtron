@@ -167,13 +167,14 @@ corresponds to which game.
 
 ## Known issues
 
-As of August/September 2019 you are likely to encounter one of these bugs:
+As of September/October 2019 you are likely to encounter one of these bugs:
 
 * Steam Overlay causes [visual glitch](https://github.com/dreamer/boxtron/issues/8).
   DOSBox issue, fixed in 0.74-3.
 * Mouse [cursor issues](https://github.com/dreamer/boxtron/issues/7) in Gnome 3.30.
   Gnome issue, fixed in 3.32.
 * Some games experience random KeyUp events in fullscreen.
-  [DOSBox issue](https://www.vogons.org/viewtopic.php?f=31&t=66491).
+  [DOSBox issue resulting from SDL1.2 usage](https://www.vogons.org/viewtopic.php?f=31&t=66491).
 * Alt+Tab does not work in fullscreen. DOSBox does not support borderless window
-  mode (yet) - use **Alt+Enter** to leave fullscreen and interact with your desktop.
+  mode (yet) - use **Alt+Enter** to leave fullscreen and interact with your desktop. This is
+  another DOSBox issue resulting from SDL1.2 usage.
