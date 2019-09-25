@@ -4,7 +4,7 @@
   {
     "%name%" // Internal name of this tool
     {
-      "install_path" "."
+      "install_path" "%path%"
       "display_name" "%display_name%"
       "from_oslist"  "windows"
       "to_oslist"    "linux"
