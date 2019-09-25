@@ -50,7 +50,10 @@ def run_setup_file(setup_exe, pfx):
     })
     inno_flags = ['/NOGUI', '/SUPPRESSMSGBOXES', '/SILENT', '/DIR=C:\\game']
     cmd = ['wine', setup_exe] + inno_flags
-    process = subprocess.run(cmd, env=tmp_env, stderr=subprocess.DEVNULL)
+    process = subprocess.run(cmd,
+                             check=False,
+                             env=tmp_env,
+                             stderr=subprocess.DEVNULL)
     if process.returncode != 0:
         print('{} finished with code {}'.format(setup_exe, process.returncode))
         sys.exit(10 + process.returncode)
