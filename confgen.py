@@ -307,8 +307,8 @@ def convert_cue_file(path):
     if cuescanner.valid_cue_file(path):
         return path
 
-    cuescanner.create_fixed_cue_file(path, 'boxtron.cue')
-    return 'boxtron.cue'
+    boxtron_cue_path = cuescanner.create_fixed_cue_file(path, 'boxtron.cue')
+    return boxtron_cue_path
 
 
 def to_linux_autoexec(autoexec):
