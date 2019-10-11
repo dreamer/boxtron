@@ -55,6 +55,9 @@ and a soundfont.  Optionally, you can use FluidSynth as well.
 
     $ sudo pacman -S dosbox inotify-tools timidity++ soundfont-fluid
 
+#### NixOS
+
+    $ nix-env -f '<nixpkgs>' -iA dosbox inotify-tools timidity soundfont-fluid
 
 ## Installation (using tarball)
 
