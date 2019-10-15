@@ -282,6 +282,17 @@ TWEAKS_DB = {
             },
         },
     },
+    # Lords of the Realm
+    'steam:254920': {
+        'commands': {
+            r'.*':  {
+                'args': ['-c', 'mount C "../../Lords of the Realm I"',
+                         '-c', 'C:',
+                         '-c', 'lords.exe',
+                         '-c', 'exit'],
+            },
+        },
+    },
 }  # yapf: disable
 
 
