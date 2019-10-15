@@ -1,0 +1,27 @@
+FILE "game.gog" BINARY
+  TRACK 01 MODE1/2352
+      INDEX 01 00:00:00
+FILE "Music\Track02.ogg" MP3
+  TRACK 02 AUDIO
+      INDEX 01 00:00:00
+FILE "Music\Track03.ogg" MP3
+  TRACK 03 AUDIO
+      INDEX 01 00:00:00
+FILE "Music\Track04.ogg" MP3
+  TRACK 04 AUDIO
+      INDEX 01 00:00:00
+FILE "Music\Track05.ogg" MP3
+  TRACK 05 AUDIO
+      INDEX 01 00:00:00
+FILE "Music\Track06.ogg" MP3
+  TRACK 06 AUDIO
+      INDEX 01 00:00:00
+FILE "Music\Track07.ogg" MP3
+  TRACK 07 AUDIO
+      INDEX 01 00:00:00
+FILE "Music\Track08.ogg" MP3
+  TRACK 08 AUDIO
+      INDEX 01 00:00:00
+FILE "Music\Track09.ogg" MP3
+  TRACK 09 AUDIO
+      INDEX 01 00:00:00

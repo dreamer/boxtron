@@ -78,28 +78,66 @@ def valid_cue_file(cue_path):
     return valid_cue_file_paths(cue_path) and valid_indexes(cue_path)
 
 
-def create_fixed_cue_file(cue_path, new_path):
+def rm_prefix(pfx, txt):
+    """Remove a prefix from a string"""
+    if txt is None:
+        return None
+    if txt.startswith(pfx):
+        return txt[len(pfx):]
+    return txt
+
+
+def fix_relative_path(pfx_win, pfx_lin, file_path):
+    """Convert a path relative to a different directory"""
+    win_path = pfx_win + file_path
+    linux_path = winpathlib.to_posix_path(win_path)
+    return rm_prefix(pfx_lin, linux_path)
+
+
+def fix_index_number(num):
+    """Clamp index number in cue file to the only valid values."""
+    return '00' if num in ('0', '00') else '01'
+
+
+def dir_prefixes(path):
+    """Return dirname as pair of windows and posix paths"""
+    dir_path, _ = os.path.split(path)
+    pfx_win = dir_path + '\\' if dir_path else ''
+    pfx_lin = dir_path + '/' if dir_path else ''
+    return pfx_win, pfx_lin
+
+
+def create_fixed_cue_file(cue_path, new_file):
     """Filter content of .cue file and save as fixed file"""
-    with open(cue_path, 'r') as cue_file, open(new_path, 'w') as out_file:
-        file_entry_1 = re.compile(r'( *)FILE +"([^"]+)" +(.*)')
-        file_entry_2 = re.compile(r'( *)FILE +([^ ]+) +(.*)')
-        index_entry = re.compile(r'( *)INDEX +(\d+) +(.*)')
+
+    file_entry_1 = re.compile(r'( *)FILE +"([^"]+)" +(.*)')
+    file_entry_2 = re.compile(r'( *)FILE +([^ ]+) +(.*)')
+    index_entry = re.compile(r'( *)INDEX +(\d+) +(.*)')
+    pfx_win, pfx_lin = dir_prefixes(cue_path)
+    new_file_path = os.path.join(pfx_lin, new_file)
+
+    def fix_file_entry(indent, path, file_type):
+        return '{}FILE "{}" {}\n'.format(
+            indent, fix_relative_path(pfx_win, pfx_lin, path), file_type)
+
+    def fix_index_entry(indent, num, time_pos):
+        return '{}INDEX {} {}\n'.format(indent, fix_index_number(num),
+                                        time_pos)
+
+    with open(cue_path, 'r') as cue_file, open(new_file_path, 'w') as out_file:
         for line in cue_file:
             match = file_entry_1.match(line) or file_entry_2.match(line)
             if match:
-                space_pfx = match.group(1)
-                file_path = winpathlib.to_posix_path(match.group(2))
-                file_type = match.group(3)
-                out_file.write('{}FILE "{}" {}\n'.format(
-                    space_pfx, file_path, file_type))
+                line = fix_file_entry(match.group(1), match.group(2),
+                                      match.group(3))
+                out_file.write(line)
                 continue
             match = index_entry.match(line)
             if match:
-                space_pfx = match.group(1)
-                num = match.group(2)
-                time_pos = match.group(3)
-                fixed_number = '00' if num in ('0', '00') else '01'
-                out_file.write('{}INDEX {} {}\n'.format(
-                    space_pfx, fixed_number, time_pos))
+                line = fix_index_entry(match.group(1), match.group(2),
+                                       match.group(3))
+                out_file.write(line)
                 continue
             out_file.write(line)
+
+    return new_file_path

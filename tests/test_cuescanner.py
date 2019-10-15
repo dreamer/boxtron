@@ -10,6 +10,12 @@ import cuescanner
 import toolbox
 
 
+def tracks(path_fmt, stated_type, first, last):
+    names = [path_fmt.format(i) for i in range(first, last+1)]
+    types = [stated_type] * (last + 1 - first)
+    return list(zip(names, types))
+
+
 class TestCueScanner(unittest.TestCase):
 
     def setUp(self):
@@ -99,9 +105,10 @@ class TestCueScanner(unittest.TestCase):
     def test_cue_file_correction(self):
         os.chdir('tests/files/cue/descent2')
         self.test_file_1 = 'new.cue'
-        self.assertFalse(os.path.isfile('new.cue'))
-        cuescanner.create_fixed_cue_file('descent_ii.inst', 'new.cue')
-        self.assertTrue(os.path.isfile('new.cue'))
+        self.assertFalse(os.path.isfile(self.test_file_1))
+        new = cuescanner.create_fixed_cue_file('descent_ii.inst', 'new.cue')
+        self.assertEqual(new, self.test_file_1)
+        self.assertTrue(os.path.isfile(self.test_file_1))
         line_0 = toolbox.get_lines('new.cue')[0]
         self.assertEqual('FILE "descent_ii.gog" BINARY\n', line_0)
         self.assertTrue(cuescanner.valid_indexes('new.cue'))
@@ -125,13 +132,9 @@ class TestCueScanner(unittest.TestCase):
         mk3_cue = '../mk3/IMAGE/MK3.cue'
         self.assertTrue(cuescanner.is_cue_file(mk3_cue))
         found_entries = list(cuescanner.list_file_entries(mk3_cue))
-
-        def tracks(first, last):
-            names = ['Track{:02d}.ogg'.format(i) for i in range(first, last+1)]
-            types = ['MP3'] * (last + 1 - first)
-            return list(zip(names, types))
-
-        expected = [('MK3.GOG', 'BINARY')] + tracks(2, 47)
+        # original file has incorrect file type
+        ogg_tracks = tracks('Track{:02d}.ogg', 'MP3', 2, 47)
+        expected = [('MK3.GOG', 'BINARY')] + ogg_tracks
         self.assertEqual(expected, found_entries)
         self.assertTrue(cuescanner.valid_cue_file_paths(mk3_cue))
         self.assertTrue(cuescanner.valid_indexes(mk3_cue))
@@ -147,6 +150,25 @@ class TestCueScanner(unittest.TestCase):
         self.assertTrue(cuescanner.is_cue_file(alone1_cue))
         self.assertTrue(cuescanner.valid_cue_file_paths(alone1_cue))
         self.assertTrue(cuescanner.valid_indexes(alone1_cue))
+
+    # Carmageddon
+    #
+    def test_carmageddon(self):
+        os.chdir('tests/files/cue/carma/DOSBOX')
+        cue_file = '../CARMA/GAME.DAT'
+        self.assertTrue(cuescanner.is_cue_file(cue_file))
+        self.assertFalse(cuescanner.valid_cue_file_paths(cue_file))
+        self.assertTrue(cuescanner.valid_indexes(cue_file))
+        self.test_file_1 = '../CARMA/new.cue'
+        self.assertFalse(os.path.isfile(self.test_file_1))
+        new = cuescanner.create_fixed_cue_file('../CARMA/GAME.DAT', 'new.cue')
+        self.assertEqual(new, self.test_file_1)
+        self.assertTrue(os.path.isfile(self.test_file_1))
+        found_entries = list(cuescanner.list_file_entries(self.test_file_1))
+        # original file has incorrect file type
+        ogg_tracks = tracks('MUSIC/Track{:02d}.ogg', 'MP3', 2, 9)
+        expected = [('GAME.GOG', 'BINARY')] + ogg_tracks
+        self.assertEqual(expected, found_entries)
 
 
 if __name__ == '__main__':  # pragma: no cover

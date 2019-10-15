@@ -34,7 +34,6 @@ files = run-dosbox \
 	winpathlib.py \
 	xdg.py \
 	xlib.py \
-	compatibilitytool.vdf \
 	toolmanifest.vdf \
 	LICENSE \
 	README.md
@@ -52,8 +51,6 @@ endif
 #
 prefix = /usr/local
 version = $(shell git describe --tags --dirty)
-
-install_dir = $(DESTDIR)$(prefix)/share/steam/compatibilitytools.d/$(tool_dir)
 devel_install_dir = $(data_home)/Steam/compatibilitytools.d/$(tool_dir_dev)
 
 lint: version.py
@@ -67,8 +64,13 @@ test: preconfig.tar
 coverage: preconfig.tar
 	bash tests/coverage-report.sh 2> /dev/null
 
+boxtron.vdf: compatibilitytool.template
+	sed 's/%name%/$(tool_name)/; s/%display_name%/$(tool_name_display)/; s|%path%|$(tool_vdf_path)|;' \
+	    $< > $@
+
 compatibilitytool.vdf: compatibilitytool.template
-	sed 's/%name%/$(tool_name)/; s/%display_name%/$(tool_name_display)/' $< > $@
+	sed 's/%name%/$(tool_name)/; s/%display_name%/$(tool_name_display)/; s|%path%|.|;' \
+	    $< > $@
 
 version.py:
 	@echo "# pylint: disable=missing-docstring" > $@
@@ -81,31 +83,49 @@ preconfig.tar: $(shell find preconfig -type f | sed 's/\ /\\ /g')
 	    -cf $@ $(shell find preconfig -type f | sed 's/\ /\\ /g' | sort) \
 	    --transform='s|DIR_UP|..|'
 
-$(tool_dir).zip: $(files)
+$(tool_dir).zip: compatibilitytool.vdf $(files)
 	mkdir -p $(tool_dir)
 	cp --reflink=auto -t $(tool_dir) $^
 	zip $@ $(tool_dir)/*
 	rm -rf $(tool_dir)
 	./run-dosbox --version
 
-$(tool_dir).tar.xz: $(files)
+$(tool_dir).tar.xz: compatibilitytool.vdf $(files)
 	mkdir -p $(tool_dir)
 	cp --reflink=auto -t $(tool_dir) $^
 	tar -cJf $@ $(tool_dir)
 	rm -rf $(tool_dir)
 	./run-dosbox --version
 
-# TODO install-gog-game should actually go into a bindir
-install: $(files)
-	mkdir -p $(install_dir)
-	cp --reflink=auto -t $(install_dir) $^
+install: tool_vdf_path = $(prefix)/share/boxtron
+install: boxtron.vdf $(files)
+	install -m 644 -Dt "$(DESTDIR)$(prefix)/share/steam/compatibilitytools.d/" boxtron.vdf
+	install        -Dt "$(DESTDIR)$(prefix)/bin/"                              install-gog-game
+	install        -Dt "$(DESTDIR)$(prefix)/share/boxtron/"                    run-dosbox
+	install -m 644 -Dt "$(DESTDIR)$(prefix)/share/boxtron/"                    *.py
+	install -m 644 -Dt "$(DESTDIR)$(prefix)/share/boxtron/"                    preconfig.tar
+	install -m 644 -Dt "$(DESTDIR)$(prefix)/share/boxtron/"                    toolmanifest.vdf
+	install -m 644 -Dt "$(DESTDIR)$(prefix)/share/doc/boxtron/"                README.md
+	install -m 644 -Dt "$(DESTDIR)$(prefix)/share/licenses/boxtron"            LICENSE
+	@echo
+	@echo 'Restart Steam, so it can pick up new compatibility tool.'
+	@echo 'You can type "make uninstall" to remove Boxtron.'
 
 uninstall:
-	rm -rf $(install_dir)
+	rm    "$(DESTDIR)$(prefix)/bin/install-gog-game"
+	rm    "$(DESTDIR)$(prefix)/share/boxtron"/*
+	rmdir "$(DESTDIR)$(prefix)/share/boxtron"
+	rm    "$(DESTDIR)$(prefix)/share/doc/boxtron"/*
+	rmdir "$(DESTDIR)$(prefix)/share/doc/boxtron"
+	rm    "$(DESTDIR)$(prefix)/share/licenses/boxtron"/*
+	rmdir "$(DESTDIR)$(prefix)/share/licenses/boxtron"
+	rm    "$(DESTDIR)$(prefix)/share/steam/compatibilitytools.d/boxtron.vdf"
+	rmdir --ignore-fail-on-non-empty "$(DESTDIR)$(prefix)/share/steam/compatibilitytools.d"
+	rmdir --ignore-fail-on-non-empty "$(DESTDIR)$(prefix)/share"/{doc,licenses,steam}
 
 user-install: tool_name = $(tool_name_dev)
 user-install: tool_name_display = $(tool_name_display_dev)
-user-install: $(files)
+user-install: compatibilitytool.vdf $(files)
 	mkdir -p $(devel_install_dir)
 	cp --reflink=auto -t $(devel_install_dir) $^
 
@@ -113,6 +133,7 @@ user-uninstall:
 	rm -rf $(devel_install_dir)
 
 clean:
+	rm -f boxtron.vdf
 	rm -f compatibilitytool.vdf
 	rm -f version.py
 	rm -f preconfig.tar

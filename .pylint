@@ -382,7 +382,7 @@ spelling-dict=en_GB
 spelling-ignore-words=activision, alsa, autoexec,
                       bool, boxtron,
                       casio, chdir, cmd, com, conf, ctypes,
-                      deathkings, dict, dir, dosbox, dx,
+                      deathkings, dict, dir, dirname, dosbox, dx,
                       ensoniq, etc, exe,
 		      fallback, filename, filenames,
                       gmail, gog,
