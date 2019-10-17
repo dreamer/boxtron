@@ -79,7 +79,7 @@ and a soundfont.  Optionally, you can use FluidSynth as well.
 
        $ git clone https://github.com/dreamer/boxtron.git
        $ cd boxtron
-       $ make user-install
+       $ make dev-install
 
 3. Start Steam.
 4. In game properties window select "Force the use of a specific Steam Play

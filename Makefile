@@ -1,7 +1,7 @@
 .PHONY: lint test coverage \
 	check-formatting pretty-code \
 	install uninstall \
-	user-install user-uninstall \
+	dev-install dev-uninstall \
 	clean shortlog \
 	compatibilitytool.vdf version.py
 
@@ -123,13 +123,13 @@ uninstall:
 	rmdir --ignore-fail-on-non-empty "$(DESTDIR)$(prefix)/share/steam/compatibilitytools.d"
 	rmdir --ignore-fail-on-non-empty "$(DESTDIR)$(prefix)/share"/{doc,licenses,steam}
 
-user-install: tool_name = $(tool_name_dev)
-user-install: tool_name_display = $(tool_name_display_dev)
-user-install: compatibilitytool.vdf $(files)
+dev-install: tool_name = $(tool_name_dev)
+dev-install: tool_name_display = $(tool_name_display_dev)
+dev-install: compatibilitytool.vdf $(files)
 	mkdir -p $(devel_install_dir)
 	cp --reflink=auto -t $(devel_install_dir) $^
 
-user-uninstall:
+dev-uninstall:
 	rm -rf $(devel_install_dir)
 
 clean:

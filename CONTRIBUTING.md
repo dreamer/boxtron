@@ -83,8 +83,8 @@ it, though.
 
 To install/remove development version of Boxtron:
 
-    $ make user-install
-    $ make user-uninstall
+    $ make dev-install
+    $ make dev-uninstall
 
 To create tarballs:
 
