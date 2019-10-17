@@ -1,4 +1,19 @@
-# Development prerequisites
+# Contributing Guidelines
+
+## Coding conventions
+
+Style and coding conventions are enforced by automatic tools, just use
+`make lint` and `make check-formatting` to follow them.
+
+For commit messages, follow the rules outlined in this article:
+[How to Write a Git Commit Message](https://chris.beams.io/posts/git-commit/).
+
+Limit yourself to Python features supported by Python 3.5 (project will switch
+to a newer Python version when the oldest Ubuntu 16.04 LTS will reach end of
+standard support in April 2021).
+
+
+## Development prerequisites
 
 You can use Python development packages provided by your distribution or
 install them using `pipenv` or `pip`.  It's up to you.
@@ -20,14 +35,15 @@ Some additional packages cannot be installed through `pip` alone, though
     $ pipenv install
     $ pipenv shell
 
-*`Pipfile` is deliberately included in .gitignore*
+*`Pipfile` is deliberately included in .gitignore, as it's not appropriate to
+commit it for non-library project.*
 
 ### pip
 
     $ pip3 install --user -r requirements.txt
 
 
-# Targets
+## Makefile Targets
 
 To run linters:
 
