@@ -1,8 +1,6 @@
-.PHONY: lint test coverage \
+.PHONY: lint test coverage clean \
 	check-formatting pretty-code \
-	install uninstall \
-	dev-install dev-uninstall \
-	clean shortlog
+	install uninstall dev-install dev-uninstall
 
 # These variables are used to generate compatibilitytool.vdf:
 #
@@ -129,10 +127,6 @@ clean:
 	rm -f preconfig.tar
 	rm -f $(tool_dir).tar.xz
 	rm -f $(tool_dir).zip
-
-# Summary to be included in CHANGELOG.md
-shortlog:
-	git shortlog $(shell git describe --tags --abbrev=0)..HEAD
 
 check-formatting:
 	yapf --version
