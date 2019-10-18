@@ -1,18 +1,21 @@
 #!/usr/bin/python3
 
+# Copyright (C) 2019 Patryk Obara <patryk.obara@gmail.com>
+# SPDX-License-Identifier: GPL-2.0-or-later
+
 """
 Fake iscriptevaluator.exe
 """
+
 import os
 import re
 import subprocess
 import urllib.request
 import shutil
 
+import toolbox
 import tweaks
 import xdg
-
-import toolbox
 
 from log import log
 

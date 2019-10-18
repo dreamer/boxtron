@@ -1,10 +1,14 @@
 #!/usr/bin/python3
 
+# Copyright (C) 2019 Patryk Obara <patryk.obara@gmail.com>
+# SPDX-License-Identifier: GPL-2.0-or-later
+
 """
 XDG Base Directories
 
 https://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
 """
+
 import os
 
 DATA_HOME = os.environ.get('XDG_DATA_HOME') or \

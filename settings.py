@@ -1,10 +1,13 @@
 #!/usr/bin/python3
 
-# pylint: disable=missing-docstring
+# Copyright (C) 2019 Patryk Obara <patryk.obara@gmail.com>
+# SPDX-License-Identifier: GPL-2.0-or-later
 
 """
 Settings file creation and handling.
 """
+
+# pylint: disable=missing-docstring
 
 import configparser
 import os

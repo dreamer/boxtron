@@ -1,8 +1,12 @@
 #!/usr/bin/python3
 
+# Copyright (C) 2019 Patryk Obara <patryk.obara@gmail.com>
+# SPDX-License-Identifier: GPL-2.0-or-later
+
 """
 Log functions
 """
+
 import sys
 
 import toolbox
