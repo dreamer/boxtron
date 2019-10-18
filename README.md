@@ -75,8 +75,7 @@ and a soundfont.  Optionally, you can use FluidSynth as well.
 ## Installation (from source, system-wide)
 
 *Supported only when running Steam Beta client; this installation method
-is explained in detail in
-[packaging guide](https://github.com/dreamer/boxtron/blob/master/PACKAGING.md).*
+is explained in detail in [packaging guide](PACKAGING.md).*
 
 1. Clone the repository and install the script system-wide:
 
@@ -91,8 +90,8 @@ is explained in detail in
 
 ## Installation (from source, for development)
 
-*This method is appropriate for testing and development. See:
-[contributing guide](https://github.com/dreamer/boxtron/blob/master/CONTRIBUTING.md).*
+*This method is appropriate for testing and development.
+See: [contributing guide](CONTRIBUTING.md).*
 
 1. Clone the repository and install the script to user directory:
 
@@ -184,7 +183,7 @@ corresponds to which game.
 
 ## Known issues
 
-As of September/October 2019 you are likely to encounter one of these bugs:
+As of October/November 2019 you are likely to encounter one of these bugs:
 
 * Steam Overlay causes [visual glitch](https://github.com/dreamer/boxtron/issues/8).
   DOSBox issue, fixed in 0.74-3.

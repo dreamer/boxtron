@@ -90,9 +90,11 @@ To create tarballs:
 
     $ make boxtron.tar.xz
 
-Target `install` is reserved for distro packagers, to be used as such:
+Target `install` is designed for distro packagers, to be used as such:
 
-    $ make --prefix=/usr install
+    $ make prefix=/usr install
+
+It's explained in detail in [packaging guidelines](PACKAGING.md).
 
 
 # Logs
