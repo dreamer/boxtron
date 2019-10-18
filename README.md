@@ -59,41 +59,55 @@ and a soundfont.  Optionally, you can use FluidSynth as well.
 
     $ nix-env -f '<nixpkgs>' -iA dosbox inotify-tools timidity soundfont-fluid
 
-## Installation (using tarball)
 
-1. Close Steam.
-2. Download and unpack tarball to `compatibilitytools.d` directory (create one if it does not exist):
+## Installation (using tarball, for a single user)
+
+1. Download and unpack tarball to `compatibilitytools.d` directory (create one if it does not exist):
 
        $ cd ~/.local/share/Steam/compatibilitytools.d/ || cd ~/.steam/root/compatibilitytools.d/
        $ curl -L https://github.com/dreamer/boxtron/releases/download/v0.5.2/boxtron.tar.xz | tar xJf -
 
-3. Start Steam.
-4. In game properties window select "Force the use of a specific Steam Play
+2. Start/restart Steam.
+3. In game properties window select "Force the use of a specific Steam Play
    compatibility tool" and select "Boxtron (native DOSBox)".
 
 
-## Installation (from source)
+## Installation (from source, system-wide)
 
-1. Close Steam.
-2. Clone the repository and install the script to user directory:
+*Supported only when running Steam Beta client; this installation method
+is explained in detail in
+[packaging guide](https://github.com/dreamer/boxtron/blob/master/PACKAGING.md).*
+
+1. Clone the repository and install the script system-wide:
+
+       $ git clone https://github.com/dreamer/boxtron.git
+       $ cd boxtron
+       $ sudo make install
+
+2. Start/restart Steam.
+3. In game properties window select "Force the use of a specific Steam Play
+   compatibility tool" and select "Boxtron (native DOSBox)".
+
+
+## Installation (from source, for development)
+
+*This method is appropriate for testing and development. See:
+[contributing guide](https://github.com/dreamer/boxtron/blob/master/CONTRIBUTING.md).*
+
+1. Clone the repository and install the script to user directory:
 
        $ git clone https://github.com/dreamer/boxtron.git
        $ cd boxtron
        $ make dev-install
 
-3. Start Steam.
-4. In game properties window select "Force the use of a specific Steam Play
+2. Start/restart Steam.
+3. In game properties window select "Force the use of a specific Steam Play
    compatibility tool" and select "Boxtron (dev)".
 
 
 ## Configuration
 
 Read [Configuration](https://github.com/dreamer/boxtron/wiki/Configuration) article on project Wiki.
-
-
-## Development
-
-Read all about it in the [contributing guide](https://github.com/dreamer/boxtron/blob/master/CONTRIBUTING.md) :)
 
 
 ## GOG Games
