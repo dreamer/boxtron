@@ -2,8 +2,7 @@
 	check-formatting pretty-code \
 	install uninstall \
 	dev-install dev-uninstall \
-	clean shortlog \
-	compatibilitytool.vdf version.py
+	clean shortlog
 
 # These variables are used to generate compatibilitytool.vdf:
 #
@@ -44,16 +43,12 @@ else
 	data_home := ${XDG_DATA_HOME}
 endif
 
-# These two variables are to be overriden by packagers, for situations
-# when source code is downloaded as a tarball, e.g.:
-#
-# make prefix=/usr version=v%{version} install
+# See PACKAGING.md for detailed description about supported installation options.
 #
 prefix = /usr/local
-version = $(shell git describe --tags --dirty)
 devel_install_dir = $(data_home)/Steam/compatibilitytools.d/$(tool_dir_dev)
 
-lint: version.py
+lint:
 	shellcheck scripts/codestyle.sh tests/coverage-report.sh
 	pylint --rcfile=.pylint run-dosbox install-gog-game *.py tests/*.py scripts/*.py
 
@@ -71,10 +66,6 @@ boxtron.vdf: compatibilitytool.template
 compatibilitytool.vdf: compatibilitytool.template
 	sed 's/%name%/$(tool_name)/; s/%display_name%/$(tool_name_display)/; s|%path%|.|;' \
 	    $< > $@
-
-version.py:
-	@echo "# pylint: disable=missing-docstring" > $@
-	@echo "VERSION = '$(version)'" >> $@
 
 preconfig.tar: $(shell find preconfig -type f | sed 's/\ /\\ /g')
 	@tar \
@@ -135,7 +126,6 @@ dev-uninstall:
 clean:
 	rm -f boxtron.vdf
 	rm -f compatibilitytool.vdf
-	rm -f version.py
 	rm -f preconfig.tar
 	rm -f $(tool_dir).tar.xz
 	rm -f $(tool_dir).zip

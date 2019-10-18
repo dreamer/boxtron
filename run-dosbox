@@ -260,7 +260,7 @@ def main():
         sys.exit(0)
 
     if args.version:
-        print('Boxtron version {0}'.format(version.VERSION[1:]))
+        print('Boxtron version', version.VERSION)
         sys.exit(0)
 
     if args.get_native_path:
