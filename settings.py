@@ -200,6 +200,7 @@ class Settings():
     def get_midi_sequencer(self):
         seq = self.get_str('midi', 'use_sequencer', DEFAULT_MIDI_SEQ_REGEX)
         seq = os.environ.get('SDOS_USE_MIDI_SEQ', seq).strip()
+        seq = seq.strip('\'\"')
         return os.environ.get('BOXTRON_USE_MIDI_SEQ', seq)
 
     def get_dosbox_cmd(self):
