@@ -71,6 +71,11 @@ class TestSettings(unittest.TestCase):
         settings.set_midi_on(True)
         self.assertTrue(settings.get_midi_on())
 
+    # TODO: enable this test in a way, that won't break midi unit tests
+    def disabled_test_midi_sequencer(self):
+        seq = settings.get_midi_sequencer()
+        self.assertEqual(seq, 'foobar')
+
 
 if __name__ == '__main__':  # pragma: no cover
     unittest.main()
