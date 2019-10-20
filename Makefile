@@ -1,6 +1,7 @@
 .PHONY: lint test coverage clean \
 	check-formatting pretty-code \
-	install uninstall dev-install dev-uninstall
+	install uninstall dev-install dev-uninstall \
+	compatibilitytool.vdf boxtron.vdf
 
 # These variables are used to generate compatibilitytool.vdf:
 #
