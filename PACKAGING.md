@@ -4,9 +4,9 @@ To obtain a source code tarball named in format `boxtron-<version>` you can
 use the following URL:
 
 
-    $ curl -L -O -J https://github.com/dreamer/boxtron/archive/v0.5.2.tar.gz
+    $ curl -L -O -J https://github.com/dreamer/boxtron/archive/v0.5.3.tar.gz
     …
-    curl: Saved to filename 'boxtron-0.5.2.tar.gz'
+    curl: Saved to filename 'boxtron-0.5.3.tar.gz'
 
 
 ## Versioning
