@@ -40,8 +40,8 @@ def list_alsa_sequencer_ports(alsa_seq_clients=ALSA_SEQ_CLIENTS):
     """List all sequencer ports visible through ALSA procfs."""
     try:
         with open(alsa_seq_clients) as clients:
-            client_pattern = re.compile(r'^Client +(\d+) : "(.*)" \[(.*)\]')
-            port_pattern = re.compile(r'^  Port +(\d+) : "(.*)" \((.{4})\)')
+            client_pattern = re.compile(r'^ *Client +(\d+) *: "(.*)" \[(.*)\]')
+            port_pattern = re.compile(r'^ *Port +(\d+) *: "(.*)" \((.{4})\)')
             client, name, space, port, desc, flags = '', '', '', '', '', ''
             for line in clients.readlines():
                 match = client_pattern.match(line)
