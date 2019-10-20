@@ -41,6 +41,13 @@ class TestAlsaMidiClients(unittest.TestCase):
     def test_find_hw_um_one(self):
         fake_seq_list = 'tests/files/alsa/um-one'
         port = midi.find_midi_port(seq_clients=fake_seq_list)
+        self.assertIsNotNone(port)
+        self.assertEqual(port.addr, '24:0')
+
+    def test_find_hw_um_one_2(self):
+        fake_seq_list = 'tests/files/alsa/um-one-test-2'
+        port = midi.find_midi_port(seq_clients=fake_seq_list)
+        self.assertIsNotNone(port)
         self.assertEqual(port.addr, '24:0')
 
     def test_find_hw_casio(self):
