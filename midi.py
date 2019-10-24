@@ -17,7 +17,7 @@ import time
 
 import toolbox
 
-from log import log, log_warn
+from log import log, log_warn, log_err
 from settings import SETTINGS as settings
 
 # casio:   tested with Casio CTK-4200
@@ -131,23 +131,26 @@ def stop_software_midi_synth(pid):
     os.kill(pid, signal.SIGTERM)  # TODO ProcessLookupError:
 
 
-def setup_midi_soft_synth():
-    """Detect or run and configure software MIDI synthesiser."""
-    if not settings.get_midi_on():
-        return
-
+def detect_external_synth():
+    """Detect a synthesiser running in the background."""
     user_pref = settings.get_midi_sequencer()
     if user_pref:
         if match_port_by_name(user_pref):
-            # We found user's preferred port; just use it.
-            return
-        log('Synthesiser matching', user_pref, 'not found')
+            # We found user's preferred port.
+            return True
+        log('synthesiser matching', user_pref, 'not found')
     else:
         if find_midi_port():
             # Synthesiser is already running (maybe as a service).
-            # There's no reason to start our own.
-            return
-        log('No synthesiser running in the background')
+            return True
+        log('no synthesiser running in the background')
+    return False
+
+
+def start_midi_synth():
+    """Start software MIDI synthesiser according to user preferences."""
+    if not settings.get_midi_on():
+        return
 
     # either user had preference but the preferred port was not found
     # or user had no preference and there was no appropriate port to use
@@ -155,6 +158,10 @@ def setup_midi_soft_synth():
 
     tool = settings.get_midi_tool()
     sfont = settings.get_midi_soundfont()
+
+    if not sfont:
+        log_err("Can't start a software synthesiser without a soundfont")
+        return
 
     preference_list = []
     if tool == 'timidity':
