@@ -30,7 +30,9 @@ DEFAULT_MIDI_TOOL = 'timidity'
 
 DEFAULT_MIDI_SEQ_REGEX = r''
 
-DEFAULT_MIDI_SOUNDFONT = 'FluidR3_GM.sf2'
+DEFAULT_SOUNDFONT = 'FluidR3_GM.sf2'
+
+BACKUP_SOUNDFONT = 'FluidR3.sf2'
 
 DEFAULT_DOSBOX_BINARY = 'dosbox'
 
@@ -195,7 +197,7 @@ class Settings():
 
     def get_midi_soundfont(self):
         assert self.finalized
-        return self.get_str('midi', 'soundfont', DEFAULT_MIDI_SOUNDFONT)
+        return self.get_str('midi', 'soundfont', DEFAULT_SOUNDFONT)
 
     def get_midi_sequencer(self):
         seq = self.get_str('midi', 'use_sequencer', DEFAULT_MIDI_SEQ_REGEX)
@@ -238,11 +240,11 @@ class Settings():
         return self.get_str('dosbox', 'scaler', DEFAULT_SCALER)
 
     def __assure_sf2_exists__(self):
-        sf2 = self.get_str('midi', 'soundfont', DEFAULT_MIDI_SOUNDFONT)
+        sf2 = self.get_str('midi', 'soundfont', DEFAULT_SOUNDFONT)
         data_dirs = [os.path.join(self.distdir, 'share')] + xdg.get_data_dirs()
         use_sf2 = ''
         sf2_paths = (os.path.join(d, s, n) for n, d, s in itertools.product(
-            [sf2, DEFAULT_MIDI_SOUNDFONT, 'default.sf2'],
+            [sf2, DEFAULT_SOUNDFONT, BACKUP_SOUNDFONT, 'default.sf2'],
             data_dirs,
             ['sounds/sf2', 'soundfonts'],
         ))
@@ -277,7 +279,7 @@ def init_settings_file():
     if old_file_exists and not new_file_exists:
         old = Settings(conf=old_settings_file)
         old_midi_enable = old.get_bool('midi', 'enable', DEFAULT_MIDI_ENABLE)
-        old_midi_sf = old.get_str('midi', 'soundfont', DEFAULT_MIDI_SOUNDFONT)
+        old_midi_sf = old.get_str('midi', 'soundfont', DEFAULT_SOUNDFONT)
         old_bin = old.get_str('dosbox', 'bin', None)
         old_cmd = old.get_str('dosbox', 'cmd', old_bin)
         old_cmd_line = '# cmd = ~/projects/dosbox/src/dosbox'
@@ -301,7 +303,7 @@ def init_settings_file():
             confgen_force=str(DEFAULT_CONFGEN_FORCE).lower(),
             midi_enable=str(DEFAULT_MIDI_ENABLE).lower(),
             midi_tool=DEFAULT_MIDI_TOOL,
-            midi_soundfont=DEFAULT_MIDI_SOUNDFONT,
+            midi_soundfont=DEFAULT_SOUNDFONT,
             fullscreen_mode=DEFAULT_FULLSCREEN_MODE,
             scaler=DEFAULT_SCALER,
             cmd_example='# cmd = ~/projects/dosbox/src/dosbox')
