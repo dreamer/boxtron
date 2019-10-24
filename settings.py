@@ -121,10 +121,10 @@ class Settings():
         which might fail or leave extensive logs on stderr.  We want this
         part of settings initialization only when actually needed.
         """
+        self.__setup_fullscreen__()
         midi_on = self.get_midi_on()
         if midi_on:
             self.__assure_sf2_exists__()
-        self.__setup_fullscreen__()
         self.finalized = True
 
     def __setup_fullscreen__(self):
@@ -251,8 +251,8 @@ class Settings():
                 use_sf2 = sf2_path
                 break
         if not use_sf2:
-            log_warn('No suitable soundfont found. Disabling MIDI support.')
-            self.store.set('midi', 'enable', 'False')
+            log_warn('no soundfont found')
+            self.store.set('midi', 'soundfont', '')
             return
         _, found_file = os.path.split(use_sf2)
         if found_file != sf2:

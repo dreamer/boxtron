@@ -42,15 +42,26 @@ def setup_midi():
     """Handle whole MIDI setup based on user preference."""
     game_id = toolbox.get_game_global_id()
     midi_preset = tweaks.get_midi_preset(game_id)
-    if midi_preset == 'auto':
-        setup_midi_game()
-    if midi_preset == 'disable':
-        log('info: this game does not support MIDI music')
+
+    midi_on = settings.get_midi_on()
+    detected_sf2 = settings.get_midi_soundfont()
+    detected_external_synth = midi.detect_external_synth()
+
+    if midi_on and (not detected_sf2) and (not detected_external_synth):
         settings.set_midi_on(False)
-    midi.setup_midi_soft_synth()
+
+    if midi_preset == 'disable':
+        log('this game does not support MIDI music')
+        settings.set_midi_on(False)
+
+    if midi_preset == 'auto':
+        setup_midi_for_game()
+
+    if not detected_external_synth:
+        midi.start_midi_synth()
 
 
-def setup_midi_game():
+def setup_midi_for_game():
     """Configure game to use (or not) MIDI."""
 
     if not preconfig.verify():
