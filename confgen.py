@@ -115,11 +115,11 @@ umb={umb}
 MIDI_INFO = """
         Music: General MIDI (MPU-401 compatible)
          Port: 330
-""" [1:]
+""".lstrip('\n')
 
 MIDI_INFO_NA = """
         Music: No MIDI synthesiser found
-""" [1:]
+""".lstrip('\n')
 
 
 class DosboxConfigParser(configparser.ConfigParser):
