@@ -143,6 +143,9 @@ TWEAKS_DB = {
     # Retro City Rampage™ DX
     'steam:204630': {
         'install': 'install_retro_city_rampage',
+        'conf': {
+            'render': {'force_aspect': 'false'},
+        },
         'commands': {
             r'.*':  {
                 'args': ['RCR486/RCR.EXE', '-exit'],
