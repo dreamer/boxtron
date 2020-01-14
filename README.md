@@ -74,8 +74,7 @@ and a soundfont.  Optionally, you can use FluidSynth as well.
 
 ## Installation (from source, system-wide)
 
-*Supported only when running Steam Beta client; this installation method
-is explained in detail in [packaging guide](PACKAGING.md).*
+This installation method is explained in detail in [the packaging guide](PACKAGING.md).
 
 1. Clone the repository and install the script system-wide:
 
@@ -90,8 +89,8 @@ is explained in detail in [packaging guide](PACKAGING.md).*
 
 ## Installation (from source, for development)
 
-*This method is appropriate for testing and development.
-See: [contributing guide](CONTRIBUTING.md).*
+This method is appropriate for testing and development.
+See: [contributing guide](CONTRIBUTING.md).
 
 1. Clone the repository and install the script to user directory:
 
@@ -183,14 +182,17 @@ corresponds to which game.
 
 ## Known issues
 
-As of October/November 2019 you are likely to encounter one of these bugs:
+As of January 2020 you might encounter one of the following bugs:
 
-* Steam Overlay causes [visual glitch](https://github.com/dreamer/boxtron/issues/8).
-  DOSBox issue, fixed in 0.74-3.
-* Mouse [cursor issues](https://github.com/dreamer/boxtron/issues/7) in Gnome 3.30.
-  Gnome issue, fixed in 3.32.
-* Some games experience random KeyUp events in fullscreen.
-  [DOSBox issue resulting from SDL1.2 usage](https://www.vogons.org/viewtopic.php?f=31&t=66491).
-* Alt+Tab does not work in fullscreen. DOSBox does not support borderless window
-  mode (yet) - use **Alt+Enter** to leave fullscreen and interact with your desktop. This is
-  another DOSBox issue resulting from SDL1.2 usage.
+- Some games experience random KeyUp events in fullscreen.
+  It's a [DOSBox bug](https://www.vogons.org/viewtopic.php?f=31&t=66491), use
+  [**dosbox-staging**](https://github.com/dreamer/dosbox-staging) to avoid it.
+- Alt+Tab does not work in fullscreen. It's a DOSBox bug, use
+  [**dosbox-staging**](https://github.com/dreamer/dosbox-staging) to avoid it.
+- Modern game controllers might not work at all. It's a DOSBox bug, use
+  [**dosbox-staging**](https://github.com/dreamer/dosbox-staging) to avoid it.
+- Steam Overlay causes [visual glitch](https://github.com/dreamer/boxtron/issues/8).
+  This was a DOSBox bug - use DOSBox 0.74-3 or
+  [**dosbox-staging**](https://github.com/dreamer/dosbox-staging) to avoid it.
+- Mouse [cursor issues](https://github.com/dreamer/boxtron/issues/7) in
+  Gnome 3.30. This was a Gnome issue, fixed in 3.32.
