@@ -223,10 +223,28 @@ class TestDosboxConfiguration(unittest.TestCase):
         new = ['mount C "Dir"', 'mount D "A B"', 'mount E "abc/DEF"']
         self.assertEqual(list(confgen.to_linux_autoexec(old)), new)
 
-    def test_fix_autoexec_4(self):
+    def test_imgmount_params_1(self):
+        params_in = r"""'game cd\cd1.iso' "game cd\cd2.iso" -t iso"""
+        paths = [r'game cd\cd1.iso', r'game cd\cd2.iso']
+        params = '-t iso'
+        self.assertEqual(confgen.parse_mount_params(params_in), (paths, params))
+
+    def test_imgmount_params_2(self):
+        params_in = r"""'game\cd\cd1.iso' game\cd\cd2.iso -t iso"""
+        paths = [r'game\cd\cd1.iso', r'game\cd\cd2.iso']
+        params = '-t iso'
+        self.assertEqual(confgen.parse_mount_params(params_in), (paths, params))
+
+    def test_fix_imgmount_1(self):
         os.chdir('tests/files/confs')
         old = ['IMGMOUNT c dir/file', '@imgmount D "DIR/FILE"']
         new = ['imgmount C "Dir/file"', 'imgmount D "Dir/file"']
+        self.assertEqual(list(confgen.to_linux_autoexec(old)), new)
+
+    def test_fix_imgmount_2(self):
+        os.chdir('tests/files/confs')
+        old = [r'imgmount d "game\cd\cd1.iso" "game\cd\cd2.iso" -t iso']
+        new = [r'imgmount D "game/cd/cd1.iso" "game/cd/cd2.iso" -t iso']
         self.assertEqual(list(confgen.to_linux_autoexec(old)), new)
 
     # Warcraft: Orcs & Humans
