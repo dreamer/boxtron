@@ -314,27 +314,41 @@ def convert_cue_file(path):
     return boxtron_cue_path
 
 
+def parse_mount_params(params):
+    """Split mount/imgmount parameters into paths and options."""
+    param_expr = r"""-.*|"[^"]+"|'[^']+'|[^ ]+"""
+    found = re.findall(param_expr, params)
+    paths = []
+    rest = None
+    for param in found:
+        if param.startswith('"'):
+            paths.append(param.strip('"'))
+        elif param.startswith("'"):
+            paths.append(param.strip("'"))
+        elif not param.startswith('-'):
+            paths.append(param)
+        else:
+            rest = param
+    return paths, rest
+
+
 def to_linux_autoexec(autoexec):
     """Convert case-sensitive parts in autoexec."""
-    cmd_1 = r'@? *(mount|imgmount) +([a-z]):? +"([^"]+)"( +(.*))?'
-    cmd_2 = r"@? *(mount|imgmount) +([a-z]):? +'([^']+)'( +(.*))?"
-    cmd_3 = r'@? *(mount|imgmount) +([a-z]):? +([^ ]+)( +(.*))?'
-    mount_cmd_1 = re.compile(cmd_1, re.IGNORECASE)
-    mount_cmd_2 = re.compile(cmd_2, re.IGNORECASE)
-    mount_cmd_3 = re.compile(cmd_3, re.IGNORECASE)
+    cmd = r'@? *(mount|imgmount) +([a-z]):? +(.*)?'
+    mount_cmd = re.compile(cmd, re.IGNORECASE)
     change_drv = re.compile(r'@? *([a-z]:)\\? *$', re.IGNORECASE)
     for line in autoexec:
-        match = mount_cmd_1.match(line) or \
-                mount_cmd_2.match(line) or \
-                mount_cmd_3.match(line)
+        match = mount_cmd.match(line)
         if match:
             cmd = match.group(1).lower()
             drive = match.group(2).upper()
-            path = to_posix_path(match.group(3))
+            paths, rest = parse_mount_params(match.group(3))
+            paths = map(to_posix_path, paths)
             if cmd == 'imgmount':
-                path = convert_cue_file(path)
-            rest = match.group(4) or ''
-            yield '{0} {1} "{2}"{3}'.format(cmd, drive, path, rest)
+                paths = map(convert_cue_file, paths)
+            new_paths = ' '.join('"{0}"'.format(p) for p in paths)
+            rest = ' {0}'.format(rest) if rest else ''
+            yield '{0} {1} {2}{3}'.format(cmd, drive, new_paths, rest)
             continue
         match = change_drv.match(line)
         if match:
