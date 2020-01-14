@@ -34,33 +34,50 @@ Game compatibility reports:
 <sub>\* - compared to vanilla DOSBox</sub>
 
 
-## Prerequisites
+## Installation (from repositories)
+
+### Flatpak
+
+If you use Steam installed via Flatpak, you can add Boxtron using:
+
+    $ flatpak install Boxtron
+
+
+## Installation (manual)
+
+There are 3 options for manual installation:
+[tarball (single-user)](#installation-using-tarball-for-a-single-user),
+[source (system-wide)](#installation-from-source-system-wide), and 
+[source (for development)](#installation-from-source-for-development).
+Before proceeding, you'll need to install dependencies manually:
+
+### Dependencies
 
 You will need Python (>= 3.5), DOSBox (>= 0.74), inotify-tools, TiMidity++,
 and a soundfont.  Optionally, you can use FluidSynth as well.
 
-#### Fedora
+##### Fedora
 
     $ sudo dnf install dosbox inotify-tools timidity++ fluid-soundfont-gm
 
-#### OpenSUSE
+##### OpenSUSE
 
     $ sudo zypper install dosbox inotify-tools timidity fluid-soundfont
 
-#### Debian, Ubuntu et consortes
+##### Debian, Ubuntu, Mint, Pop!\_OS
 
     $ sudo apt install dosbox inotify-tools timidity fluid-soundfont-gm
 
-#### Arch, Manjaro
+##### Arch, Manjaro
 
     $ sudo pacman -S dosbox inotify-tools timidity++ soundfont-fluid
 
-#### NixOS
+##### NixOS
 
     $ nix-env -f '<nixpkgs>' -iA dosbox inotify-tools timidity soundfont-fluid
 
 
-## Installation (using tarball, for a single user)
+### Installation (using tarball, for a single user)
 
 1. Download and unpack tarball to `compatibilitytools.d` directory (create one if it does not exist):
 
@@ -72,7 +89,7 @@ and a soundfont.  Optionally, you can use FluidSynth as well.
    compatibility tool" and select "Boxtron (native DOSBox)".
 
 
-## Installation (from source, system-wide)
+### Installation (from source, system-wide)
 
 This installation method is explained in detail in [the packaging guide](PACKAGING.md).
 
@@ -87,7 +104,7 @@ This installation method is explained in detail in [the packaging guide](PACKAGI
    compatibility tool" and select "Boxtron (native DOSBox)".
 
 
-## Installation (from source, for development)
+### Installation (from source, for development)
 
 This method is appropriate for testing and development.
 See: [contributing guide](CONTRIBUTING.md).
