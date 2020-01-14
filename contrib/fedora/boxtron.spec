@@ -27,9 +27,6 @@ game launchers using native Linux DOSBox.
 %make_install prefix=/usr
 %py_byte_compile %{__python3} %{buildroot}%{_datadir}/%{name}
 
-# FIXME: remove hashbang from non-executable *.py files,
-#        otherwise rpmlint complains
-
 %files
 %license LICENSE
 %doc README.md
