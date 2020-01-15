@@ -4,15 +4,16 @@
 
 Name:      boxtron
 Version:   0.5.3
-Release:   1%{?dist}
+Release:   3%{?dist}
 BuildArch: noarch
 Summary:   Steam Play Compatibility tool to run DOS games
 
-License:   GPLv2
-URL:       https://github.com/dreamer/boxtron
-Source:    https://github.com/dreamer/boxtron/archive/%{gittag}/%{name}-%{version}.tar.gz
+License: GPLv2
+URL:     https://github.com/dreamer/boxtron
+Source:  https://github.com/dreamer/boxtron/archive/%{gittag}/%{name}-%{version}.tar.gz
 
-Requires:  dosbox inotify-tools timidity++ fluid-soundfont-gm
+Requires:      dosbox inotify-tools timidity++ fluid-soundfont-gm
+BuildRequires: python3-devel
 
 %description
 Boxtron is a compatibility tool to run DOS games via Steam or other GUI
@@ -31,9 +32,15 @@ game launchers using native Linux DOSBox.
 %license LICENSE
 %doc README.md
 %{steam_dir}/compatibilitytools.d/%{name}.vdf
-{_datadir}/%{name}
+%{_datadir}/%{name}
 %{_bindir}/install-gog-game
 
 %changelog
+* Wed Jan 15 2020 Patryk Obara <dreamer.tan@gmail.com> 0.5.3-3
+- Bump release to test copr updates
+
+* Wed Jan 15 2020 Patryk Obara <dreamer.tan@gmail.com> 0.5.3-2
+- Add BuildRequires to prevent build failure on copr
+
 * Thu Nov 28 2019 Patryk Obara <dreamer.tan@gmail.com> 0.5.3-1
 - Initial release
