@@ -36,20 +36,26 @@ Game compatibility reports:
 
 ## Installation (from repositories)
 
-### Flatpak
+##### Fedora (copr)
 
-If you use Steam installed via Flatpak, you can add Boxtron using:
+    $ sudo dnf copr enable pbo/boxtron 
+    $ sudo dnf install boxtron
+    
+##### Flathub
 
-    $ flatpak install Boxtron
+If you use [Steam flatpak](https://flathub.org/apps/details/com.valvesoftware.Steam),
+you can add Boxtron using:
+
+    $ flatpak install flathub Boxtron
 
 
 ## Installation (manual)
 
-There are 3 options for manual installation:
-[tarball (single-user)](#installation-using-tarball-for-a-single-user),
-[source (system-wide)](#installation-from-source-system-wide), and 
-[source (for development)](#installation-from-source-for-development).
-Before proceeding, you'll need to install dependencies manually:
+You'll need to install dependencies manually and then proceed to installation steps:
+- [tarball (single-user)](#installation-using-tarball-for-a-single-user)
+- [source (system-wide)](#installation-from-source-system-wide)
+- [source (for development)](#installation-from-source-for-development)
+
 
 ### Dependencies
 
