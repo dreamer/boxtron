@@ -30,7 +30,7 @@ DEFAULT_MIDI_SEQ_REGEX = r''
 
 DEFAULT_SOUNDFONT = 'FluidR3_GM.sf2'
 
-BACKUP_SOUNDFONT = 'FluidR3.sf2'
+BACKUP_SOUNDFONTS = ['FluidR3.sf2', 'FluidR3_GM2-2.sf2']
 
 DEFAULT_DOSBOX_BINARY = 'dosbox'
 
@@ -242,7 +242,7 @@ class Settings():
         data_dirs = [os.path.join(self.distdir, 'share')] + xdg.get_data_dirs()
         use_sf2 = ''
         sf2_paths = (os.path.join(d, s, n) for n, d, s in itertools.product(
-            [sf2, DEFAULT_SOUNDFONT, BACKUP_SOUNDFONT, 'default.sf2'],
+            [sf2, DEFAULT_SOUNDFONT] + BACKUP_SOUNDFONTS + ['default.sf2'],
             data_dirs,
             ['sounds/sf2', 'soundfonts'],
         ))
