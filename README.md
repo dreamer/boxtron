@@ -94,7 +94,7 @@ and a soundfont.  Optionally, you can use FluidSynth as well.
 1. Download and unpack tarball to `compatibilitytools.d` directory (create one if it does not exist):
 
        $ cd ~/.local/share/Steam/compatibilitytools.d/ || cd ~/.steam/root/compatibilitytools.d/
-       $ curl -L https://github.com/dreamer/boxtron/releases/download/v0.5.3/boxtron.tar.xz | tar xJf -
+       $ curl -L https://github.com/dreamer/boxtron/releases/download/v0.5.4/boxtron.tar.xz | tar xJf -
 
 2. Start/restart Steam.
 3. In game properties window select "Force the use of a specific Steam Play
