@@ -1,4 +1,4 @@
-# Boxtron (formerly: steam-dos)
+# Boxtron
 
 [![Build Status](https://travis-ci.com/dreamer/boxtron.svg?branch=master)](https://travis-ci.com/dreamer/boxtron)
 [![Luxtorpeda project Discord](https://img.shields.io/discord/514567252864008206.svg?label=discord)](https://discord.gg/8mFhUPX)
@@ -36,7 +36,9 @@ Game compatibility reports:
 
 ## Installation (from repositories)
 
-##### Fedora (copr)
+##### Fedora
+
+You can use [Copr repo](https://copr.fedorainfracloud.org/coprs/pbo/boxtron/):
 
     $ sudo dnf copr enable pbo/boxtron 
     $ sudo dnf install boxtron
@@ -47,6 +49,10 @@ If you use [Steam flatpak](https://flathub.org/apps/details/com.valvesoftware.St
 you can add Boxtron using:
 
     $ flatpak install flathub Boxtron
+
+##### Arch, Manjaro
+
+You can use [AUR package](https://aur.archlinux.org/packages/boxtron/).
 
 
 ## Installation (manual)
