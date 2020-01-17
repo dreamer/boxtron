@@ -247,8 +247,10 @@ class Settings():
             ['sounds/sf2', 'soundfonts'],
         ))
         for sf2_path in sf2_paths:
+            log('looking for sf2 file:', sf2_path)
             if os.path.isfile(sf2_path):
                 use_sf2 = sf2_path
+                log('found soundfont:', sf2_path)
                 break
         if not use_sf2:
             log_warn('no soundfont found')
