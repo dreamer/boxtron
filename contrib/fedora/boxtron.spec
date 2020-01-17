@@ -3,8 +3,8 @@
 %global gittag v%{version}
 
 Name:      boxtron
-Version:   0.5.3
-Release:   3%{?dist}
+Version:   0.5.4
+Release:   1%{?dist}
 BuildArch: noarch
 Summary:   Steam Play Compatibility tool to run DOS games
 
@@ -36,6 +36,9 @@ game launchers using native Linux DOSBox.
 %{_bindir}/install-gog-game
 
 %changelog
+* Fri Jan 17 2020 Patryk Obara <dreamer.tan@gmail.com> 0.5.4-1
+- Update to release 0.5.4
+
 * Wed Jan 15 2020 Patryk Obara <dreamer.tan@gmail.com> 0.5.3-3
 - Bump release to test copr updates
 
