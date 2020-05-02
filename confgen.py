@@ -5,6 +5,8 @@
 DOSBox configuration file generator.
 """
 
+# pylint: disable=dangerous-default-value
+
 import argparse
 import configparser
 import hashlib
