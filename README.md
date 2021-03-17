@@ -8,9 +8,9 @@ Steam Play compatibility tool to run DOS games using native Linux DOSBox
 This is a sister project of
 [Luxtorpeda](https://github.com/dreamer/luxtorpeda),
 [Roberta](https://github.com/dreamer/roberta), and
-[DOSBox Staging](https://github.com/dreamer/roberta).
+[DOSBox Staging](https://dosbox-staging.github.io/).
 
-![boxtron](https://user-images.githubusercontent.com/3967/62228547-29ebfb00-b3be-11e9-9011-625460706f25.png)
+![boxtron](https://user-images.githubusercontent.com/3967/111551660-fde2e080-8780-11eb-961a-f2fae8286cfa.png)
 
 Official mirrors:
 [GitHub](https://github.com/dreamer/boxtron),
