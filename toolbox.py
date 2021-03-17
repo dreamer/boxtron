@@ -43,7 +43,7 @@ def is_trivial_batch(file):
         return False
     with open(file, 'r') as bat_file:
         lines = bat_file.readlines(512)
-        return all([known_bat_cmd(line) for line in lines])
+        return all(known_bat_cmd(line) for line in lines)
     return False
 
 
