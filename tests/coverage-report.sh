@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Copyright (C) 2019-2020  Patryk Obara <patryk.obara@gmail.com>
 # SPDX-License-Identifier: GPL-2.0-or-later
+# Copyright (C) 2019-2021  Patryk Obara <patryk.obara@gmail.com>
 
 readonly test_config="$(pwd)/tests/files/xdg_config_home"
 
