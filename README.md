@@ -36,13 +36,6 @@ Game compatibility reports:
 
 ## Installation (from repositories)
 
-##### Fedora
-
-You can use [Copr repo](https://copr.fedorainfracloud.org/coprs/pbo/boxtron/):
-
-    $ sudo dnf copr enable pbo/boxtron 
-    $ sudo dnf install boxtron
-    
 ##### Flathub
 
 If you use [Steam flatpak](https://flathub.org/apps/details/com.valvesoftware.Steam),
