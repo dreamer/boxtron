@@ -2,13 +2,13 @@
 
 [![Build Status](https://travis-ci.com/dreamer/boxtron.svg?branch=master)](https://travis-ci.com/dreamer/boxtron)
 [![Luxtorpeda project Discord](https://img.shields.io/discord/514567252864008206.svg?label=discord)](https://discord.gg/8mFhUPX)
-[![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/dreamer)
 
 Steam Play compatibility tool to run DOS games using native Linux DOSBox
 
 This is a sister project of
-[Luxtorpeda](https://github.com/dreamer/luxtorpeda) and
-[Roberta](https://github.com/dreamer/roberta).
+[Luxtorpeda](https://github.com/dreamer/luxtorpeda),
+[Roberta](https://github.com/dreamer/roberta), and
+[DOSBox Staging](https://github.com/dreamer/roberta).
 
 ![boxtron](https://user-images.githubusercontent.com/3967/62228547-29ebfb00-b3be-11e9-9011-625460706f25.png)
 
@@ -58,12 +58,14 @@ You'll need to install dependencies manually and then proceed to installation st
 
 ### Dependencies
 
-You will need Python (>= 3.5), DOSBox (>= 0.74), inotify-tools, TiMidity++,
-and a soundfont.  Optionally, you can use FluidSynth as well.
+You will need Python (>= 3.5), DOSBox Staging (>= 0.76), inotify-tools,
+TiMidity++, and a soundfont.  Optionally, you can use FluidSynth as well.
+If your distribution does not include [dosbox-staging][dosbox-staging-repos]
+yet, you can use DOSBox 0.74-3 instead, but you might encounter severe issues.
 
 ##### Fedora
 
-    $ sudo dnf install dosbox inotify-tools timidity++ fluid-soundfont-gm
+    $ sudo dnf install dosbox-staging inotify-tools timidity++ fluid-soundfont-gm
 
 ##### OpenSUSE
 
@@ -81,6 +83,7 @@ and a soundfont.  Optionally, you can use FluidSynth as well.
 
     $ nix-env -f '<nixpkgs>' -iA dosbox inotify-tools timidity soundfont-fluid
 
+[dosbox-staging-repos]: https://dosbox-staging.github.io/downloads/linux/
 
 ### Installation (using tarball, for a single user)
 
@@ -90,8 +93,9 @@ and a soundfont.  Optionally, you can use FluidSynth as well.
        $ curl -L https://github.com/dreamer/boxtron/releases/download/v0.5.4/boxtron.tar.xz | tar xJf -
 
 2. Start/restart Steam.
-3. In game properties window select "Force the use of a specific Steam Play
-   compatibility tool" and select "Boxtron (native DOSBox)".
+3. In game properties window go to "Compatibility" section, select "Force
+   the use of a specific Steam Play compatibility tool" and pick
+   "Boxtron (native DOSBox)".
 
 
 ### Installation (from source, system-wide)
@@ -204,17 +208,18 @@ corresponds to which game.
 
 ## Known issues
 
-As of January 2020 you might encounter one of the following bugs:
+As of March 2021 you might encounter one of the following bugs:
 
 - Some games experience random KeyUp events in fullscreen.
   It's a [DOSBox bug](https://www.vogons.org/viewtopic.php?f=31&t=66491), use
-  [**dosbox-staging**](https://github.com/dreamer/dosbox-staging) to avoid it.
+  [DOSBox Staging] to avoid it.
 - Alt+Tab does not work in fullscreen. It's a DOSBox bug, use
-  [**dosbox-staging**](https://github.com/dreamer/dosbox-staging) to avoid it.
+  [DOSBox Staging] to avoid it.
 - Modern game controllers might not work at all. It's a DOSBox bug, use
-  [**dosbox-staging**](https://github.com/dreamer/dosbox-staging) to avoid it.
-- Steam Overlay causes [visual glitch](https://github.com/dreamer/boxtron/issues/8).
+  [DOSBox Staging] to avoid it.
+- Steam Overlay causes [visual glitch][steam-overlay-glitch].
   This was a DOSBox bug - use DOSBox 0.74-3 or
-  [**dosbox-staging**](https://github.com/dreamer/dosbox-staging) to avoid it.
-- Mouse [cursor issues](https://github.com/dreamer/boxtron/issues/7) in
-  Gnome 3.30. This was a Gnome issue, fixed in 3.32.
+  [DOSBox Staging] to avoid it.
+
+[DOSBox Staging]: https://dosbox-staging.github.io/
+[steam-overlay-glitch]: https://github.com/dreamer/boxtron/issues/8
