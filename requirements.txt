@@ -3,3 +3,4 @@ pycodestyle
 pyenchant
 pylint
 yapf
+mypy

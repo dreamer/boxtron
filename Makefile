@@ -138,3 +138,6 @@ check-formatting:
 pretty-code:
 	yapf -i -vv run-dosbox install-gog-game *.py
 	git status
+
+check-types:
+	mypy run-dosbox

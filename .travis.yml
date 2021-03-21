@@ -9,13 +9,16 @@ install:
 
 jobs:
   include:
+    - name: "Check Types"
+      stage: analyze
+      script: make check-types
     - name: "Run Linters"
       stage: analyze
       script: make lint
-    - name: "Unit Tests"
+    - name: "Run Unit Tests"
       stage: test
       script: make test
-    - name: "Unit Tests Coverage"
+    - name: "Run Unit Tests Coverage"
       stage: test
       script: make coverage
     - name: "Check Formatting"
