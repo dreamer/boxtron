@@ -35,7 +35,8 @@ def which(cmd):
 
 def is_trivial_batch(file):
     """Test if file is trivially interpretable batch file."""
-    if not file.lower().endswith('.bat'):
+    filename = file.lower()
+    if not (filename.endswith('.bat') or filename.endswith('.cmd')):
         return False
     if not os.path.isfile(file):
         return False
@@ -96,6 +97,12 @@ def known_bat_cmd(bat_cmd_line):
     first_word = line[0].lstrip('@').lower()
     if first_word in ('echo', 'cd', 'exit'):
         return True
+    if first_word.startswith(':'):
+        # This is a label for GOTO statement. Windows programmers use
+        # sometimes use '::' or e.g. ':!' to inject "broken" labels.
+        # These "broken" labels are silently ignored by Windows cmd.exe,
+        # so they can be used instead of REM to indicate comments in code...
+        return True
     win_path = pathlib.PureWindowsPath(first_word)
     exe = win_path.parts[-1]
     return exe in ('dosbox', 'dosbox.exe')
@@ -121,9 +128,15 @@ def read_trivial_batch(file):
             if not this_line:
                 continue
             first_word = this_line[0]
+            if first_word.startswith(':'):
+                # Maybe a GOTO label, but probably a "broken" label used
+                # as a comment.
+                continue
             if first_word.lower() in ('exit', '@exit'):
                 continue
             if first_word.lower() in ('echo', '@echo'):
+                continue
+            if first_word.lower() in ('rem', '@rem'):
                 continue
             if first_word.lower() in ('cd', '@cd'):
                 # This works only for a single 'CD', but no game uses more than
