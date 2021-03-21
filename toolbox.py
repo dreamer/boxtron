@@ -33,7 +33,7 @@ def which(cmd):
         return None
 
 
-def is_trivial_batch(file):
+def is_trivial_batch(file: str) -> bool:
     """Test if file is trivially interpretable batch file."""
     filename = file.lower()
     if not (filename.endswith('.bat') or filename.endswith('.cmd')):
