@@ -94,6 +94,16 @@ class TestBatchFileDetection(unittest.TestCase):
         self.assertEqual(path, 'DOSBOX')
         self.assertEqual(args, ['-conf', 'ROTT.conf', '-noconsole', '-c'])
 
+    def test_star_trek_25th(self):
+        os.chdir('tests/files/bat/star_trek_25th')
+        script = 'Launch Star Trek 25th Anniversary.cmd'
+        self.assertTrue(toolbox.is_trivial_batch(script))
+        path, args = toolbox.read_trivial_batch(script)
+        self.assertEqual(path, 'DOSBOX')
+        self.assertEqual(args, ['-conf', r'..\dosbox_st25.conf',
+                                '-conf', r'..\dosbox_st25_single.conf',
+                                '-noconsole', '-c', 'exit'])
+
 
 class TestEnabledInEnv(unittest.TestCase):
 
