@@ -45,7 +45,6 @@ def is_trivial_batch(file: str) -> bool:
     with open(file, 'r') as bat_file:
         lines = bat_file.readlines(512)
         return all(known_bat_cmd(line) for line in lines)
-    return False
 
 
 def argsplit_windows(line):
