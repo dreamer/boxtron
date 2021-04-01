@@ -68,7 +68,6 @@ def find_gog_info(game_dir):
     with open(info_files[0], 'r') as gog_info_file:
         info = json.load(gog_info_file)
         return info
-    return None
 
 
 # Trying to emulate GOG name -> slug conversion as close as possible:
