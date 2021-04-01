@@ -1,7 +1,8 @@
 # Boxtron
 
-[![Build Status](https://travis-ci.com/dreamer/boxtron.svg?branch=master)](https://travis-ci.com/dreamer/boxtron)
-[![Luxtorpeda project Discord](https://img.shields.io/discord/514567252864008206.svg?label=discord)](https://discord.gg/8mFhUPX)
+[![Build Status][travis-badge]][travis]
+[![Language grade: Python][lgtm-badge]][lgtm-py]
+[![Luxtorpeda project Discord][discord-badge]][discord]
 
 Steam Play compatibility tool to run DOS games using native Linux DOSBox
 
@@ -223,3 +224,9 @@ As of March 2021 you might encounter one of the following bugs:
 
 [DOSBox Staging]: https://dosbox-staging.github.io/
 [steam-overlay-glitch]: https://github.com/dreamer/boxtron/issues/8
+[travis-badge]: https://travis-ci.com/dreamer/boxtron.svg?branch=master
+[travis]: https://travis-ci.com/dreamer/boxtron
+[lgtm-badge]: https://img.shields.io/lgtm/grade/python/g/dreamer/boxtron.svg
+[lgtm-py]: https://lgtm.com/projects/g/dreamer/boxtron/context:python
+[discord-badge]: https://img.shields.io/discord/514567252864008206?color=%237289da&logo=discord&logoColor=white&label=discord
+[discord]: https://discord.gg/8mFhUPX
