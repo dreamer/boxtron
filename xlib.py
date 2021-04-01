@@ -7,7 +7,7 @@ X11 related classes and functions.
 
 import collections
 
-from ctypes import c_bool, c_char_p, c_int, c_short, c_void_p,
+from ctypes import c_bool, c_char_p, c_int, c_short, c_void_p, \
                    CDLL, POINTER, Structure, byref
 
 
