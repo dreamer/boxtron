@@ -5,13 +5,12 @@
 Log functions
 """
 
+import os
 import sys
-
-import toolbox
 
 PREFIX = 'boxtron:'
 
-QUIET = toolbox.enabled_in_env('BOXTRON_QUIET')
+QUIET: bool = os.environ.get('BOXTRON_QUIET', '0') != '0'
 
 
 def print_err(*value, sep=' ', end='\n', flush=False):

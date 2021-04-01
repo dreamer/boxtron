@@ -12,15 +12,17 @@ import re
 import shlex
 import subprocess
 import zipfile
+from typing import List, Optional, Tuple
 
 import winpathlib
+from log import log_err
 
 
-def enabled_in_env(var, fallback_var=None):
+def enabled_in_env(var: str, fallback_var=None) -> bool:
     """Returns True for environment variables with non-zero value."""
     val1 = os.environ.get(var)
     val2 = os.environ.get(fallback_var) if fallback_var else None
-    return (val1 and val1 != '0') or (val2 and val2 != '0')
+    return (bool(val1) and val1 != '0') or (bool(val2) and val2 != '0')
 
 
 def which(cmd):
@@ -107,7 +109,7 @@ def known_bat_cmd(bat_cmd_line):
     return exe in ('dosbox', 'dosbox.exe')
 
 
-def read_trivial_batch(file):
+def read_trivial_batch(file: str) -> Tuple[Optional[str], List[str]]:
     """Find DOSBox command in batch file and return its argument list.
 
     Returns a tuple:
@@ -149,7 +151,7 @@ def read_trivial_batch(file):
             exe = win_path.parts[-1]
             if exe.lower() in ('dosbox', 'dosbox.exe'):
                 return new_path, this_line[1:]
-    assert False, 'error processing .bat file (line {})'.format(line_num)
+    log_err('error while processing .bat file (line {})'.format(line_num))
     return None, []
 
 
