@@ -5,19 +5,17 @@
 X11 related classes and functions.
 """
 
-# pylint: disable=wildcard-import
-# pylint: disable=unused-wildcard-import
-
 import collections
+import ctypes
 
-from ctypes import *
+from ctypes import c_bool, c_char_p, c_int, c_short, c_void_p
 
 
 class Xlib:
     """Adapter to X11 library."""
 
     def __init__(self):
-        self.lib = CDLL("libX11.so.6")
+        self.lib = ctypes.CDLL("libX11.so.6")
         self.lib.XOpenDisplay.argtypes = [c_char_p]
         self.lib.XOpenDisplay.restype = c_void_p
         self.lib.XDisplayString.argtypes = [c_void_p]
@@ -51,7 +49,7 @@ class Xlib:
         return self.lib.XDisplayString(self.dpy).decode('ascii')
 
 
-class XineramaScreenInfo(Structure):
+class XineramaScreenInfo(ctypes.Structure):
     """struct XineramaScreenInfo
 
     Definition in /usr/include/X11/extensions/Xinerama.h
@@ -74,11 +72,12 @@ class Xinerama:
 
     def __init__(self, xlib):
         self.xlib = xlib
-        self.lib = CDLL("libXinerama.so.1")
+        self.lib = ctypes.CDLL("libXinerama.so.1")
         self.lib.XineramaIsActive.argtypes = [c_void_p]
         self.lib.XineramaIsActive.restype = c_bool
-        self.lib.XineramaQueryScreens.argtypes = [c_void_p, POINTER(c_int)]
-        self.lib.XineramaQueryScreens.restype = POINTER(XineramaScreenInfo)
+        ptr = ctypes.POINTER
+        self.lib.XineramaQueryScreens.argtypes = [c_void_p, ptr(c_int)]
+        self.lib.XineramaQueryScreens.restype = ptr(XineramaScreenInfo)
 
     def is_active(self):
         """Adapts: Bool XineramaIsActive(Display *);
@@ -96,7 +95,7 @@ class Xinerama:
         dpy = self.xlib.dpy
         assert dpy
         num = c_int(0)
-        xscreens = self.lib.XineramaQueryScreens(dpy, byref(num))
+        xscreens = self.lib.XineramaQueryScreens(dpy, ctypes.byref(num))
         screens = [
             ScreenInfo(s.screen_number, s.width, s.height, s.x_org, s.y_org)
             for s in xscreens[:num.value]
