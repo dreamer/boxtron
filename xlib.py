@@ -5,12 +5,10 @@
 X11 related classes and functions.
 """
 
-# pylint: disable=wildcard-import
-# pylint: disable=unused-wildcard-import
-
 import collections
 
-from ctypes import *
+from ctypes import c_bool, c_char_p, c_int, c_short, c_void_p, \
+                   CDLL, POINTER, Structure, byref
 
 
 class Xlib:
