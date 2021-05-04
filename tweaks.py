@@ -448,17 +448,15 @@ def install_fallout():
     """
 
     if not os.path.isfile('DOS4GW.EXE_'):
-        archive = zipfile.ZipFile(xdg.cached_file('dos32a-912.zip'), 'r')
-        archive.extract('binw/dos32a.exe')
-        archive.close()
-        os.rename('binw/dos32a.exe', 'DOS4GW.EXE')
-        os.rmdir('binw')
+        with zipfile.ZipFile(xdg.cached_file('dos32a-912.zip'), 'r') as arch:
+            arch.extract('binw/dos32a.exe')
+            os.rename('binw/dos32a.exe', 'DOS4GW.EXE')
+            os.rmdir('binw')
 
     if not os.path.isfile('HMIDET.386') or not os.path.isfile('HMIDRV.386'):
-        archive = zipfile.ZipFile(xdg.cached_file('SETUP40.ZIP'), 'r')
-        archive.extract('HMIDET.386')
-        archive.extract('HMIDRV.386')
-        archive.close()
+        with zipfile.ZipFile(xdg.cached_file('SETUP40.ZIP'), 'r') as arch:
+            arch.extract('HMIDET.386')
+            arch.extract('HMIDRV.386')
 
     if not os.path.isfile('FALLOUT.EXE'):
         cache_file = xdg.cached_file('fallout_patch_1_1_dos.zip')

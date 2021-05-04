@@ -245,9 +245,8 @@ class PidFile:
 
 def unzip(src_file, dst_dir):
     """Simply unzip a file."""
-    archive = zipfile.ZipFile(src_file, 'r')
-    archive.extractall(dst_dir)
-    archive.close()
+    with zipfile.ZipFile(src_file, 'r') as archive:
+        archive.extractall(dst_dir)
 
 
 def sha256sum(path):
