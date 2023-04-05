@@ -61,10 +61,10 @@ class ResourceFile:
         """Return iterator over objects named with prefix."""
         return filter(lambda x: x.name.startswith(pfx), self.tar.getmembers())
 
-    def includes(self, app_id):
+    def includes(self, app_id) -> bool:
         """Return iff file contains setup for app_id."""
         pfx = 'preconfig/{}/'.format(app_id)
-        return list(self.filter_pfx(pfx)) != []
+        return list(self.filter_pfx(pfx))
 
     def extract(self, app_id, resource):
         """Extract all files for named app_id and resource to working dir."""
