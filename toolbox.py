@@ -221,7 +221,8 @@ def guess_game_install_dir(directory=None):
             break
     if not lib_pattern_found:
         return None
-    found_path = os.path.join(*posix_parts[:pos + 1])
+    # TODO ensure that we're joining at least one part in line below
+    found_path = os.path.join('', *posix_parts[:pos + 1])
     return found_path.replace(' ', r'\ ').replace('&', r'\&')
 
 
