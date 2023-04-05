@@ -123,7 +123,7 @@ MIDI_INFO_NA = """
 
 
 class DosboxConfigParser(configparser.ConfigParser):
-    """Specialization of ConfigParser for DOSBox format."""
+    """Specialisation of ConfigParser for DOSBox format."""
 
     # pylint: disable=too-many-ancestors
 

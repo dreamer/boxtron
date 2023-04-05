@@ -313,23 +313,23 @@ max-spelling-suggestions=4
 spelling-dict=en_GB
 
 # List of comma separated words that should not be checked.
-spelling-ignore-words=activision, alsa, autoexec,
+spelling-ignore-words=activision, adapter, alsa, autoexec,
                       bool, boxtron,
                       casio, chdir, cmd, com, conf, ctypes,
                       deathkings, dict, dir, dirname, dosbox, dx,
                       ensoniq, etc, exe,
-		      fallback, filename, filenames,
-                      gmail, gog,
-                      iff, imgmount, inc, int, iterable, iscriptevaluator,
+                      fallback, filename, filenames,
+                      glyphs, gmail, gog,
+                      iff, imgmount, inc, int, interpretable, iterable, iscriptevaluator,
                       max, misconfigure,
                       nukem, noqa,
                       obara, online,
-                      patryk, pid, posix, pre-configuration, pre-configure, preset, procfs,
-                      ragnarok, regex, runtime
+                      patryk, pid, posix, pre, pre-configuration, pre-configure, preset, procfs,
+                      ragnarok, regex, runtime,
                       scalers, sdl, setup, soundfont, stderr, stdout, struct, sublicense, sys,
                       toolmanifest, tuple,
-		      usb,
-		      VA,
+                      usb,
+                      VA,
                       xclosedisplay, xdg, xfree, xinerama, xineramaqueryscreens, xopendisplay,
                       yapf,
 

@@ -65,7 +65,7 @@ def active_midi_through(alsa_seq_clients=ALSA_SEQ_CLIENTS):
     If this port is connected to anything, whatever the purpose is, the user
     decided to pass through MIDI signal to some device - hardware or software.
 
-    One possible use-case is to pass MIDI signal to software synthesiser
+    One possible use-case is to pass MIDI signal to software synthesizer
     running under Wine, e.g. Roland Sound Canvas VA.
     """
     try:
@@ -124,41 +124,41 @@ def start_fluidsynth(sfont):
 
 
 def stop_software_midi_synth(pid):
-    """Stop software synthesiser process."""
+    """Stop software synthesizer process."""
     log('Stopping MIDI client {0}'.format(pid))
     os.kill(pid, signal.SIGTERM)  # TODO ProcessLookupError:
 
 
 def detect_external_synth():
-    """Detect a synthesiser running in the background."""
+    """Detect a synthesizer running in the background."""
     user_pref = settings.get_midi_sequencer()
     if user_pref:
         if match_port_by_name(user_pref):
             # We found user's preferred port.
             return True
-        log('synthesiser matching', user_pref, 'not found')
+        log('synthesizer matching', user_pref, 'not found')
     else:
         if find_midi_port():
-            # Synthesiser is already running (maybe as a service).
+            # Synthesizer is already running (maybe as a service).
             return True
-        log('no synthesiser running in the background')
+        log('no synthesizer running in the background')
     return False
 
 
 def start_midi_synth():
-    """Start software MIDI synthesiser according to user preferences."""
+    """Start software MIDI synthesizer according to user preferences."""
     if not settings.get_midi_on():
         return
 
     # either user had preference but the preferred port was not found
     # or user had no preference and there was no appropriate port to use
-    # so simply start one of software synthesisers as a fallback:
+    # so simply start one of software synthesizers as a fallback:
 
     tool = settings.get_midi_tool()
     sfont = settings.get_midi_soundfont()
 
     if not sfont:
-        log_err("Can't start a software synthesiser without a soundfont")
+        log_err("Can't start a software synthesizer without a soundfont")
         return
 
     preference_list = []
@@ -178,4 +178,4 @@ def start_midi_synth():
         if tool == 'fluidsynth':
             start_fluidsynth(sfont)
             return
-    log_warn('no software MIDI synthesiser available')
+    log_warn('no software MIDI synthesizer available')
