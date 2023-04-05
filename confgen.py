@@ -218,7 +218,6 @@ class DosboxConfiguration(dict):
                 self.raw_autoexec.append('exit')
 
     def __get_default_conf__(self):
-        # pylint: disable=no-self-use
         path = to_posix_path('dosbox.conf')
         if path and os.path.isfile(path):
             return [path]
