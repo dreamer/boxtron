@@ -20,7 +20,7 @@ from winpathlib import to_posix_path
 # There are several tweaks, that can be specified in TWEAKS_DB:
 #
 # download - describe files to download on the first start
-# install  - name the function in tweaks module to finalize game installation
+# install  - name the function in tweaks module to finalise game installation
 # midi     - see documentation for get_midi_preset
 # conf     - dictionary of values to inject to DOSBox configuration
 # commands - replace command line parameters used by specific game
@@ -353,7 +353,7 @@ def get_midi_preset(app_id):
 
     Possible return values:
 
-    enable  - (default) turn on software midi synthesiser
+    enable  - (default) turn on software midi synthesizer
     disable - game does not support midi at all
     auto    - pre-configure game to automatically turn midi on/off depending
               on user preference

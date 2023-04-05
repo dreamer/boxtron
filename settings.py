@@ -115,11 +115,11 @@ class Settings():
         self.distdir = os.path.dirname(os.path.abspath(__file__))
 
     def setup(self):
-        """Finalize settings initialization on request.
+        """Finalise settings initialisation on request.
 
-        Some settings need more involved initialization/detection procedure,
+        Some settings need more involved initialisation/detection procedure,
         which might fail or leave extensive logs on stderr.  We want this
-        part of settings initialization only when actually needed.
+        part of settings initialisation only when actually needed.
         """
         self.__setup_fullscreen__()
         midi_on = self.get_midi_on()

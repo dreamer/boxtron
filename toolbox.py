@@ -199,7 +199,7 @@ def guess_game_install_dir(directory=None):
     Path will be escaped in a way, that allows it to be injected into
     quoted shell commands.
 
-    This function assumes current working directory is a subdirectory
+    This function assumes current working directory is a sub-directory
     of an installation directory.
     """
     path = directory or os.getcwd()
