@@ -17,9 +17,17 @@ jobs:
     - run:  sudo apt-get update
     - name: Install dependencies
       run: |
-        sudo apt-get install -y hunspell-en-gb enchant-2
+        sudo apt-get install -y hunspell-en-gb enchant-2 shellcheck
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-    - name: Analysing the code with pylint
-      run: |
-        pylint --rcfile=.pylint run-dosbox install-gog-game *.py tests/*.py scripts/*.py
+        pylint --version
+    - name: Check Types
+      run:  make check-types
+    - name: Run Linters
+      run:  make lint
+    - name: Run Unit Tests
+      run:  make test
+    - name: Run Unit Tests Coverage
+      run:  make coverage
+    - name: Check Formatting
+      run:  make check-formatting
